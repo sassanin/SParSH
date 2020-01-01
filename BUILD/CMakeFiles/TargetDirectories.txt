@@ -1,0 +1,6 @@
+/home/sashikumaar/SParSH_Working/SParSH/BUILD/CMakeFiles/rebuild_cache.dir
+/home/sashikumaar/SParSH_Working/SParSH/BUILD/CMakeFiles/SParSH_2D_SEQUENTIAL.exe.dir
+/home/sashikumaar/SParSH_Working/SParSH/BUILD/CMakeFiles/edit_cache.dir
+/home/sashikumaar/SParSH_Working/SParSH/BUILD/crust/src/common/CMakeFiles/rebuild_cache.dir
+/home/sashikumaar/SParSH_Working/SParSH/BUILD/crust/src/common/CMakeFiles/common.dir
+/home/sashikumaar/SParSH_Working/SParSH/BUILD/crust/src/common/CMakeFiles/edit_cache.dir
