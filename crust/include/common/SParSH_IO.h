@@ -13,7 +13,6 @@
 #include <iomanip>
 #include <fstream>
 #include <sstream>
-#include <ranges>
 
 using std::cout;
 using std::cerr;

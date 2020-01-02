@@ -1,2 +1,0 @@
-/usr/bin/ar qc /home/sashikumaar/SParSH_Working/SParSH_Output/CD2D/lib/libcommon.a  CMakeFiles/common.dir/SParSH_IO.C.o
-/usr/bin/ranlib /home/sashikumaar/SParSH_Working/SParSH_Output/CD2D/lib/libcommon.a
