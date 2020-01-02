@@ -5,7 +5,8 @@
 // =======================================================================
 #include <SParSH_IO.h>
 #include <algorithm> 
-#include <ranges> 
+
+#include <Vertex.h>
 
 // =======================================================================
 // main program
@@ -15,6 +16,11 @@ int main(int argc, char* argv[])
     int N = 100000;
     vector<int> values(100000); 
   
+    const int dim = 2;
+    SParSHMesh::TVertex<double, dim> V1;
+
+    vector<SParSHMesh::TVertex<double, 2>> Vertices;
+
     // Generate Random values 
     auto f = []() -> int { return rand() % 10000; }; 
   
@@ -52,8 +58,8 @@ int main(int argc, char* argv[])
     auto even = [](int i){ return 0 == i % 2; };
     auto square = [](int i) { return i * i; };
  
-    for (int i : ints | ranges::views::filter(even) | std::views::transform(square)) {
-        std::cout << i << ' ';
+    //for (int i : ints | ranges::views::filter(even) | std::views::transform(square)) {
+    //   std::cout << i << ' ';
         
                  
   return 0;
