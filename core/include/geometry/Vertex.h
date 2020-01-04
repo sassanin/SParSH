@@ -8,36 +8,44 @@
 ===========================================================================*/
 
 #include<tuple> 
+#include <vector>
 
-#ifndef __VERTEX__
-#define __VERTEX__
+#pragma once
 
 namespace SParSHMesh {
-template <class T, int dim> 
+template <int dim> 
 class TVertex {
 
-  protected:
-      T V[dim]; 
-
+  private: 
+   //std::vector<T> elems[dim]; 
+   double V[dim]; 
+ 
   public:
     // Constructors
-
 //#ifdef __3D__
-//      /** 3D vertex */
-//      TVertex(double initX, double initY, double initZ)
-//      { } ;
+    //  TVertex(double X, double Y, double Z);
+//#elif __2D__
+      TVertex(double X, double Y);
+
+      void SetCoords(double X, double Y);
 //#else
-//      /** 2D vertex */ 
-//      TVertex(double initX, double initY)
-//      { };
+   //   TVertex(double X);
 //#endif
 
-
-
-
 };
+
+
+template <int dim>
+TVertex<dim>::TVertex(double X, double Y) 
+{
+ V[0] = X;
+ V[1] = Y;
+
+ cout << "TVert " << X << ", " << Y <<endl; 
+}
 
 #include "Vertex.C"
 
 } // namespace SParSHMesh
-#endif
+
+//#endif

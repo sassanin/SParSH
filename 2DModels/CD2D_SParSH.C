@@ -17,9 +17,17 @@ int main(int argc, char* argv[])
     vector<int> values(100000); 
   
     const int dim = 2;
-    SParSHMesh::TVertex<double, dim> V1;
+    SParSHMesh::TVertex<dim> V1(2.3, 4.5);
+ 
+    cout << "Size of One Ver obj:" << sizeof(V1) << endl;
 
-    vector<SParSHMesh::TVertex<double, 2>> Vertices;
+
+    vector<SParSHMesh::TVertex<dim>> Vertices;
+    
+    cout << "Size of Vector Ver obj:" << sizeof(Vertices) << endl;
+
+    vector<double> elems; 
+
 
     // Generate Random values 
     auto f = []() -> int { return rand() % 10000; }; 
