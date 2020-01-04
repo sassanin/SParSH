@@ -1,19 +1,19 @@
 #include <SParSH_IO.h>
 #include <Vertex.h>
 
-namespace SParSHMesh
-{
+
+SParSH_NAMESPACE_BEGIN
 
 //#ifdef __3D__
 
 
 //#elif __2D__
-void TVertex::SetCoords(double X, double Y) 
+ TVertex::TVertex(double X, double Y) 
 {
- V[0] = X;
- V[1] = Y;
+ //V[0] = X;
+ //V[1] = Y;
 
- cout << "TVert Set Coord" << X << ", " << Y <<endl; 
+ //cout << "TVert Set Coord" << X << ", " << Y <<endl; 
 }
 
 //#else
@@ -21,5 +21,4 @@ void TVertex::SetCoords(double X, double Y)
 
 //#endif
 
-
-} // namespace SParSHMesh
+SParSH_NAMESPACE_END

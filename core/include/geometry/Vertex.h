@@ -9,10 +9,13 @@
 
 #include<tuple> 
 #include <vector>
+#include <SParSH_Variables.h>
+
 
 #pragma once
 
-namespace SParSHMesh {
+SParSH_NAMESPACE_BEGIN
+
 template <int dim> 
 class TVertex {
 
@@ -21,6 +24,8 @@ class TVertex {
    double V[dim]; 
  
   public:
+
+   TVertex();
     // Constructors
 //#ifdef __3D__
     //  TVertex(double X, double Y, double Z);
@@ -35,17 +40,15 @@ class TVertex {
 };
 
 
-template <int dim>
-TVertex<dim>::TVertex(double X, double Y) 
-{
- V[0] = X;
- V[1] = Y;
+//template <int dim>
+//TVertex<dim>::TVertex(double X, double Y) 
+//{
+ //V[0] = X;
+ //V[1] = Y;
 
- cout << "TVert " << X << ", " << Y <<endl; 
-}
+// cout << "TVert " << X << ", " << Y <<endl; 
+//}
 
 #include "Vertex.C"
 
-} // namespace SParSHMesh
-
-//#endif
+SParSH_NAMESPACE_END

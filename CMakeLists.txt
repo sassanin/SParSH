@@ -232,7 +232,6 @@ endif()
  
  include_directories("${CMAKE_SOURCE_DIR}/crust/include/common")
  include_directories("${CMAKE_SOURCE_DIR}/core/include/geometry")
- include_directories("${CMAKE_SOURCE_DIR}/core/src/geometry") 
 # include_directories("${CMAKE_SOURCE_DIR}/include/Geometry")
 # include_directories("${CMAKE_SOURCE_DIR}/include/QuadFormulas")
 # include_directories("${CMAKE_SOURCE_DIR}/include/FE1D")
