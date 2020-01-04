@@ -17,17 +17,19 @@ int main(int argc, char* argv[])
     vector<int> values(100000); 
   
     const int dim = 2;
-    SParSHMesh::TVertex<dim> V1(2.3, 4.5);
+    SParSH::TVertex<dim> V1(2.3, 4.5);
  
     cout << "Size of One Ver obj:" << sizeof(V1) << endl;
+    V1.SetCoords(4.7, 8.8);
 
-
-    vector<SParSHMesh::TVertex<dim>> Vertices;
+    vector<SParSH::TVertex<dim>> Vertices;
     
     cout << "Size of Vector Ver obj:" << sizeof(Vertices) << endl;
 
     vector<double> elems; 
 
+//    const int dim3d = 3;
+//    SParSH::TVertex<dim3d> V2(2.3, 4.6, 8.3);
 
     // Generate Random values 
     auto f = []() -> int { return rand() % 10000; }; 

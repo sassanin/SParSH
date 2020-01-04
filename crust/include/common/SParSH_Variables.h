@@ -25,7 +25,7 @@
 #define SParSH_VERSION_SUBMINOR @SParSH_VERSION_SUBMINOR@
 
 /**=======================================================================
- * cmake configuration
+ * general configuration
 =======================================================================*/
 
 #ifdef NULL
@@ -40,8 +40,8 @@
 #endif
 
 constexpr double ln2() { 
-    return log(2.0); 
-} 
+  return log(2.0); 
+  } 
 
  enum class boolean {FALSE, TRUE};
 
