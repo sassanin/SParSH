@@ -3,44 +3,43 @@
 
 SParSH_NAMESPACE_BEGIN
 
+template <sint dim, bool BD_Vert> 
+TVertex<dim, BD_Vert>::TVertex(double *X) 
+ {
+  for(sint i=0;i<dim;++i) { 
+   V[i] = X[i]; 
+  }
+ }
+
+template <sint dim, bool BD_Vert> 
+void TVertex<dim, BD_Vert>::SetCoords(double *X) 
+ {
+  for(sint i=0;i<dim;++i) { 
+   V[i] = X[i]; 
+  }
+ }
+
+template <sint dim, bool BD_Vert> 
+void TVertex<dim, BD_Vert>::GetCoords(double *X) 
+ {
+  for(sint i=0;i<dim;++i) { 
+   X[i] = V[i]; 
+  }
+ }
+
+template <sint dim, bool BD_Vert> 
+bool TVertex<dim, BD_Vert>::IsBoundVert() 
+ {
+  return BD_Vert;
+ }
+
+// explicit instantiation
 #ifdef __3D__
-template <int dim>
-TVertex<dim>::TVertex(double X, double Y, double Z) 
-{
- V[0] = X;
- V[1] = Y;
- V[2] = Z;
-cout << "TVert3d .C " << X << ", " << Y<< ", " << Z  <<endl; 
-}
-
-#elif __2D__
-template <int dim>
-TVertex<dim>::TVertex(double X, double Y) 
-{
- V[0] = X;
- V[1] = Y;
-
-cout << "TVert .C " << X << ", " << Y <<endl; 
-}
-
-void TVertex<2>::SetCoords(double X, double Y) {
- V[0] = X;
- V[1] = Y;
-
-cout << "TVert  ln2()" << ln2() <<endl; 
-
-cout << "TVert .C " << X << ", " << Y<<endl; 
-} // void TVertex<2>::SetCoords 
-
-
+    template class TVertex<3>;
+#elif __2D__    
+    template class TVertex<2>;
 #else
-     
-
+    template class TVertex<1>;
 #endif
-
-// explicit instantiations
-template class TVertex<1>;
-template class TVertex<2>;
-template class TVertex<3>;
 
 SParSH_NAMESPACE_END

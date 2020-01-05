@@ -12,7 +12,7 @@
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <int dim> 
+template <sint dim, bool BD_Vert=false> 
 class TVertex {
 
   private: 
@@ -21,15 +21,17 @@ class TVertex {
   public:
   
   // Constructors
-#ifdef __3D__
-     TVertex(double X, double Y, double Z);
-#elif __2D__
-      TVertex(double X, double Y);
+  TVertex(double *X);
 
- void SetCoords(double X, double Y);
-#else
-    //  TVertex(double X);
-#endif
+  //methods 
+  void SetCoords(double *X);
+  
+  void GetCoords(double *X);
+
+  double* GetCoordsPtr()
+  { return V; }
+  
+  bool IsBoundVert();
 
 };
 

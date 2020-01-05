@@ -4,6 +4,7 @@
 // History:     Implementation started on 28.12.2019
 // =======================================================================
 #include <SParSH_IO.h>
+#include <SParSH_Variables.h>
 #include <algorithm> 
 
 #include <Vertex.h>
@@ -16,11 +17,29 @@ int main(int argc, char* argv[])
     int N = 100000;
     vector<int> values(100000); 
   
-    const int dim = 2;
-    SParSH::TVertex<dim> V1(2.3, 4.5);
- 
+    const sint dim = 2;
+    double y[2], x[2]={1.5, 2.8}, *z;
+
+    SParSH::TVertex<dim> V1(x);
     cout << "Size of One Ver obj:" << sizeof(V1) << endl;
-    V1.SetCoords(4.7, 8.8);
+    //V1.SetCoords(x);
+
+      cout << "Size of int_fast8_t :" << sizeof(uint_fast8_t) << endl;
+      cout << "Size of sint :" << sizeof(sint) << endl;
+      cout << "Size of bool :" << sizeof(bool) << endl;
+
+    V1.GetCoords(y);
+    z=V1.GetCoordsPtr();
+
+    for(sint i=0;i<dim;++i)
+     cout << "z[i] :" << z[i] << endl;
+
+    cout << "IsBDVert " << V1.IsBoundVert() << endl;
+
+    //SParSH::TVertex<3> V2(x);
+
+
+
 
     vector<SParSH::TVertex<dim>> Vertices;
     
