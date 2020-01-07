@@ -28,7 +28,7 @@ set(CMAKE_VERBOSE_MAKEFILE FALSE)
 
 
 # selection of architect type (LINUX64 MAC64 INTEL64 TYRONE64 CRAY64)
-set(SParSH_ARCH "INTEL64" CACHE STRING "select the machine type")
+set(SParSH_ARCH "MAC64" CACHE STRING "select the machine type")
 
 #  selection of program type (SEQUENTIAL SMPI MPI OMPONLY HYBRID)
 set(SParSH_PARALLEL_TYPE "SEQUENTIAL" CACHE STRING "select the parallel type")
@@ -114,7 +114,7 @@ endif()
  endif()
 
  if("${SParSH_ARCH}" STREQUAL "LINUX64")
-   set(SParSH_CXX_DEF "${SParSH_CXX_DEF} -std=c++20 -fopenmp")
+   set(SParSH_CXX_DEF "${SParSH_CXX_DEF} -std=c++1z -fopenmp")
    set(SParSH_C_DEF "  ${SParSH_C_DEF}  -DREDUCED -DNO_TIMER -DMKL_ILP64  ")
  elseif("${SParSH_ARCH}" STREQUAL "MAC64")
    set(SParSH_CXX_DEF "-std=c++1z  -stdlib=libc++ ${SParSH_CXX_DEF}  -fapple-pragma-pack -Wdeprecated-register  ")
