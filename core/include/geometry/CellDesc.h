@@ -10,26 +10,26 @@
 
 #pragma once
 
-#define N_CellTypes  37
+#define N_CellTypes  20
 
-/** based on https://cgns.github.io/CGNS_docs_current/sids/conv.html#unstructgrid */
-enum class CellType:sint {LINE_2, LINE3, LINE_4, LINE_5,
-                       TRI_3, TRI_6, TRI_9, TRI_12,
-                       QUAD_4, QUAD_8, QUAD_9, QUAD_12, QUAD_16, QUAD_P4_16, 
-                       TETRA_4, TETRA_10, TETRA_16, TETRA_20, TETRA_22,
-                       PYRA_5, PYRA_13, PYRA_14, PYRA_21, PYRA_29, PYRA_30, PYRA_P4_29, 
-                       PENTA_6, PENTA_15, PENTA_18, PENTA_24, PENTA_38, PENTA_40,  PENTA_33,
-                       HEXA_8, HEXA_20, HEXA_27, HEXA_32 };
+/** \brief based on https://cgns.github.io/CGNS_docs_current/sids/conv.html#unstructgrid 
+ *  and for bubble FEs */
+enum class CellType:sint {LINE_2, LINE3,
+                          TRI_3, TRI_6, TRI_7,
+                          QUAD_4, QUAD_8, QUAD_9, 
+                          TETRA_4, TETRA_10, TETRA_14,
+                          PYRA_5, PYRA_13, PYRA_14, 
+                          PENTA_6, PENTA_15, PENTA_18,
+                          HEXA_8, HEXA_20, HEXA_27 };
  
-
 SParSH_NAMESPACE_BEGIN
 
-template <CellType celltype > 
+template <sint dim=0> 
 class TCellDesc {
 
   protected:
     /** \brief Type contains the enum ID of the cell type */
-    CellType Type = celltype;
+    CellType Type;
 
     /** \brief number of vertices in this cell */
     int N_Vertices;

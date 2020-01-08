@@ -5,6 +5,7 @@
 // =======================================================================
 #include <SParSH_IO.h>
 #include <SParSH_Variables.h>
+#include <SParSH_Init.h>
 #include <algorithm> 
 
 #include <Vertex.h>
@@ -13,12 +14,26 @@
 // main program
 // =======================================================================
 int main(int argc, char* argv[])
-{
+{ 
+    const sint dim = 2;
+
+    /** \brief Initilize the SparSH */
+    SParSH::TSParSH_Init<dim> Init();
+
+
     int N = 100000;
     vector<int> values(100000); 
-  
-    const sint dim = 2;
+
+
+
+
+
+
     double y[2], x[2]={1.5, 2.8}, *z;
+
+
+
+
 
     SParSH::TVertex<dim> V1(x);
     cout << "Size of One Ver obj:" << sizeof(V1) << endl;
