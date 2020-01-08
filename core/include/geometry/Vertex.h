@@ -1,5 +1,4 @@
 /** =======================================================================
-*
 * @class     TVertex
 * @brief     base class for vertex 
 * @author    Sashikumaar Ganesan 

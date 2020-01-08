@@ -12,7 +12,7 @@
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <> 
+template <CellType celltype > 
 class TCell {
 
   private: 
