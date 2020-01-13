@@ -11,7 +11,7 @@
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <sint dim, bool BD_Vert=false> 
+template <sint dim=SParSH::GEO_DIM, bool BD_Vert=false> 
 class TVertex {
 
   private: 

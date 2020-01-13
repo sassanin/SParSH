@@ -12,8 +12,8 @@
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <sint dim=0> 
-class TSParSHDatabase {
+template <sint dim=SParSH::GEO_DIM> 
+class TSParSH_Database {
 
   private: 
   
@@ -23,7 +23,7 @@ class TSParSHDatabase {
   public:
    
   //constructor
-  TSParSHDatabase();
+  TSParSH_Database();
 
 };
 

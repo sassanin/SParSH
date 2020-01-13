@@ -34,12 +34,7 @@ bool TVertex<dim, BD_Vert>::IsBoundVert()
  }
 
 // explicit instantiation
-#ifdef __3D__
-    template class TVertex<3>;
-#elif __2D__    
-    template class TVertex<2>;
-#else
-    template class TVertex<1>;
-#endif
+ template class TVertex<SParSH::GEO_DIM>;
+
 
 SParSH_NAMESPACE_END

@@ -233,7 +233,6 @@ endif()
  
  include_directories("${CMAKE_SOURCE_DIR}/crust/include/common")
  include_directories("${CMAKE_SOURCE_DIR}/core/include/geometry")
- include_directories("${CMAKE_SOURCE_DIR}/include/Geometry")
 # include_directories("${CMAKE_SOURCE_DIR}/include/QuadFormulas")
 # include_directories("${CMAKE_SOURCE_DIR}/include/FE1D")
 # include_directories("${CMAKE_SOURCE_DIR}/include/FE2D")
@@ -270,7 +269,7 @@ add_executable(SParSH_${SParSH_GEO}_${SParSH_PARALLEL_TYPE}.exe  ${SParSH_MODEL}
 #                       ${BLAS_LIBRARIES} ${TETGEN_LIBRARIES} ${GRIDGEN_LIBRARIES} )
 # endif("${SParSH_PARALLEL_TYPE}" STREQUAL "MPI"  OR "${SParSH_PARALLEL_TYPE}" STREQUAL "HYBRID" OR "${SParSH_PARALLEL_TYPE}" STREQUAL "SMPI")
 
-target_link_libraries(SParSH_${SParSH_GEO}_${SParSH_PARALLEL_TYPE}.exe "common" "geo" ${UMFPACK_LIBRARIES} ${TECPLOT_LIBRARIES}
+target_link_libraries(SParSH_${SParSH_GEO}_${SParSH_PARALLEL_TYPE}.exe  "geo" "common" ${UMFPACK_LIBRARIES} ${TECPLOT_LIBRARIES}
                               ${BLAS_LIBRARIES} ${TETGEN_LIBRARIES} ${GRIDGEN_LIBRARIES} )
 
 message("============================================================================================================"  )  

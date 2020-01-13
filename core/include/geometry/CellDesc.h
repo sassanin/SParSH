@@ -24,7 +24,7 @@ enum class CellType:sint {LINE_2, LINE3,
  
 SParSH_NAMESPACE_BEGIN
 
-template <sint dim=0> 
+template <sint dim=GEO_DIM> 
 class TCellDesc {
 
   protected:

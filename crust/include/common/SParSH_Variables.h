@@ -6,12 +6,12 @@
 
 #include <math.h>
 
-
-#ifndef __SParSH_Variables__
-#define __SParSH_Variables__
+#pragma once
 
 #define SParSH_NAMESPACE_BEGIN namespace SParSH {
 #define SParSH_NAMESPACE_END }
+
+SParSH_NAMESPACE_BEGIN
 
 /**=======================================================================
  * Information about SParSH:
@@ -35,9 +35,14 @@
 #define sint uint_fast8_t
 
 #ifdef __3D__
-#define GEO_DIM 3
+const sint Space_Dim = 3;
+#define GEO_DIM Space_Dim
+#elif __2D__  
+const sint Space_Dim = 2;
+#define GEO_DIM Space_Dim
 #else
-#define GEO_DIM 2
+const sint Space_Dim = 1;
+#define GEO_DIM Space_Dim
 #endif
 
 //constexpr double ln2() { 
@@ -55,8 +60,6 @@ enum class GridCellType {tirangle};
 
 
 
-
-
-#endif
+SParSH_NAMESPACE_END
 
 

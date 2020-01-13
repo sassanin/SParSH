@@ -7,21 +7,24 @@
 ===========================================================================*/
 
 #include <SParSH_Variables.h>
-//#include <SparSH_Database.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <sint dim=0> 
+template <int dim> 
 class TSParSH_Init {
 
   private: 
-  
+    int N;
 
   public:
    
-  //constructor
+  //default constructor
   TSParSH_Init();
+
+  //methods
+  //  /** \brief  Return the type (bpoundary vertex or not) of the vertex */
+  // bool Test();
 
 };
 

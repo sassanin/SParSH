@@ -4,6 +4,6 @@
 SParSH_NAMESPACE_BEGIN
 
 // explicit instantiation
-template class TSParSHDatabase<>;
+template class TSParSH_Database<SParSH::GEO_DIM>;
 
 SParSH_NAMESPACE_END

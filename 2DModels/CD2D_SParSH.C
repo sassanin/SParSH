@@ -15,10 +15,9 @@
 // =======================================================================
 int main(int argc, char* argv[])
 { 
-    const sint dim = 2;
+ 
+   SParSH::TSParSH_Init<SParSH::GEO_DIM> Db;
 
-    /** \brief Initilize the SparSH */
-    SParSH::TSParSH_Init<dim> Init();
 
 
     int N = 100000;
@@ -35,7 +34,7 @@ int main(int argc, char* argv[])
 
 
 
-    SParSH::TVertex<dim> V1(x);
+    SParSH::TVertex<SParSH::GEO_DIM> V1(x);
     cout << "Size of One Ver obj:" << sizeof(V1) << endl;
     //V1.SetCoords(x);
 
@@ -46,7 +45,7 @@ int main(int argc, char* argv[])
     V1.GetCoords(y);
     z=V1.GetCoordsPtr();
 
-    for(sint i=0;i<dim;++i)
+    for(sint i=0;i<SParSH::GEO_DIM;++i)
      cout << "z[i] :" << z[i] << endl;
 
     cout << "IsBDVert " << V1.IsBoundVert() << endl;
@@ -56,7 +55,7 @@ int main(int argc, char* argv[])
 
 
 
-    vector<SParSH::TVertex<dim>> Vertices;
+    vector<SParSH::TVertex<SParSH::GEO_DIM>> Vertices;
     
     cout << "Size of Vector Ver obj:" << sizeof(Vertices) << endl;
 
