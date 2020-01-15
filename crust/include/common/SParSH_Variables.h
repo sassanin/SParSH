@@ -3,7 +3,7 @@
 // @author    Sashikumaar Ganesan, 
 // @date      04/01/2020
 // =======================================================================*/
-
+#include <stdint.h>
 #include <math.h>
 
 #pragma once
@@ -11,7 +11,7 @@
 #define SParSH_NAMESPACE_BEGIN namespace SParSH {
 #define SParSH_NAMESPACE_END }
 
-SParSH_NAMESPACE_BEGIN
+
 
 /**=======================================================================
  * Information about SParSH:
@@ -34,6 +34,7 @@ SParSH_NAMESPACE_BEGIN
 
 #define sint uint_fast8_t
 
+SParSH_NAMESPACE_BEGIN
 #ifdef __3D__
 const sint Space_Dim = 3;
 #define GEO_DIM Space_Dim

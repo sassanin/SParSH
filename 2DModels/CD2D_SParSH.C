@@ -6,6 +6,7 @@
 #include <SParSH_IO.h>
 #include <SParSH_Variables.h>
 #include <SParSH_Init.h>
+#include <SParSH_Database.h>
 #include <algorithm> 
 
 #include <Vertex.h>
@@ -16,9 +17,9 @@
 int main(int argc, char* argv[])
 { 
  
-   SParSH::TSParSH_Init<SParSH::GEO_DIM> Db;
+   SParSH::TSParSH_Database<SParSH::GEO_DIM> *DataBase= new SParSH::TSParSH_Database<SParSH::GEO_DIM>();
 
-
+   std::cout<<  " ParamDB : " << SParSH::TSParSH_Database<SParSH::GEO_DIM>::ParamDB.UserDoubleParameter.size() <<" :  "<<endl;
 
     int N = 100000;
     vector<int> values(100000); 

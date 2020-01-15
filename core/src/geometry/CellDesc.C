@@ -4,6 +4,6 @@
 SParSH_NAMESPACE_BEGIN
 
 // explicit instantiation
-template class TCellDesc<>;
+template class TCellDesc<SParSH::GEO_DIM>;
 
 SParSH_NAMESPACE_END

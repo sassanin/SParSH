@@ -9,6 +9,7 @@
 #include <SParSH_Variables.h>
 
 #pragma once
+SParSH_NAMESPACE_BEGIN
 
 #define N_CellTypes  20
 
@@ -22,7 +23,7 @@ enum class CellType:sint {LINE_2, LINE3,
                           PENTA_6, PENTA_15, PENTA_18,
                           HEXA_8, HEXA_20, HEXA_27 };
  
-SParSH_NAMESPACE_BEGIN
+
 
 template <sint dim=GEO_DIM> 
 class TCellDesc {
@@ -48,7 +49,8 @@ class TCellDesc {
   public:
   
   // Constructors
-
+    TCellDesc();
+    
   //methods 
 
    /** \brief return the cell type */

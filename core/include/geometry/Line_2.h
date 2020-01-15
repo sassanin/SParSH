@@ -1,30 +1,28 @@
 /** =======================================================================
-* @class     TSParSH_Init
-* @brief     base class for Init SParSh Package 
+* @class     TLINE_2
+* @brief     LINE_2 (element) descriptors
 * @author    Sashikumaar Ganesan 
-* @date      08.01.2020
+* @date      15.01.2020
 * @History   
 ===========================================================================*/
-
 #include <SParSH_Variables.h>
+#include <CellDesc.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-class TSParSH_Init {
-
-  private: 
-    int N;
+class TLine_2 : TCellDesc<SParSH::GEO_DIM>
+{
+ protected:
 
   public:
-   
-  //default constructor
-  TSParSH_Init();
-
-  //methods
-  //  /** \brief  Return the type (bpoundary vertex or not) of the vertex */
-  // bool Test();
+  
+  // Constructors
+  TLine_2();
+    
+  //methods 
+ 
 
 };
 
