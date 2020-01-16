@@ -15,9 +15,10 @@ SParSH_NAMESPACE_BEGIN
 struct TParamDB
 {
   /** \brief variables for data output and input files  */   
-  char *MeshFile[2]{"UnitSquare.mesh", "UnitSquare.mesh"};
-  char *OutFile[2]={"SParsh1_Out", "SParsh2_Out"};
-  
+  std::vector<std::string> OutFile{"SParsh1_Out", "SParsh2_Out"};  
+  std::vector<std::string> MeshFile{"UnitSquare.mesh", "UnitSquare.mesh"};
+  std::vector<std::string> CellTypes{0};
+
   char *VTKFile{"SParsh_VTK"};
   char *PSFile{"SParsh_PS"};
   char *OutDir{"SParsh_Out"};
