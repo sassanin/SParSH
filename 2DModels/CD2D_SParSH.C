@@ -17,23 +17,17 @@
 int main(int argc, char* argv[])
 { 
  
-   SParSH::TSParSH_Database<SParSH::GEO_DIM> *DataBase= new SParSH::TSParSH_Database<SParSH::GEO_DIM>();
+    // SParSH::TSParSH_Database<SParSH::GEO_DIM> *DataBase= new SParSH::TSParSH_Database<SParSH::GEO_DIM>();
+    SParSH::TSParSH_Database<SParSH::GEO_DIM> *DataBase= new SParSH::TSParSH_Database<SParSH::GEO_DIM>(argv[1]);
 
-   std::cout<<  " ParamDB : " << SParSH::TSParSH_Database<SParSH::GEO_DIM>::ParamDB.UserDoubleParameter.size() <<" :  "<<endl;
+
+
+  //  std::cout<<  " ParamDB : " << SParSH::TSParSH_Database<SParSH::GEO_DIM>::ParamDB.UserDoubleParameter.size() <<" :  "<<endl;
 
     int N = 100000;
     vector<int> values(100000); 
 
-
-
-
-
-
     double y[2], x[2]={1.5, 2.8}, *z;
-
-
-
-
 
     SParSH::TVertex<SParSH::GEO_DIM> V1(x);
     cout << "Size of One Ver obj:" << sizeof(V1) << endl;

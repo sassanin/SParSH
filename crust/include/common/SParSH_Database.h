@@ -14,30 +14,29 @@ SParSH_NAMESPACE_BEGIN
 
 struct TParamDB
 {
-  /** \brief variables for data output and input files  */   
-  std::vector<std::string> OutFile{"SParsh1_Out", "SParsh2_Out"};  
-  std::vector<std::string> MeshFile{"UnitSquare.mesh", "UnitSquare.mesh"};
-  std::vector<std::string> CellTypes{0};
+  // /** \brief variables for data output and input files  */   
+  // std::vector<std::string> OutFile{"SParsh1_Out"};  
+  // std::vector<std::string> MeshFile{"UnitSquareQuad.mesh"};
+  // std::vector<std::sint> CellTypes{0};
 
-  char *VTKFile{"SParsh_VTK"};
-  char *PSFile{"SParsh_PS"};
-  char *OutDir{"SParsh_Out"};
+  // /** \brief parameters for grid generation                             */
+  // std::vector<sint> Uniform_Steps{1};
+  // double Drift_X{0.0}, Drift_Y{0.0}, Drift_Z{0.0};
+  // double Scale_X{1.0}, Scale_Y{1.0}, Scale_Z{1.0};
+
+  // char *VTKFile{"SParsh_VTK"};
+  // char *PSFile{"SParsh_PS"};
+  // char *OutDir{"SParsh_Out"};
       
-  /** \brief variables for controling output */
-  bool Write_PS{true};
-  bool Write_VTK{true};
-  bool Measure_Errors{false};
+  // /** \brief variables for controling output */
+  // bool Write_PS{true};
+  // bool Write_VTK{true};
+  // bool Measure_Errors{false};
 
-
-  /** \brief parameters for grid generation                             */
-  int Uniform_Steps{1};
-  double Drift_X{0.0}, Drift_Y{0.0}, Drift_Z{0.0};
-
-  /** free parameters for users */
-  std::vector<double> UserDoubleParameter{0., 0., 0., 0., 0.};
-  std::vector<int> UserIntParameter{0, 0, 0, 0, 0};
-  std::vector<bool> UserBoolParameter{0, 0, 0, 0, 0};
-
+  // /** free parameters for users */
+  // std::vector<double> UserDoubleParameter{0., 0., 0., 0., 0.};
+  // std::vector<int> UserIntParameter{0, 0, 0, 0, 0};
+  // std::vector<bool> UserBoolParameter{0, 0, 0, 0, 0};
 };
 
 // using TParamDB = ParaDB<int>;
@@ -67,8 +66,9 @@ class TSParSH_Database {
   static vector<SParSH::TCellDesc<SParSH::GEO_DIM>> CellDB[N_CellTypes]; 
 
   // //constructor
-  
   TSParSH_Database();
+  
+  TSParSH_Database(std::string ReadinFile);
 };
 
 SParSH_NAMESPACE_END
