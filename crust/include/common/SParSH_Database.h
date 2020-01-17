@@ -19,19 +19,19 @@ struct TParamDB
   std::vector<std::string> MeshFile{"UnitSquareQuad.mesh"};
   std::vector<std::sint> CellTypes{0};
 
-  /** \brief parameters for grid generation                             */
+  /** \brief parameters for grid generation     */
   std::vector<sint> Uniform_Steps{1};
   double Drift_X{0.0}, Drift_Y{0.0}, Drift_Z{0.0};
   double Scale_X{1.0}, Scale_Y{1.0}, Scale_Z{1.0};
 
-  char *VTKFile{"SParsh_VTK"};
-  char *PSFile{"SParsh_PS"};
-  char *OutDir{"SParsh_Out"};
+  std::string VTKFile{"SParsh_VTK"};
+  std::string PSFile{"SParsh_PS"};
+  std::string OutDir{"SParsh_Out"};
       
   /** \brief variables for controling output */
-  bool Write_PS{true};
-  bool Write_VTK{true};
-  bool Measure_Errors{false};
+  bool Write_PS = false;
+  bool Write_VTK = false;
+  bool Measure_Errors = false;
 
   /** free parameters for users */
   std::vector<double> UserDoubleParameter{0., 0., 0., 0., 0.};

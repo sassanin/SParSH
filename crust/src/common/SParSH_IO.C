@@ -5,7 +5,7 @@ std::ofstream OutFile;
 
 void OpenFiles()
 {
-  // OutFile.open("TDatabase::ParamDB->OUTFILE");
+  // OutFile.open("SParSH::TSParSH_Database::ParamDB->OutFile[0]");
   OutFile.open("sparsh_OutFile.out");
   OutFile.setf(std::ios::scientific);
 }

@@ -10,6 +10,7 @@
 
 #define SParSH_NAMESPACE_BEGIN namespace SParSH {
 #define SParSH_NAMESPACE_END }
+#define sarshpout(x)  std::cout << " Exited @ File: " <<  __FILE__ << "("<< __LINE__ <<") " << " Reason: " <<  x.what() << "!\n"
 
 /**=======================================================================
  * Information about SParSH:
