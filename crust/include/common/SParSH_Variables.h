@@ -11,8 +11,6 @@
 #define SParSH_NAMESPACE_BEGIN namespace SParSH {
 #define SParSH_NAMESPACE_END }
 
-
-
 /**=======================================================================
  * Information about SParSH:
 =======================================================================*/

@@ -4,7 +4,7 @@
 * @author    Sashikumaar Ganesan 
 * @date      08.01.2020
 * @History   
-===========================================================================*/
+* ===========================================================================*/
 
 #include <SParSH_Variables.h>
 
@@ -20,7 +20,7 @@ enum class CellType:sint {LINE_2, LINE3,
                           QUAD_4, QUAD_8, QUAD_9, 
                           TETRA_4, TETRA_10, TETRA_14,
                           PYRA_5, PYRA_13, PYRA_14, 
-                          PENTA_6, PENTA_15, PENTA_18,
+                          PRISM_6, PRISM_15, PRISM_18,
                           HEXA_8, HEXA_20, HEXA_27 };
  
 

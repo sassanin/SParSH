@@ -17,8 +17,8 @@
 int main(int argc, char* argv[])
 { 
  
-    // SParSH::TSParSH_Database<SParSH::GEO_DIM> *DataBase= new SParSH::TSParSH_Database<SParSH::GEO_DIM>();
-    SParSH::TSParSH_Database<SParSH::GEO_DIM> *DataBase= new SParSH::TSParSH_Database<SParSH::GEO_DIM>(argv[1]);
+  SParSH::TSParSH_Database<SParSH::GEO_DIM> DataBase(argv[1]);
+ 
 
 
 

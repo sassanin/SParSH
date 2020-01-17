@@ -21,13 +21,54 @@ TSParSH_Database<dim>::TSParSH_Database()
 template <sint dim> 
 TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile) 
  {
-  /** \brief Initilize the SparSH Database */
-  // SParSH::TSParSH_Database<dim> SParSH_DB;
 
   std::cout<<  " ParamDB : " << ReadinFile <<" :  "<<endl;
 
-  char data[100];
-  std::ifstream myfile(ReadinFile);
+  char line[100];
+  std::ifstream dat(ReadinFile);
+
+  try
+    {
+    if (!dat) throw std::runtime_error("Could not open file"); 
+    }
+  
+  // {
+  //   cerr << "cannot open '" << ReadinFile << "' for input" << endl;
+  //   exit(-1);
+  // }
+catch (std::exception &ex) {
+        std::cout << "Ouch! That hurts, because: "
+            << ex.what() << "!\n";
+}
+// #include <stdexcept>
+// #include <limits>
+// #include <iostream>
+
+// using namespace std;
+
+// void MyFunc(int c)
+// {
+//     if (c > numeric_limits< char> ::max())
+//         throw invalid_argument("MyFunc argument too large.");
+//     //...
+// }
+
+// int main()
+// {
+//     try
+//     {
+//         MyFunc(256); //cause an exception to throw
+//     }
+
+//     catch (invalid_argument& e)
+//     {
+//         cerr << e.what() << endl;
+//         return -1;
+//     }
+//     //...
+//     return 0;
+// }
+
 
   cout << "Rading  the file" << endl;
   // cin.getline(data, 100);
