@@ -10,33 +10,37 @@
 #include <Vertex.h>
 #include <Facet.h>
 #include <Cell.h>
+#include <memory>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <sint dim=SParSH::GEO_DIM> 
+template <sint dim=GEO_DIM> 
 class TMesh {
 
  protected: 
 
   /** \brief Vertices contains the list of all vertices in this mesh. */
-  static vector<SParSH::TVertex<SParSH::GEO_DIM>> Vertices; 
+  static std::vector< std::shared_ptr< TVertex<GEO_DIM> > > Vertices; 
  
   /** \brief Facets contains the list of all boundaries of all cell in this mesh:
    *         face in 3d, edge in 2d, vertex in 1d   */
-  static vector<SParSH::TFacets<SParSH::GEO_DIM>> Facets; 
+  // static vector<SParSH::TFacets<SParSH::GEO_DIM>> Facets; 
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
-  static vector<SParSH::TCellDesc<SParSH::GEO_DIM>> Cells; 
+  static vector<TCellDesc<GEO_DIM>> Cells; 
 
   public:
   
-//   /** \brief  Default constructor with coordinates of the vertex */
-//   TVertex(double *X);
+  /** \brief  Default constructor with coordinates of the vertex */
+  TMesh();
+
+  TMesh(int N_Vertices);
 
 //   //methods 
-
+  auto GetVertices()
+        { return 0; }
 //   /** \brief  Assign/Change the coordinates of the vertex */
 //   void SetCoords(double *X);
 

@@ -1,5 +1,6 @@
 #include <SParSH_IO.h>
 #include <SParSH_Database.h>
+#include <Mesh.h>
 #include <iostream>
 #include <fstream>
 #include<string.h> 
@@ -31,11 +32,14 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
   char line[100];
   int tempint;
-  sint tempsint, outlen=0, meshlen=0, celltyplen=0, unifmstplen=0;
+  double tempdouble;
+  sint tempsint, outlen=0, meshlen=0, celltyplen=0, unifmstplen=0, usrdblen=0., usrintlen=0;
   std::string tempstr, outstring = "OutFile[" + std::to_string(outlen) + "]:";
   std::string meshstring = "MeshFile[" + std::to_string(meshlen) + "]:";
   std::string celltypstring = "CellTypes[" + std::to_string(celltyplen) + "]:";
   std::string unifmststring = "Uniform_Steps[" + std::to_string(unifmstplen) + "]:";
+  std::string usrdblstring = "UserDoubleParameter[" + std::to_string(usrdblen) + "]:";
+  std::string usrintstring = "UserIntParameter[" + std::to_string(usrintlen) + "]:";
 
   // cout << " outstring : "<< outstring <<endl;
 
@@ -126,20 +130,105 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      else
       { TSParSH_Database::ParamDB.Write_PS=false; }
     }   
-
+    else if (!strcmp(line, usrdblstring.c_str()))
+     {
+      if(usrdblen==0)
+       { 
+        dat >> TSParSH_Database::ParamDB.UserDoubleParameter[0];
+        usrdblstring = "UserDoubleParameter[" + std::to_string(++usrdblen) + "]:";
+       }
+      else
+       {  
+        dat >> tempdouble;
+        TSParSH_Database::ParamDB.UserDoubleParameter.push_back(tempdouble);
+        usrdblstring = "UserDoubleParameter[" + std::to_string(++usrdblen) + "]:";
+       }
+     }
+    else if (!strcmp(line, usrintstring.c_str()))
+     {
+      if(usrintlen==0)
+       { 
+        dat >> TSParSH_Database::ParamDB.UserIntParameter[0];
+        usrintstring = "UserIntParameter[" + std::to_string(++usrintlen) + "]:";
+       }
+      else
+       {  
+        dat >> tempint;
+        TSParSH_Database::ParamDB.UserIntParameter.push_back(tempdouble);
+        usrintstring = "UserIntParameter[" + std::to_string(++usrintlen) + "]:";
+       }
+     }
    else if (! strcmp(line, "BASIC_DATA_END"))
-    { break; }
+    {  break; }
+
   } // while (!dat.eof())
 
+  dat.close();
 
-   // cout << "Rading  the file" << endl;
-  // cin.getline(data, 100);
+ } // TSParSH_Database
 
-    // cout << "Init :TSParSH_Database<T> " <<endl;
-// ParamDB.UserDoubleParameter.push_back(10); 
 
-  
- }
+
+template <sint dim> 
+void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile) 
+ {
+  std::cout<<  " Gmsh File :  " << MeshFile <<endl;
+
+  std::cout<<  " Meshes size :  " << sizeof(Meshes) <<endl;
+
+
+
+  std::ifstream dat(MeshFile);  
+  try { if (!dat) throw std::runtime_error("Could not open Gmsh file");  }
+  catch (std::exception &ex)
+    { sarshpout(ex); exit(-1); }
+
+  char  line[100];
+  int dimension;
+  while (!dat.eof())
+  {
+    dat >> line;    
+    if ( (!strcmp(line, "Dimension"))  ||  (!strcmp(line, "dimension")) ||  (!strcmp(line, "DIMENSION")))
+    {
+     dat.getline (line, 99);
+     dat >> dimension;
+     break;
+    }
+    dat.getline (line, 99);   
+  }
+
+  //still the Dim of Gmsh is 3 even for 2D mesh???
+  if(dimension!=3)
+   {
+    cerr << "dimension: " << dimension << endl;
+    cerr<<  " MESHFile " << MeshFile <<     endl;    
+    exit(-1);
+   }
+
+ int N_Vertices;
+ while (!dat.eof())
+  {
+    dat >> line;    
+    if ( (!strcmp(line, "Vertices")) ||  (!strcmp(line, "vertices"))   ||  (!strcmp(line, "VERTICES"))   ) 
+    {
+     dat.getline (line, 99);
+     dat >> N_Vertices;
+     break;
+    }
+    dat.getline (line, 99);
+  }
+
+  std::unique_ptr<SParSH::TMesh<GEO_DIM> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>(N_Vertices)  );
+  // std::cout<<  " localmesh size :  " << sizeof(localmesh) <<endl;
+
+  std::vector< std::auto_ptr< TVertex<GEO_DIM> > > Vertices; // = localmesh->GetVertices();
+
+   dat.close();
+
+
+
+ } // GenerateMesh
+
 
 // explicit instantiation
 template class TSParSH_Database<GEO_DIM>;

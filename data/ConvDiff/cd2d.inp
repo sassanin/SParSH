@@ -4,7 +4,7 @@
 BASIC_DATA_BEGIN
 
 OutFile[0]:        cd2d.out
-MeshFile[0]:   ../../SParSH/data/mesh/UnitSquare.sparsh
+MeshFile[0]:   ../../SParSH/data/mesh/UnitSqureTria.mesh
 
 # ----------------------------------------------------------------------
 # select the cell types used in the mesh (mesh can have mixed type)
@@ -32,11 +32,11 @@ Measure_Errors: 1
 
 # ----------------------------------------------------------------------
 # temporary user variables (double, int, bool)
-# UserDoubleParameter[], UserIntParameter[], UserBoolParameter[]
+# UserDoubleParameter[], UserIntParameter[]
 # ----------------------------------------------------------------------
 UserDoubleParameter[0]: 1
+UserDoubleParameter[1]: 1
 UserIntParameter[0]: 1
-UserBoolParameter[0]: 1
 
 BASIC_DATA_END
 

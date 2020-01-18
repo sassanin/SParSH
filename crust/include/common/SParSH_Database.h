@@ -8,6 +8,7 @@
 
 #include <SParSH_Variables.h>
 #include <CellDesc.h>
+#include <Mesh.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -34,9 +35,9 @@ struct TParamDB
   bool Measure_Errors = false;
 
   /** free parameters for users */
-  std::vector<double> UserDoubleParameter{0., 0., 0., 0., 0.};
-  std::vector<int> UserIntParameter{0, 0, 0, 0, 0};
-  std::vector<bool> UserBoolParameter{0, 0, 0, 0, 0};
+  std::vector<double> UserDoubleParameter{0.};
+  std::vector<int> UserIntParameter{0};
+  // std::vector<bool> UserBoolParameter{false};
 };
 
 // using TParamDB = ParaDB<int>;
@@ -62,12 +63,17 @@ class TSParSH_Database {
    /** \brief general parameters */
   static TParamDB ParamDB;
 
+  static std::vector< std::unique_ptr< TMesh<GEO_DIM> > > Meshes; 
 
-
-  // //constructor
+  //constructor
   TSParSH_Database();
   
   TSParSH_Database(std::string ReadinFile);
+
+  //methods
+  /** \brief gererating a mesh using the given Gmsh file */
+   void GenerateGmsh(std::string MeshFile);
+
 };
 
 SParSH_NAMESPACE_END

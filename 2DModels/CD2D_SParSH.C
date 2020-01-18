@@ -6,6 +6,7 @@
 #include <SParSH_IO.h>
 #include <SParSH_Variables.h>
 #include <SParSH_Init.h>
+#include <Mesh.h>
 #include <SParSH_Database.h>
 #include <algorithm> 
 
@@ -16,13 +17,16 @@
 // =======================================================================
 int main(int argc, char* argv[])
 { 
+ using namespace SParSH;
+
+  unique_ptr<TSParSH_Database<GEO_DIM> > DataBase(make_unique<TSParSH_Database<GEO_DIM>>(argv[1]));
  
-  SParSH::TSParSH_Database<SParSH::GEO_DIM> DataBase(argv[1]);
- 
+
+  std::cout<<  " ParamDB : " << TSParSH_Database<2>::ParamDB.UserIntParameter.size() <<" :  "<<endl;
 
 
+  DataBase->GenerateGmsh(TSParSH_Database<2>::ParamDB.MeshFile[0]);
 
-  //  std::cout<<  " ParamDB : " << SParSH::TSParSH_Database<SParSH::GEO_DIM>::ParamDB.UserDoubleParameter.size() <<" :  "<<endl;
 
     int N = 100000;
     vector<int> values(100000); 

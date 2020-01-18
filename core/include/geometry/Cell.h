@@ -8,6 +8,7 @@
 ===========================================================================*/
 
 #include <SParSH_Variables.h>
+#include <CellDesc.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
