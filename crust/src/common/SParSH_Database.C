@@ -174,10 +174,6 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
  {
   std::cout<<  " Gmsh File :  " << MeshFile <<endl;
 
-  std::cout<<  " Meshes size :  " << sizeof(Meshes) <<endl;
-
-
-
   std::ifstream dat(MeshFile);  
   try { if (!dat) throw std::runtime_error("Could not open Gmsh file");  }
   catch (std::exception &ex)
@@ -205,9 +201,9 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     exit(-1);
    }
 
- int N_Vertices;
- while (!dat.eof())
-  {
+  int N_Vertices;
+  while (!dat.eof())
+   {
     dat >> line;    
     if ( (!strcmp(line, "Vertices")) ||  (!strcmp(line, "vertices"))   ||  (!strcmp(line, "VERTICES"))   ) 
     {
@@ -216,12 +212,34 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
      break;
     }
     dat.getline (line, 99);
-  }
+   }
 
-  std::unique_ptr<SParSH::TMesh<GEO_DIM> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>(N_Vertices)  );
+  std::unique_ptr<TMesh<GEO_DIM> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>(N_Vertices)  );
   // std::cout<<  " localmesh size :  " << sizeof(localmesh) <<endl;
+  shared_ptr<TVertex<GEO_DIM> > svert;
+  unique_ptr<TVertex<GEO_DIM> > vert;
+  double X[3], Y[3];
+  for(int i_vert=0; i_vert<N_Vertices; ++i_vert)
+   {
+     dat.getline (line, 99);
+     dat >> X[0] >> X[1] >> X[2];      
+ 
+    svert = std::move(vert = make_unique<TVertex<GEO_DIM>>(X));
 
-  std::vector< std::auto_ptr< TVertex<GEO_DIM> > > Vertices; // = localmesh->GetVertices();
+    // localmesh->AddVertex(std::move(vert = make_unique<TVertex<GEO_DIM>>(X)));
+    // std::cout<<  " Meshes size :  " << sizeof(vert)  <<endl;
+    svert->GetCoords(Y);
+     std::cout<<  X[0] << " Coord:  " << Y[0] <<endl;
+
+      // if (X > Xmax) Xmax = X;
+      // if (X < Xmin) Xmin = X;
+      // if (Y > Ymax) Ymax = Y;
+      // if (Y < Ymin) Ymin = Y;
+   } 
+
+ 
+
+  // std::vector< std::auto_ptr< TVertex<GEO_DIM> > > Vertices; // = localmesh->GetVertices();
 
    dat.close();
 

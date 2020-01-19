@@ -15,14 +15,16 @@
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
+using namespace std;
+
 template <sint dim=GEO_DIM> 
 class TMesh {
 
  protected: 
 
   /** \brief Vertices contains the list of all vertices in this mesh. */
-  static std::vector< std::shared_ptr< TVertex<GEO_DIM> > > Vertices; 
- 
+  vector< shared_ptr< TVertex<GEO_DIM> > > Vertices; 
+
   /** \brief Facets contains the list of all boundaries of all cell in this mesh:
    *         face in 3d, edge in 2d, vertex in 1d   */
   // static vector<SParSH::TFacets<SParSH::GEO_DIM>> Facets; 
@@ -40,9 +42,9 @@ class TMesh {
 
 //   //methods 
   auto GetVertices()
-        { return 0; }
-//   /** \brief  Assign/Change the coordinates of the vertex */
-//   void SetCoords(double *X);
+   { return 0; }
+  /** \brief  Assign a vertex */
+  void AddVertex(std::shared_ptr< TVertex<GEO_DIM>> &Vert);
 
 //   /** \brief  Copy and return the coordinates of the vertex */
 //   void GetCoords(double *X);
