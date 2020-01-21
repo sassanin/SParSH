@@ -28,7 +28,7 @@ set(CMAKE_VERBOSE_MAKEFILE FALSE)
 
 
 # selection of architect type (LINUX64 MAC64 INTEL64 TYRONE64 CRAY64)
-set(SParSH_ARCH "INTEL64" CACHE STRING "select the machine type")
+set(SParSH_ARCH "MAC64" CACHE STRING "select the machine type")
 
 #  selection of program type (SEQUENTIAL SMPI MPI OMPONLY HYBRID)
 set(SParSH_PARALLEL_TYPE "SEQUENTIAL" CACHE STRING "select the parallel type")
@@ -51,7 +51,7 @@ set(SParSH_OUTPUT_DIR_PATH "${CMAKE_SOURCE_DIR}/../SParSH_Output/CD2D" CACHE STR
 set(USE_SParSH_DEFINE -D__PRIVATE__)
 
 # CMAKE_BUILD_TYPE [ DEBUG | RELEASE | RELWITHDEBINFO | MINSIZEREL ]
-set(EXE_BUILD_TYPE RELEASE)
+set(EXE_BUILD_TYPE DEBUG)
 
 
 # set FALSE, if you want to use libs provided in SParSH 

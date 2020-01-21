@@ -7,7 +7,10 @@
 
 SParSH_NAMESPACE_BEGIN
 
-TParamDB TSParSH_Database<GEO_DIM>::ParamDB;
+
+/** \brief initialize the static ParamDB  */
+template<>
+std::unique_ptr<TParamDB> TSParSH_Database<GEO_DIM>::ParamDB = NULL;
 
 /** \brief default constructor */
 template <sint dim> 
@@ -58,13 +61,13 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      {
       if(outlen==0)
        { 
-        dat >> TSParSH_Database::ParamDB.OutFile[0];
+        dat >> TSParSH_Database::ParamDB->OutFile[0];
         outstring = "OutFile[" + std::to_string(++outlen) + "]:";
        }
       else
        {  
         dat >> tempstr;
-        TSParSH_Database::ParamDB.OutFile.push_back(tempstr);
+        TSParSH_Database::ParamDB->OutFile.push_back(tempstr);
         outstring = "OutFile[" + std::to_string(++outlen) + "]:";
        }
      }
@@ -72,13 +75,13 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      {
       if(meshlen==0)
        { 
-        dat >> TSParSH_Database::ParamDB.MeshFile[0];
+        dat >> TSParSH_Database::ParamDB->MeshFile[0];
         meshstring = "MeshFile[" + std::to_string(++meshlen) + "]:";
        }
       else
        {  
         dat >> tempstr;
-        TSParSH_Database::ParamDB.MeshFile.push_back(tempstr);
+        TSParSH_Database::ParamDB->MeshFile.push_back(tempstr);
         meshstring = "MeshFile[" + std::to_string(++meshlen) + "]:";
        }
      }
@@ -86,13 +89,13 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      {
       if(celltyplen==0)
        { 
-        dat >> TSParSH_Database::ParamDB.CellTypes[0];
+        dat >> TSParSH_Database::ParamDB->CellTypes[0];
         celltypstring = "CellTypes[" + std::to_string(++celltyplen) + "]:";
        }
       else
        {  
         dat >> tempsint;
-        TSParSH_Database::ParamDB.CellTypes.push_back(tempsint);
+        TSParSH_Database::ParamDB->CellTypes.push_back(tempsint);
         celltypstring = "CellTypes[" + std::to_string(++celltyplen) + "]:";
        }
      }
@@ -100,47 +103,47 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      {
       if(unifmstplen==0)
        { 
-        dat >> TSParSH_Database::ParamDB.Uniform_Steps[0];
+        dat >> TSParSH_Database::ParamDB->Uniform_Steps[0];
         unifmststring = "Uniform_Steps[" + std::to_string(++unifmstplen) + "]:";
        }
       else
        {  
         dat >> tempsint;
-        TSParSH_Database::ParamDB.Uniform_Steps.push_back(tempsint);
+        TSParSH_Database::ParamDB->Uniform_Steps.push_back(tempsint);
         unifmststring = "Uniform_Steps[" + std::to_string(++unifmstplen) + "]:";
        }
      }
    else if (! strcmp(line, "VTKFile:"))
     {    
-     dat >> TSParSH_Database::ParamDB.VTKFile;
+     dat >> TSParSH_Database::ParamDB->VTKFile;
     }
    else if (! strcmp(line, "PSFile:"))
     {    
-     dat >> TSParSH_Database::ParamDB.PSFile;
+     dat >> TSParSH_Database::ParamDB->PSFile;
     }   
    else if (! strcmp(line, "OutDir:"))
     {    
-     dat >> TSParSH_Database::ParamDB.OutDir;
+     dat >> TSParSH_Database::ParamDB->OutDir;
     }     
    else if (! strcmp(line, "Write_PS:"))
     {    
      dat >> tempint;
      if(tempint==1)
-      { TSParSH_Database::ParamDB.Write_PS=true; }
+      { TSParSH_Database::ParamDB->Write_PS=true; }
      else
-      { TSParSH_Database::ParamDB.Write_PS=false; }
+      { TSParSH_Database::ParamDB->Write_PS=false; }
     }   
     else if (!strcmp(line, usrdblstring.c_str()))
      {
       if(usrdblen==0)
        { 
-        dat >> TSParSH_Database::ParamDB.UserDoubleParameter[0];
+        dat >> TSParSH_Database::ParamDB->UserDoubleParameter[0];
         usrdblstring = "UserDoubleParameter[" + std::to_string(++usrdblen) + "]:";
        }
       else
        {  
         dat >> tempdouble;
-        TSParSH_Database::ParamDB.UserDoubleParameter.push_back(tempdouble);
+        TSParSH_Database::ParamDB->UserDoubleParameter.push_back(tempdouble);
         usrdblstring = "UserDoubleParameter[" + std::to_string(++usrdblen) + "]:";
        }
      }
@@ -148,13 +151,13 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      {
       if(usrintlen==0)
        { 
-        dat >> TSParSH_Database::ParamDB.UserIntParameter[0];
+        dat >> TSParSH_Database::ParamDB->UserIntParameter[0];
         usrintstring = "UserIntParameter[" + std::to_string(++usrintlen) + "]:";
        }
       else
        {  
         dat >> tempint;
-        TSParSH_Database::ParamDB.UserIntParameter.push_back(tempdouble);
+        TSParSH_Database::ParamDB->UserIntParameter.push_back(tempdouble);
         usrintstring = "UserIntParameter[" + std::to_string(++usrintlen) + "]:";
        }
      }

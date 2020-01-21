@@ -12,6 +12,7 @@
 
 #include <Vertex.h>
 
+
 // =======================================================================
 // main program
 // =======================================================================
@@ -22,10 +23,10 @@ int main(int argc, char* argv[])
   unique_ptr<TSParSH_Database<GEO_DIM> > DataBase(make_unique<TSParSH_Database<GEO_DIM>>(argv[1]));
  
 
-  std::cout<<  " ParamDB : " << TSParSH_Database<2>::ParamDB.UserIntParameter.size() <<" :  "<<endl;
+  //std::cout<<  " ParamDB : " << TSParSH_Database<2>::ParamDB.UserIntParameter.size() <<" :  "<<endl;
 
 
-  DataBase->GenerateGmsh(TSParSH_Database<2>::ParamDB.MeshFile[0]);
+  //DataBase->GenerateGmsh(TSParSH_Database<2>::ParamDB.MeshFile[0]);
 
 
     int N = 100000;

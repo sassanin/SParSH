@@ -18,7 +18,7 @@ struct TParamDB
   /** \brief variables for data output and input files  */   
   std::vector<std::string> OutFile{"SParsh1_Out"};  
   std::vector<std::string> MeshFile{"UnitSquareQuad.mesh"};
-  std::vector<std::sint> CellTypes{0};
+  std::vector<sint> CellTypes{0};
 
   /** \brief parameters for grid generation     */
   std::vector<sint> Uniform_Steps{1};
@@ -61,7 +61,7 @@ class TSParSH_Database {
   public:
 
    /** \brief general parameters */
-  static TParamDB ParamDB;
+  static std::unique_ptr<TParamDB> ParamDB;
 
   static std::vector< std::unique_ptr< TMesh<GEO_DIM> > > Meshes; 
 

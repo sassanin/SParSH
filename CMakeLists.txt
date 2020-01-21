@@ -228,7 +228,7 @@ endif()
   set(CMAKE_C_FLAGS_DEBUG "-g ${SParSH_C_DEF}")
   set(CMAKE_C_FLAGS_RELEASE "O3 -s  ${SParSH_C_DEF}")
   set(CMAKE_CXX_FLAGS "${SParSH_CXX_DEF} " )
-  set(CMAKE_CXX_FLAGS_DEBUG "${SParSH_CXX_DEF} ")
+  set(CMAKE_CXX_FLAGS_DEBUG "$ -v {SParSH_CXX_DEF} ")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3 -s ${SParSH_CXX_DEF}") 
  
  include_directories("${CMAKE_SOURCE_DIR}/crust/include/common")
@@ -269,7 +269,7 @@ add_executable(SParSH_${SParSH_GEO}_${SParSH_PARALLEL_TYPE}.exe  ${SParSH_MODEL}
 #                       ${BLAS_LIBRARIES} ${TETGEN_LIBRARIES} ${GRIDGEN_LIBRARIES} )
 # endif("${SParSH_PARALLEL_TYPE}" STREQUAL "MPI"  OR "${SParSH_PARALLEL_TYPE}" STREQUAL "HYBRID" OR "${SParSH_PARALLEL_TYPE}" STREQUAL "SMPI")
 
-target_link_libraries(SParSH_${SParSH_GEO}_${SParSH_PARALLEL_TYPE}.exe  "geo" "common" "geo" ${UMFPACK_LIBRARIES} ${TECPLOT_LIBRARIES}
+target_link_libraries(SParSH_${SParSH_GEO}_${SParSH_PARALLEL_TYPE}.exe  "geo" "common" "geo" "common" ${UMFPACK_LIBRARIES} ${TECPLOT_LIBRARIES}
                               ${BLAS_LIBRARIES} ${TETGEN_LIBRARIES} ${GRIDGEN_LIBRARIES} )
 
 message("============================================================================================================"  )  
