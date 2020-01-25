@@ -7,19 +7,17 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TMesh<dim>::TMesh(int N_Vertices) 
+TMesh<dim>::TMesh(size_t N_Vertices) 
  {
   Vertices.reserve(N_Vertices);
  }
 
 
-template <sint dim> 
-void TMesh<dim>::AddVertex(std::shared_ptr< TVertex<GEO_DIM>> &Vert)
-{
-
- Vertices.push_back(Vert);
-
-}// AddVertex
+//template <sint dim> 
+//void TMesh<dim>::AddVertex(unique_ptr<TVertex<dim>> && Vert)
+//{
+// Vertices.push_back(move(Vert));
+//}// AddVertex
 
 
 // explicit instantiation

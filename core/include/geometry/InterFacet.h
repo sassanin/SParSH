@@ -1,0 +1,36 @@
+/** =======================================================================
+* @class     TInterFacet
+* @brief     base class for interface facet 
+* @author    Sashikumaar Ganesan 
+* @date      25.01.2020
+* @History   
+===========================================================================*/
+
+#include <Facet.h>
+
+#pragma once
+SParSH_NAMESPACE_BEGIN
+
+template <sint dim=SParSH::GEO_DIM> 
+class TInterFacet : public TFacet<dim>  {
+
+ public:
+  
+ // Constructors
+
+ /** \brief  Default constructor with coordinates of the vertex */
+ TInterFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex);
+
+ /** constructor with one initial neighbour */
+ TInterFacet(SParSH::TCellDesc<dim> *owncell);
+
+ /** constructor with two initial neighbours */
+ TInterFacet(SParSH::TCellDesc<dim> *owncell, SParSH::TCellDesc<dim> *neibcell);
+
+ //methods 
+
+
+
+};
+
+SParSH_NAMESPACE_END

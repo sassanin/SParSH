@@ -55,7 +55,7 @@ struct TParamDB
 // };
 
 // template struct CDParaDB<sint>;
-template <sint dim> 
+template <sint dim=SParSH::GEO_DIM> 
 class TSParSH_Database {
 
   public:
@@ -75,5 +75,10 @@ class TSParSH_Database {
    void GenerateGmsh(std::string MeshFile);
 
 };
+
+
+/** \brief initialize the static ParamDB  */
+template <sint dim> 
+std::unique_ptr<SParSH::TParamDB> SParSH::TSParSH_Database<dim>::ParamDB(make_unique<SParSH::TParamDB>());
 
 SParSH_NAMESPACE_END

@@ -25,8 +25,9 @@ int main(int argc, char* argv[])
 
   //std::cout<<  " ParamDB : " << TSParSH_Database<2>::ParamDB.UserIntParameter.size() <<" :  "<<endl;
 
+  // cout << " outstring : "<< SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0] <<endl;
 
-  //DataBase->GenerateGmsh(TSParSH_Database<2>::ParamDB.MeshFile[0]);
+  DataBase->GenerateGmsh( SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0] );
 
 
     int N = 100000;
@@ -51,9 +52,6 @@ int main(int argc, char* argv[])
     cout << "IsBDVert " << V1.IsBoundVert() << endl;
 
     //SParSH::TVertex<3> V2(x);
-
-
-
 
     vector<SParSH::TVertex<SParSH::GEO_DIM>> Vertices;
     

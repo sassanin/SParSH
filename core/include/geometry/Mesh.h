@@ -23,28 +23,32 @@ class TMesh {
  protected: 
 
   /** \brief Vertices contains the list of all vertices in this mesh. */
-  vector< shared_ptr< TVertex<GEO_DIM> > > Vertices; 
+  vector< unique_ptr< TVertex<dim> > > Vertices; 
 
   /** \brief Facets contains the list of all boundaries of all cell in this mesh:
    *         face in 3d, edge in 2d, vertex in 1d   */
-  // static vector<SParSH::TFacets<SParSH::GEO_DIM>> Facets; 
+  // static vector<SParSH::TFacets<SParSH::dim>> Facets; 
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
-  static vector<TCellDesc<GEO_DIM>> Cells; 
+  static vector<TCellDesc<dim>> Cells; 
 
   public:
   
   /** \brief  Default constructor with coordinates of the vertex */
   TMesh();
 
-  TMesh(int N_Vertices);
+  TMesh(size_t N_Vertices);
 
-//   //methods 
-  auto GetVertices()
-   { return 0; }
-  /** \brief  Assign a vertex */
-  void AddVertex(std::shared_ptr< TVertex<GEO_DIM>> &Vert);
+  // methods 
+
+  //send the raw pointer of the vertex V[at]
+  TVertex<dim>* GetVerticesAT(size_t pos)
+   { return Vertices.at(pos).get(); }
+
+  /** \brief  add a vertex to the mesh */
+  void AddVertex(unique_ptr<TVertex<dim>> && Vert)
+  { Vertices.push_back(move(Vert)); }
 
 //   /** \brief  Copy and return the coordinates of the vertex */
 //   void GetCoords(double *X);

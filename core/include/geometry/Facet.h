@@ -7,37 +7,56 @@
 ===========================================================================*/
 
 #include <SParSH_Variables.h>
+#include <Cell.h>
+#include <Vertex.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <sint dim=SParSH::GEO_DIM, bool BD_Facet=false> 
+/** \brief factes in 1d, 2d, 3d and in parallel */
+enum class FacetType:sint {InnerPoint, InterfacePoint, BoundPoint, PeriodicBoundPoint,
+                           InnerEdge, InterfaceEdge, IsoInterfaceEdge, BoundEdge, IsoBoundEdge, PeriodicBoundEdge,
+                           InnerFace, InterFace, IsoInterFace, BoundFace, IsoBoundFace, PeriodicBoundFace,
+                           SubDomainEdge, SubDomainHaloEdge, SubDomaineFace, SubDomainHaloFace,
+                           NotAssigned};
+
+enum class BoundCond:sint {Dirichlet, Dirichlet_Weak, Neumann, Robin, FreeSurf, SlipWithFriction, Interface,
+                           SubDomainInterface, SubDomainHalloBound, NotAssigned};
+
+
+template <sint dim=SParSH::GEO_DIM> 
 class TFacet {
 
-  private: 
+ protected: 
   
-//   /** \brief V[] contains the coordinats of the vertex */
-//    double V[dim]; 
- 
-  public:
+ /** \brief Type of the facet */
+ FacetType Type;
+
+ /** \brief ID (inner is 0) of the facet */
+ std::size_t ID;
+
+ /** \brief V[] contains the indices of the vertices */
+ vector<std::size_t> V; 
+
+ /** \brief Inner Vertices on the facet */
+ vector<unique_ptr< TVertex<dim>>> InnerVertices;
+
+ /** \brief raw pointers for the own and neib cells */
+ SParSH::TCellDesc<dim> *OwnCell, *NeibCell;
+
+ bool BD_Facet=false;
+
+ public:
   
-//   /** \brief  Default constructor with coordinates of the vertex */
-//   TVertex(double *X);
+ /** \brief  Default constructor with Null */
+ TFacet();
 
-  //methods 
+ /** \brief  Default constructor with coordinates of the vertex */
+ TFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex);
 
-//   /** \brief  Assign/Change the coordinates of the vertex */
-//   void SetCoords(double *X);
+ //methods 
 
-//   /** \brief  Copy and return the coordinates of the vertex */
-//   void GetCoords(double *X);
 
-//   /** \brief  Return the address of the vertex */
-//   double* GetCoordsPtr()
-//   { return V; }
-  
-//   /** \brief  Return the type (bpoundary vertex or not) of the vertex */
-//   bool IsBoundVert();
 
 };
 

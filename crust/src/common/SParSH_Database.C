@@ -7,11 +7,6 @@
 
 SParSH_NAMESPACE_BEGIN
 
-
-/** \brief initialize the static ParamDB  */
-template<>
-std::unique_ptr<TParamDB> TSParSH_Database<GEO_DIM>::ParamDB = NULL;
-
 /** \brief default constructor */
 template <sint dim> 
 TSParSH_Database<dim>::TSParSH_Database() 
@@ -44,7 +39,8 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
   std::string usrdblstring = "UserDoubleParameter[" + std::to_string(usrdblen) + "]:";
   std::string usrintstring = "UserIntParameter[" + std::to_string(usrintlen) + "]:";
 
-  // cout << " outstring : "<< outstring <<endl;
+  //cout << " outstring : "<< TSParSH_Database::ParamDB->MeshFile[0] <<endl;
+
 
   while (!dat.eof())
   {
@@ -62,7 +58,11 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
       if(outlen==0)
        { 
         dat >> TSParSH_Database::ParamDB->OutFile[0];
+        // dat >> tempstr;
+        // auto it = TSParSH_Database::ParamDB->OutFile.begin();
+        // TSParSH_Database::ParamDB->OutFile.insert(it, tempstr);
         outstring = "OutFile[" + std::to_string(++outlen) + "]:";
+       
        }
       else
        {  
@@ -163,11 +163,12 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      }
    else if (! strcmp(line, "BASIC_DATA_END"))
     {  break; }
-
   } // while (!dat.eof())
 
   dat.close();
 
+
+  cout << "SParSH_Database : BASIC_DATA Read Completed "<<endl;
  } // TSParSH_Database
 
 
@@ -175,7 +176,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 template <sint dim> 
 void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile) 
  {
-  std::cout<<  " Gmsh File :  " << MeshFile <<endl;
+  std::cout<<  "Start Read Gmsh File :  " << MeshFile <<endl;
 
   std::ifstream dat(MeshFile);  
   try { if (!dat) throw std::runtime_error("Could not open Gmsh file");  }
@@ -204,7 +205,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     exit(-1);
    }
 
-  int N_Vertices;
+  std::size_t N_Vertices;
   while (!dat.eof())
    {
     dat >> line;    
@@ -217,22 +218,23 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     dat.getline (line, 99);
    }
 
-  std::unique_ptr<TMesh<GEO_DIM> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>(N_Vertices)  );
+  std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>(N_Vertices));
   // std::cout<<  " localmesh size :  " << sizeof(localmesh) <<endl;
-  shared_ptr<TVertex<GEO_DIM> > svert;
-  unique_ptr<TVertex<GEO_DIM> > vert;
+
+  //TVertex<dim> *svert;
+  unique_ptr<TVertex<dim> > vert;
   double X[3], Y[3];
-  for(int i_vert=0; i_vert<N_Vertices; ++i_vert)
+
+  for(std::size_t i_vert=0; i_vert<N_Vertices; ++i_vert)
    {
      dat.getline (line, 99);
      dat >> X[0] >> X[1] >> X[2];      
  
-    svert = std::move(vert = make_unique<TVertex<GEO_DIM>>(X));
-
-    // localmesh->AddVertex(std::move(vert = make_unique<TVertex<GEO_DIM>>(X)));
-    // std::cout<<  " Meshes size :  " << sizeof(vert)  <<endl;
-    svert->GetCoords(Y);
-     std::cout<<  X[0] << " Coord:  " << Y[0] <<endl;
+     vert = make_unique<TVertex<dim>>(X);
+     localmesh->AddVertex(std::move(vert));
+     //svert = localmesh->GetVerticesAT(i_vert);
+     //svert->GetCoords(Y);
+     //std::cout<<  X[0] << " Coord:  " << Y[0] <<endl;
 
       // if (X > Xmax) Xmax = X;
       // if (X < Xmin) Xmin = X;
@@ -240,9 +242,22 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
       // if (Y < Ymin) Ymin = Y;
    } 
 
- 
+  std::size_t NBDEdges;
+  while (!dat.eof())
+   {
+    dat >> line;    
+    if ( (!strcmp(line, "Edges")) ||  (!strcmp(line, "EDGES"))   ||  (!strcmp(line, "edges"))   ) 
+    {
+     dat.getline (line, 99);
+     dat >> NBDEdges;
+     break;
+    }    
+    // read until end of line
+    dat.getline (line, 99);
+   }  
 
-  // std::vector< std::auto_ptr< TVertex<GEO_DIM> > > Vertices; // = localmesh->GetVertices();
+  std::cout<<  " localmesh NEdges :  " << NBDEdges <<endl;
+
 
    dat.close();
 
