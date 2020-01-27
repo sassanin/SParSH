@@ -25,9 +25,14 @@ class TMesh {
   /** \brief Vertices contains the list of all vertices in this mesh. */
   vector< unique_ptr< TVertex<dim> > > Vertices; 
 
+  /** \brief list of IDs  of the  (physical) Boundary  */
+  static vector<size_t>  BoundIDs;
+
+  /** \brief BD ID of list of Facets  */
+
   /** \brief Facets contains the list of all boundaries of all cell in this mesh:
    *         face in 3d, edge in 2d, vertex in 1d   */
-  // static vector<SParSH::TFacets<SParSH::dim>> Facets; 
+  // static vector<SParSH::TFacets<SParSH::dim>> BDFacets; 
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */

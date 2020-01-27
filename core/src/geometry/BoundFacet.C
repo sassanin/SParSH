@@ -20,7 +20,7 @@ TBoundFacet<dim>::TBoundFacet(FacetType type,  std::size_t id, std::size_t N_Ver
 
  }
 
-/** constructor with one initial neighbour */
+/** constructor with own cell */
 template <sint dim> 
 TBoundFacet<dim>::TBoundFacet(SParSH::TCellDesc<dim> *owncell) : 
                   TFacet<dim>()

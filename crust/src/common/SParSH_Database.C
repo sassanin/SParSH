@@ -41,7 +41,6 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
   //cout << " outstring : "<< TSParSH_Database::ParamDB->MeshFile[0] <<endl;
 
-
   while (!dat.eof())
   {
    dat >> line;
@@ -256,8 +255,43 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     dat.getline (line, 99);
    }  
 
-  std::cout<<  " localmesh NEdges :  " << NBDEdges <<endl;
+  //std::cout<<  " localmesh NEdges :  " << NBDEdges <<endl;
+  std::size_t v1, v2, BoundaryMarker;
 
+  std::vector<std::size_t> BdEdges;
+  std::vector<std::size_t> BdMarker;
+  std::vector<std::size_t> UniqueBdMarker;
+  bool Mark;
+  //std::cout<<  " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
+
+  for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
+   {
+    dat.getline (line, 99);
+    dat >> v1 >> v2 >> BoundaryMarker;
+    BdEdges.push_back(v1-1); // C-format,  
+    BdEdges.push_back(v2-1); // C-format, 
+    BdMarker.push_back(BoundaryMarker); 
+
+    Mark=true;
+    for(std::size_t j_edge=0; j_edge<UniqueBdMarker.size(); ++j_edge)
+      {
+       if(UniqueBdMarker[j_edge]==BoundaryMarker) 
+        {
+         Mark = false; 
+         break;
+        }
+      }
+
+    if(Mark)
+     {
+      UniqueBdMarker.push_back(BoundaryMarker); 
+     }
+
+   }// for(std::size_t i_edge=0
+
+
+     for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
+       cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;
 
    dat.close();
 
