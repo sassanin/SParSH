@@ -13,11 +13,15 @@ TMesh<dim>::TMesh(size_t N_Vertices)
  }
 
 
-//template <sint dim> 
-//void TMesh<dim>::AddVertex(unique_ptr<TVertex<dim>> && Vert)
-//{
-// Vertices.push_back(move(Vert));
-//}// AddVertex
+template <sint dim> 
+void TMesh<dim>::AddBoundIDs(vector<std::size_t> && BDIDs)
+{
+ BoundIDs = std::move(BDIDs);
+
+//  for(std::size_t i_edge=0; i_edge<BDIDs.size(); ++i_edge)
+//        cout << "BDIDs[i] :" << BDIDs[i_edge] << endl;
+
+}// AddVertex
 
 
 // explicit instantiation

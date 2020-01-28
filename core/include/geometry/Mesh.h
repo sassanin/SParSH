@@ -11,6 +11,7 @@
 #include <Facet.h>
 #include <Cell.h>
 #include <memory>
+#include <iostream>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -25,10 +26,12 @@ class TMesh {
   /** \brief Vertices contains the list of all vertices in this mesh. */
   vector< unique_ptr< TVertex<dim> > > Vertices; 
 
-  /** \brief list of IDs  of the  (physical) Boundary  */
-  static vector<size_t>  BoundIDs;
+  /** \brief list of IDs of physical Boundaries */
+  vector<size_t>  BoundIDs;
 
-  /** \brief BD ID of list of Facets  */
+  /** \brief list of BDFaces of physical Boundaries */
+  vector< vector<TFacet> >  BoundIDs;
+
 
   /** \brief Facets contains the list of all boundaries of all cell in this mesh:
    *         face in 3d, edge in 2d, vertex in 1d   */
@@ -55,8 +58,8 @@ class TMesh {
   void AddVertex(unique_ptr<TVertex<dim>> && Vert)
   { Vertices.push_back(move(Vert)); }
 
-//   /** \brief  Copy and return the coordinates of the vertex */
-//   void GetCoords(double *X);
+  /** \brief adding list of IDs  of physical Boundaries  */
+  void AddBoundIDs(vector<std::size_t> && BDIDs);
 
 //   /** \brief  Return the address of the vertex */
 //   double* GetCoordsPtr()
