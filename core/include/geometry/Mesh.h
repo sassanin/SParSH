@@ -29,13 +29,9 @@ class TMesh {
   /** \brief list of IDs of physical Boundaries */
   vector<size_t>  BoundIDs;
 
-  /** \brief list of BDFaces of physical Boundaries */
-  vector< vector<TFacet> >  BoundIDs;
-
-
   /** \brief Facets contains the list of all boundaries of all cell in this mesh:
    *         face in 3d, edge in 2d, vertex in 1d   */
-  // static vector<SParSH::TFacets<SParSH::dim>> BDFacets; 
+  vector<vector<shared_ptr<SParSH::TFacet<dim>> > > Facets; 
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
@@ -61,9 +57,9 @@ class TMesh {
   /** \brief adding list of IDs  of physical Boundaries  */
   void AddBoundIDs(vector<std::size_t> && BDIDs);
 
-//   /** \brief  Return the address of the vertex */
-//   double* GetCoordsPtr()
-//   { return V; }
+  /** \brief  Return the arry of facets for given BoundIDs. Default for internal facets is 0 */
+  vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BoundIDs);
+ 
   
 //   /** \brief  Return the type (bpoundary vertex or not) of the vertex */
 //   bool IsBoundVert();

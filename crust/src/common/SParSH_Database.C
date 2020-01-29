@@ -262,7 +262,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
   std::vector<std::size_t> BdMarker;
   std::vector<std::size_t> UniqueBdMarker;
   bool Mark;
-  //std::cout<<  " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
+  std::cout<<  " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
 
   for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
@@ -288,6 +288,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
      }
 
    }// for(std::size_t i_edge=0
+
 
    /** store the unique boundaries in the mesh */
    localmesh->AddBoundIDs(std::move(UniqueBdMarker));
