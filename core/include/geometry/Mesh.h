@@ -58,7 +58,7 @@ class TMesh {
   void AddBoundIDs(vector<std::size_t> && BDIDs);
 
   /** \brief  Return the arry of facets for given BoundIDs. Default for internal facets is 0 */
-  vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BoundIDs);
+  const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID);
  
   
 //   /** \brief  Return the type (bpoundary vertex or not) of the vertex */

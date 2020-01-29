@@ -298,8 +298,6 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
    dat.close();
 
-
-
  } // GenerateMesh
 
 

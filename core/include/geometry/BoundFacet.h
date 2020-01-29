@@ -22,7 +22,7 @@ class TBoundFacet : public TFacet<dim>  {
   
  // Constructors
 
- /** \brief  Default constructor with coordinates of the vertex */
+ /** \brief  Default constructor with index of the verticies */
  TBoundFacet(FacetType type, std::size_t id, std::size_t N_Vert,  std::size_t *Vindex);
 
  /** constructor with one initial neighbour */

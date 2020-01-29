@@ -28,14 +28,26 @@ void TMesh<dim>::AddBoundIDs(vector<std::size_t> && BDIDs)
 }// AddVertex
 
 template <sint dim> 
-vector<shared_ptr<SParSH::TFacet<dim>> > TMesh<dim>::GetFacets(size_t BoundIDs)
+const vector<shared_ptr<SParSH::TFacet<dim>> > TMesh<dim>::GetFacets(size_t BDID)
 {
+ std::size_t i_edge;
 
-   return Facets[0];
+ for( i_edge=0; i_edge<BoundIDs.size(); ++i_edge)
+    if(BDID == BoundIDs[i_edge])
+      {
+        break;
+      }
 
-    cout << "No. Facet Types: " << Facets.size() <<endl;
-    for(std::size_t i_facet=0; i_facet<Facets.size(); ++i_facet)
-      cout <<"No. Facets in Type : " <<  i_facet << "is " << Facets[i_facet].size() <<endl;
+  try { if (i_edge == BoundIDs.size()) throw std::runtime_error("Could not find the BD for the given component");  }
+
+  catch (std::exception &ex)
+    { sarshpout(ex); exit(-1); }
+
+   return Facets[i_edge];
+
+    // cout << "No. Facet Types: " << Facets.size() <<endl;
+    // for(std::size_t i_facet=0; i_facet<Facets.size(); ++i_facet)
+    //   cout <<"No. Facets in Type : " <<  i_facet << "is " << Facets[i_facet].size() <<endl;
 
 }// GetFacets(size_t BoundIDs)
 
