@@ -14,13 +14,13 @@
 SParSH_NAMESPACE_BEGIN
 
 /** \brief factes in 1d, 2d, 3d and in parallel */
-enum class FacetType:sint {InnerPoint, InterfacePoint, BoundPoint, PeriodicBoundPoint,
+enum class FacetType:std::size_t {InnerPoint, InterfacePoint, BoundPoint, PeriodicBoundPoint,
                            InnerEdge, InterfaceEdge, IsoInterfaceEdge, BoundEdge, IsoBoundEdge, PeriodicBoundEdge,
                            InnerFace, InterFace, IsoInterFace, BoundFace, IsoBoundFace, PeriodicBoundFace,
                            SubDomainEdge, SubDomainHaloEdge, SubDomaineFace, SubDomainHaloFace,
                            NotAssigned};
 
-enum class BoundCond:sint {Dirichlet, Dirichlet_Weak, Neumann, Robin, FreeSurf, SlipWithFriction, Interface,
+enum class BoundCond:std::size_t {Dirichlet, Dirichlet_Weak, Neumann, Robin, FreeSurf, SlipWithFriction, Interface,
                            SubDomainInterface, SubDomainHalloBound, NotAssigned};
 
 

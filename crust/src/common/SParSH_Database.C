@@ -1,6 +1,8 @@
 #include <SParSH_IO.h>
 #include <SParSH_Database.h>
 #include <Mesh.h>
+#include <BoundFacet.h>
+
 #include <iostream>
 #include <fstream>
 #include<string.h> 
@@ -289,9 +291,20 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
    }// for(std::size_t i_edge=0
 
-
    /** store the unique boundaries in the mesh */
-   localmesh->AddBoundIDs(std::move(UniqueBdMarker));
+  localmesh->AddBoundIDs(std::move(UniqueBdMarker));
+
+  unique_ptr<TBoundFacet<dim> > BDFacet;
+  std::size_t* BDFacet_ptr = BdMarker.data();
+  for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
+   {
+     /**\brief Boundary Marker ID must be in the range of 100 and 199 */
+     BoundaryMarker = BdMarker[i_edge];
+     if(BoundaryMarker>99 && BoundaryMarker<199 )
+       BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, BDFacet_ptr+(2*i_edge) );
+     localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
+   }
+
 
      for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
        cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;

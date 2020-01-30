@@ -27,6 +27,16 @@ void TMesh<dim>::AddBoundIDs(vector<std::size_t> && BDIDs)
 
 }// AddVertex
 
+
+template <sint dim> 
+void TMesh<dim>::MoveBDFacet(unique_ptr<TFacet<dim>> && Vert, std::size_t id)
+{
+
+    
+}
+
+
+
 template <sint dim> 
 const vector<shared_ptr<SParSH::TFacet<dim>> > TMesh<dim>::GetFacets(size_t BDID)
 {

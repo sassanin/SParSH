@@ -57,6 +57,10 @@ class TMesh {
   /** \brief adding list of IDs  of physical Boundaries  */
   void AddBoundIDs(vector<std::size_t> && BDIDs);
 
+  /** \brief  add a BDFacet to the mesh */
+  void MoveBDFacet(unique_ptr<TFacet<dim>> && Vert, std::size_t id);
+
+
   /** \brief  Return the arry of facets for given BoundIDs. Default for internal facets is 0 */
   const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID);
  
