@@ -303,11 +303,11 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    {
      /**\brief Boundary Marker ID must be in the range of 100 and 199 */
      BoundaryMarker = BdMarker[i_edge];
-    //  FacetVert[0] = 
-
+     FacetVert[0] = localmesh->GetVerticesAT(BdEdges[2*i_edge]);
+     FacetVert[1] = localmesh->GetVerticesAT(BdEdges[(2*i_edge) + 1]);
 
      if(BoundaryMarker>99 && BoundaryMarker<199 )
-      //  BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, BDFacet_ptr+(2*i_edge) );
+       BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, FacetVert );
      localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
    }
 

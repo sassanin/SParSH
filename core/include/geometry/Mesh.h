@@ -53,7 +53,7 @@ class TMesh {
 
   //send the raw pointer of the vertex V[at]
   TVertex<dim>* GetVerticesAT(size_t pos)
-   { return &(Vertices[pos]).data(); }
+   { return (Vertices.at(pos)).get(); }
 
   /** \brief  add a vertex to the mesh */
   void AddVertex(unique_ptr<TVertex<dim>> && Vert)
