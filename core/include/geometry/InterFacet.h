@@ -19,7 +19,7 @@ class TInterFacet : public TFacet<dim>  {
  // Constructors
 
  /** \brief  Default constructor with coordinates of the vertex */
- TInterFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex);
+ TInterFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert);
 
  /** constructor with one initial neighbour */
  TInterFacet(SParSH::TCellDesc<dim> *owncell);

@@ -5,13 +5,13 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TBoundFacet<dim>::TBoundFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex) :
-                  TFacet<dim>(type, id, N_Vert, Vindex)
+TBoundFacet<dim>::TBoundFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert) :
+                  TFacet<dim>(type, id, N_Vert, Vert)
  {
 
   bool IsBDFacet = false;
 
-  cout<< "TBoundFacet Type: " <<  static_cast<int> (type) <<endl;
+  //cout<< "TBoundFacet Type: " <<  static_cast<int> (type) <<endl;
 
   if( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  )
    {    IsBDFacet = true;   }

@@ -5,8 +5,8 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TInterFacet<dim>::TInterFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex) :
-                  TFacet<dim>(type, id, N_Vert, Vindex)
+TInterFacet<dim>::TInterFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert) :
+                  TFacet<dim>(type, id, N_Vert, Vert)
  {
 
   try { 

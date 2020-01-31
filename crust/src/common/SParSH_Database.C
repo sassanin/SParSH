@@ -258,13 +258,13 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    }  
 
   //std::cout<<  " localmesh NEdges :  " << NBDEdges <<endl;
-  std::size_t v1, v2, BoundaryMarker;
+  std::size_t v1, v2, v3, BoundaryMarker, CellMarker;
 
   std::vector<std::size_t> BdEdges;
   std::vector<std::size_t> BdMarker;
   std::vector<std::size_t> UniqueBdMarker;
   bool Mark;
-  std::cout<<  " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
+  // std::cout<<  " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
 
   for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
@@ -294,20 +294,71 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    /** store the unique boundaries in the mesh */
   localmesh->AddBoundIDs(std::move(UniqueBdMarker));
 
-  unique_ptr<TBoundFacet<dim> > BDFacet;
+  unique_ptr<TBoundFacet<dim>> BDFacet;
   std::size_t* BDFacet_ptr = BdMarker.data();
-  for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
+  TVertex<dim> *FacetVert[2];
+
+
+  for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
      /**\brief Boundary Marker ID must be in the range of 100 and 199 */
      BoundaryMarker = BdMarker[i_edge];
+    //  FacetVert[0] = 
+
+
      if(BoundaryMarker>99 && BoundaryMarker<199 )
-       BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, BDFacet_ptr+(2*i_edge) );
+      //  BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, BDFacet_ptr+(2*i_edge) );
      localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
    }
 
+  size_t N_FacetPerCell, N_RootCells;
+  while (!dat.eof())
+  {
+    dat >> line;
+    
+    if ( (!strcmp(line, "Triangles")) ||  (!strcmp(line, "TRIANGLES"))   ||  (!strcmp(line, "triangles"))   ) 
+    {
+     N_FacetPerCell = 3;
+     dat.getline (line, 99);
+     dat >> N_RootCells;
+     break;
+    } 
+    else if ( (!strcmp(line, "Quadrilateral")) ||  (!strcmp(line, "QUADRILATERAL"))   ||  (!strcmp(line, "quadrilateral"))   ) 
+    {
+     N_FacetPerCell = 3;
+        cerr <<   " Quad Gmsh not yet implmented!!" <<  endl;
+        exit(-1); 
+    }     
+    
+    // read until end of line
+    dat.getline (line, 99);   
+   }
 
-     for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
-       cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;
+  cout<<"Number of RootCells: "<< N_RootCells<<endl;
+
+  for (size_t i=0;i<N_RootCells;i++)
+   {
+    dat.getline (line, 99);
+    dat >> v1 >> v2 >> v3  >> CellMarker;  
+    // CellVertices[3*i    ] = v1-1; // C-format,  
+    //  CellVertices[3*i + 1] = v2-1; // C-format,  
+    //  CellVertices[3*i + 2] = v3-1; // C-format,  
+     
+    //  CellTree[i] = new TMacroCell(TDatabase::RefDescDB[Triangle], 0);
+
+    //  CellTree[i]->SetVertex(0, NewVertices[CellVertices[3*i    ]]);
+    //  CellTree[i]->SetVertex(1, NewVertices[CellVertices[3*i + 1]]);
+    //  CellTree[i]->SetVertex(2, NewVertices[CellVertices[3*i + 2]]);
+
+    //  CellTree[i]->SetRegionID(CellMarker);
+    //  CellTree[i]->SetClipBoard(i);     
+    //  ((TMacroCell *) CellTree[i])->SetSubGridID(0);
+    }
+   
+
+
+    //  for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
+      //  cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;
 
    dat.close();
 

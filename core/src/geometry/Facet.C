@@ -16,14 +16,14 @@ TFacet<dim>::TFacet()
  }
  
 template <sint dim> 
-TFacet<dim>::TFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex)
+TFacet<dim>::TFacet(FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert)
  {
   Type = type;
   ID = id;
 
   for(std::size_t i; i<N_Vert ; ++i )
     {
-     V.push_back(Vindex[i]);
+     Vertices.push_back(Vert[i]);
     }
 
   OwnCell = NULL;

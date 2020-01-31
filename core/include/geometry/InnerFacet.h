@@ -21,7 +21,7 @@ class TInnerFacet : public TFacet<dim>  {
  // Constructors
 
  /** \brief  Default constructor with coordinates of the vertex */
- TInnerFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  std::size_t *Vindex);
+ TInnerFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert);
 
  /** constructor with one initial neighbour */
  TInnerFacet(SParSH::TCellDesc<dim> *owncell);

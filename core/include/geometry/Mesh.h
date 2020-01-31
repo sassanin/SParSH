@@ -37,8 +37,13 @@ class TMesh {
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
   static vector<TCellDesc<dim>> Cells; 
 
+  private:
+
+   /** \brief return the locallly stored index for the given BDID */
+  size_t GetBoundIndex(size_t BDID);
+
   public:
-  
+
   /** \brief  Default constructor with coordinates of the vertex */
   TMesh();
 
@@ -48,23 +53,28 @@ class TMesh {
 
   //send the raw pointer of the vertex V[at]
   TVertex<dim>* GetVerticesAT(size_t pos)
-   { return Vertices.at(pos).get(); }
+   { return &(Vertices[pos]).data(); }
 
   /** \brief  add a vertex to the mesh */
   void AddVertex(unique_ptr<TVertex<dim>> && Vert)
   { Vertices.push_back(move(Vert)); }
 
   /** \brief adding list of IDs  of physical Boundaries  */
-  void AddBoundIDs(vector<std::size_t> && BDIDs);
+  void AddBoundIDs(vector<size_t> && BDIDs);
 
   /** \brief  add a BDFacet to the mesh */
-  void MoveBDFacet(unique_ptr<TFacet<dim>> && Vert, std::size_t id);
-
+  void MoveBDFacet(unique_ptr<TFacet<dim>> && facet, size_t BDID)
+  { 
+   size_t idx = this->GetBoundIndex(BDID);
+   Facets[idx].push_back(move(facet)); 
+  }
 
   /** \brief  Return the arry of facets for given BoundIDs. Default for internal facets is 0 */
-  const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID);
- 
+  const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID)
+  { return Facets[this->GetBoundIndex(BDID)]; }
   
+
+
 //   /** \brief  Return the type (bpoundary vertex or not) of the vertex */
 //   bool IsBoundVert();
 
