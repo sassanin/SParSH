@@ -20,9 +20,10 @@ int main(int argc, char* argv[])
 { 
  using namespace SParSH;
 
+  /** initiate the database with the give readin file (argv[1]) at execution */
   unique_ptr<TSParSH_Database<GEO_DIM> > DataBase(make_unique<TSParSH_Database<GEO_DIM>>(argv[1]));
  
-
+  
   //std::cout<<  " ParamDB : " << TSParSH_Database<2>::ParamDB.UserIntParameter.size() <<" :  "<<endl;
 
   // cout << " outstring : "<< SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0] <<endl;

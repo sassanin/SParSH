@@ -10,24 +10,27 @@
 #include <CellDesc.h>
 #include <Mesh.h>
 
+using namespace std; 
+
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
+template <sint dim=SParSH::GEO_DIM> 
 struct TParamDB
 {
   /** \brief variables for data output and input files  */   
-  std::vector<std::string> OutFile{"SParsh1_Out"};  
-  std::vector<std::string> MeshFile{"UnitSquareQuad.mesh"};
-  std::vector<sint> CellTypes{0};
+  vector<string> OutFile{"SParsh1_Out"};  
+  vector<string> MeshFile{"UnitSquareQuad.mesh"};
+  vector<sint> CellTypes{0};
 
   /** \brief parameters for grid generation     */
-  std::vector<sint> Uniform_Steps{1};
+  vector<sint> Uniform_Steps{1};
   double Drift_X{0.0}, Drift_Y{0.0}, Drift_Z{0.0};
   double Scale_X{1.0}, Scale_Y{1.0}, Scale_Z{1.0};
 
-  std::string VTKFile{"SParsh_VTK"};
-  std::string PSFile{"SParsh_PS"};
-  std::string OutDir{"SParsh_Out"};
+  string VTKFile{"SParsh_VTK"};
+  string PSFile{"SParsh_PS"};
+  string OutDir{"SParsh_Out"};
       
   /** \brief variables for controling output */
   bool Write_PS = false;
@@ -35,9 +38,9 @@ struct TParamDB
   bool Measure_Errors = false;
 
   /** free parameters for users */
-  std::vector<double> UserDoubleParameter{0.};
-  std::vector<int> UserIntParameter{0};
-  // std::vector<bool> UserBoolParameter{false};
+  vector<double> UserDoubleParameter{0.};
+  vector<int> UserIntParameter{0};
+  // vector<bool> UserBoolParameter{false};
 };
 
 // using TParamDB = ParaDB<int>;
@@ -55,30 +58,37 @@ struct TParamDB
 // };
 
 // template struct CDParaDB<sint>;
+
 template <sint dim=SParSH::GEO_DIM> 
 class TSParSH_Database {
 
   public:
 
    /** \brief general parameters */
-  static std::unique_ptr<TParamDB> ParamDB;
+  static unique_ptr<TParamDB<dim> > ParamDB;
 
-  static std::vector< std::unique_ptr< TMesh<GEO_DIM> > > Meshes; 
+  /** database of shape descriptors */
+  static vector<unique_ptr<TCellDesc<dim> > > CellDB;
+
+  static vector< unique_ptr< TMesh<dim> > > Meshes; 
 
   //constructor
   TSParSH_Database();
   
-  TSParSH_Database(std::string ReadinFile);
+  TSParSH_Database(string ReadinFile);
 
   //methods
   /** \brief gererating a mesh using the given Gmsh file */
-   void GenerateGmsh(std::string MeshFile);
+   void GenerateGmsh(string MeshFile);
 
 };
 
-
-/** \brief initialize the static ParamDB  */
+/** \brief initialize the static ParamDB */
 template <sint dim> 
-std::unique_ptr<SParSH::TParamDB> SParSH::TSParSH_Database<dim>::ParamDB(make_unique<SParSH::TParamDB>());
+unique_ptr<SParSH::TParamDB<dim>> SParSH::TSParSH_Database<dim>::ParamDB(make_unique<SParSH::TParamDB<dim>>());
+
+/** \brief initialize the static CellDB */
+template <sint dim> 
+vector<unique_ptr<SParSH::TCellDesc<dim>>> SParSH::TSParSH_Database<dim>::CellDB;
 
 SParSH_NAMESPACE_END

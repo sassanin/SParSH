@@ -36,7 +36,7 @@ class TTriangle_3 : public TCellDesc<dim>
   // { return 0; }  
 
   // /** \brief return measure of a cell */
-  virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
+  // virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
 };
 
 SParSH_NAMESPACE_END

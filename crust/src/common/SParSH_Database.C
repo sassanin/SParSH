@@ -16,7 +16,7 @@ TSParSH_Database<dim>::TSParSH_Database()
   /** \brief Initilize the SparSH Database */
   // SParSH::TSParSH_Database<dim> SParSH_DB;
 
-    std::cout<<  " Para :  "<<endl;
+   // std::cout<<  " Para :  "<<endl;
  }
 
 /** \brief constructor with readin.data file */
@@ -170,6 +170,17 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
 
   cout << "SParSH_Database : BASIC_DATA Read Completed "<<endl;
+
+  /** Initiate the based on the data given in readinfile */
+
+  TSParSH_Database::CellDB.resize(N_CellTypes);
+  for(size_t i_celltype = 0; i_celltype<TSParSH_Database::ParamDB->CellTypes.size(); i_celltype++ )
+   {
+    cout << "SParSH_Database : Cell type : " << N_CellTypes<<endl;
+
+      
+   }
+
  } // TSParSH_Database
 
 

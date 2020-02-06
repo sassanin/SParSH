@@ -22,7 +22,8 @@ enum class CellType:sint {LINE_2, LINE_3,
                           TETRA_4, TETRA_10, TETRA_14,
                           PYRA_5, PYRA_13, PYRA_14, 
                           PRISM_6, PRISM_15, PRISM_18,
-                          HEXA_8, HEXA_20, HEXA_27 };
+                          HEXA_8, HEXA_20, HEXA_27,
+                          NOT_DEFINED };
  
 template <sint dim=GEO_DIM> 
 class TCellDesc {
@@ -34,30 +35,70 @@ class TCellDesc {
     /** \brief number of vertices in this cell */
     int N_Vertices;
 
-    /** \brief number of Facets. 1d:vertex, 2d:edge, 3d:face */
+    /**  \brief number of edges in a cell */
+    int N_Edges;
+
+    /** \brief number of Facets: 1d::vertex, 2d::edge, 3d::face */
     int N_Facets;
 
-    /** \brief Type contains the enum ID of the joint celltype of this cell */
-    CellType JointType;
+    /** \brief Type contains the enum ID of the edge celltype of this cell */
+    CellType EdgeType;
 
-    #ifdef __3D__
-      /**  \brief number of edges in a 3d cell */
-      int N_Edges;
-    #endif
-
-    /** \brief maximum number of facets per vertex */
-    int MaxN_FacetPerVert;
+    /** \brief maximum number of edges per vertex */
+    int MaxN_EpV;
  
-    /** \brief which vertices belong to one facet */
-    const int *FacetVertex;
+    /** \brief vertices that belong to one edge */
+    const int *EdgeVertex;
 
-    /** \brief which facets meet at a vertex */
-    const int *VertexFacet;
+    /** \brief edges that meet at a vertex */
+    const int *VertexEdge;
+
+#ifdef __3D__
+    /**  \brief number of faces in a 3d cell */
+    int N_Faces;
+
+    /** \brief Type contains the enum ID of the face celltype of this cell */
+    CellType FaceType;
+
+    /** \brief maximum number of vertices per face */
+    int MaxN_VpF;
+
+    /** \brief maximum number of faces per vertex */
+    int MaxN_FpV;
+
+    /** \brief maximum number of edges per face */
+    int MaxN_EpF;
+
+    /** \brief maximum number of faces per edge */
+    int MaxN_FpE;
+
+    /** \brief \brief which vertices are on one face */
+    const int *FaceVertex;
+    
+    /** number of  vertices on one face */
+    const int *FaceVertexLen;
+
+    /** \brief which edges are on one face */
+    const int *FaceEdge;
+
+    /** \brief number of edges on one face */
+    const int *FaceEdgeLen;
+
+    /** \brief which shapes have the faces got */
+    const Shapes *FaceType;
+
+    /** \brief which faces meet at a vertex */
+    const int *VertexFace;
+    
+    /** \brief which faces meet a one edge */
+    const int *EdgeFace;      
+#endif
+
 
   public:
   
   // Constructors
-    TCellDesc();
+  TCellDesc();
     
   //methods 
 
@@ -66,7 +107,7 @@ class TCellDesc {
     { return Type; }
 
     /** \brief return diameter of a cell */
-    virtual double GetDiameter(SParSH::TVertex<dim> **Verts) = 0;
+    // virtual double GetDiameter(SParSH::TVertex<dim> **Verts) = 0;
 
     // /** \brief return shortest of a cell */
     // virtual double GetShortestEdge(SParSH::TVertex<dim> **Verts) = 0;
@@ -75,7 +116,7 @@ class TCellDesc {
     // virtual double GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts) = 0;
 
     // /** \brief return measure of a cell */
-    virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
+    // virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
 
 };
 

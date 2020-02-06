@@ -13,26 +13,28 @@ SParSH_NAMESPACE_BEGIN
 
 using namespace std; 
 
-constexpr static const int DatFacetVertex[3][2] = { {0, 1},  {1, 2},  {2, 0}};
-constexpr static const int DatVertexFacet[3][2] = { {2, 0},  {0, 1},  {1, 2}};
+constexpr static const int DatEdgeVertex[3][2] = { {0, 1},  {1, 2},  {2, 0}};
+constexpr static const int DatVertexEdge[3][2] = { {2, 0},  {0, 1},  {1, 2}};
  
 // Constructor
 template <sint dim> 
 TTriangle_3<dim>::TTriangle_3()
 {
-  this->MaxN_FacetPerVert = 3;
-  this->FacetVertex = (const int *) DatFacetVertex;
-  this->VertexFacet = (const int *) DatVertexFacet;
-  this->Type = CellType::TRI_3;
-  this->N_Vertices = 3;   
-  this->N_Facets = 3;   
+ this->Type = CellType::TRI_3;
+ this->N_Vertices = 3;   
+ this->N_Edges = 3;   
+ this->N_Facets = 3;    
+ this->EdgeType = CellType::LINE_2;     
+ this->MaxN_EpV = 2;
+ this->EdgeVertex = (const int *) DatEdgeVertex;
+ this->VertexEdge = (const int *) DatVertexEdge;   
 }
 
 // Methods
-template <sint dim> 
-double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
-{
-  double x1,x2,y1,y2;
+// template <sint dim> 
+// double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
+// {
+  // double x1,x2,y1,y2;
 
   // x1 = Verts[0]->GetX();
   // y1 = Verts[0]->GetY();
@@ -40,7 +42,7 @@ double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
   // y2 = Verts[1]->GetY();
 
   // return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-}
+// }
 
 
 // explicit instantiation
