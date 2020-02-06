@@ -7,6 +7,7 @@
 * ===========================================================================*/
 
 #include <SParSH_Variables.h>
+#include <Vertex.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -15,7 +16,7 @@ SParSH_NAMESPACE_BEGIN
 
 /** \brief based on https://cgns.github.io/CGNS_docs_current/sids/conv.html#unstructgrid 
  *  and for bubble FEs */
-enum class CellType:sint {LINE_2, LINE3,
+enum class CellType:sint {LINE_2, LINE_3,
                           TRI_3, TRI_6, TRI_7,
                           QUAD_4, QUAD_8, QUAD_9, 
                           TETRA_4, TETRA_10, TETRA_14,
@@ -56,6 +57,18 @@ class TCellDesc {
    /** \brief return the cell type */
     CellType GetCellType()
     { return Type; }
+
+    /** \brief return diameter of a cell */
+    virtual double GetDiameter(SParSH::TVertex<dim> **Verts) = 0;
+
+    // /** \brief return shortest of a cell */
+    // virtual double GetShortestEdge(SParSH::TVertex<dim> **Verts) = 0;
+
+    // /** \brief return the length of the cell defined with the reference map */
+    // virtual double GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts) = 0;
+
+    // /** \brief return measure of a cell */
+    // virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
 
 };
 
