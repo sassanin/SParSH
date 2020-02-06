@@ -34,8 +34,8 @@ class TCellDesc {
     /** \brief number of vertices in this cell */
     int N_Vertices;
 
-    /** \brief number of joints. 1d:vertex, 2d:edge, 3d:face */
-    int N_Joints;
+    /** \brief number of Facets. 1d:vertex, 2d:edge, 3d:face */
+    int N_Facets;
 
     /** \brief Type contains the enum ID of the joint celltype of this cell */
     CellType JointType;
@@ -44,6 +44,15 @@ class TCellDesc {
       /**  \brief number of edges in a 3d cell */
       int N_Edges;
     #endif
+
+    /** \brief maximum number of facets per vertex */
+    int MaxN_FacetPerVert;
+ 
+    /** \brief which vertices belong to one facet */
+    const int *FacetVertex;
+
+    /** \brief which facets meet at a vertex */
+    const int *VertexFacet;
 
   public:
   
@@ -66,7 +75,7 @@ class TCellDesc {
     // virtual double GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts) = 0;
 
     // /** \brief return measure of a cell */
-    // virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
+    virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
 
 };
 

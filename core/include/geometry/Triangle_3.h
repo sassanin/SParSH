@@ -1,8 +1,8 @@
 /** =======================================================================
-* @class     TLINE_2
-* @brief     LINE_2 (element) descriptors
+* @class     TTriangle_3
+* @brief     TRI_3 (element) descriptors
 * @author    Sashikumaar Ganesan 
-* @date      15.01.2020
+* @date      06.02.2020
 * @History   
 ===========================================================================*/
 #include <SParSH_Variables.h>
@@ -12,14 +12,14 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-class TLine_2 : public TCellDesc<dim>
+class TTriangle_3 : public TCellDesc<dim>
 {
  protected:
 
   public:
   
   // Constructors
-  TLine_2();
+  TTriangle_3();
     
   //methods 
 

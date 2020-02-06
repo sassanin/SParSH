@@ -1,36 +1,36 @@
 
 /** =======================================================================
-* @class     TLINE_2
-* @brief     LINE_2 (element) descriptors source 
+* @class     TTriangle_3
+* @brief     TRI_3 (element) descriptors source 
 * @author    Sashikumaar Ganesan 
-* @date      15.01.2020
+* @date      06.02.2020
 * @History   
 ===========================================================================*/
 
-#include <Line_2.h>
- 
+#include <Triangle_3.h>
+
 SParSH_NAMESPACE_BEGIN
 
 using namespace std; 
 
-constexpr static const int DatFacetVertex[1][2] = { {0, 1}};
-constexpr static const int DatVertexFacet[2][1] = { {0},  {0}};
+constexpr static const int DatFacetVertex[3][2] = { {0, 1},  {1, 2},  {2, 0}};
+constexpr static const int DatVertexFacet[3][2] = { {2, 0},  {0, 1},  {1, 2}};
  
 // Constructor
 template <sint dim> 
-TLine_2<dim>::TLine_2()
+TTriangle_3<dim>::TTriangle_3()
 {
-  this->MaxN_FacetPerVert = 1;
+  this->MaxN_FacetPerVert = 3;
   this->FacetVertex = (const int *) DatFacetVertex;
   this->VertexFacet = (const int *) DatVertexFacet;
-  this->Type = CellType::LINE_2;
-  this->N_Vertices = 2;   
-  this->N_Facets = 2;   
+  this->Type = CellType::TRI_3;
+  this->N_Vertices = 3;   
+  this->N_Facets = 3;   
 }
 
 // Methods
 template <sint dim> 
-double TLine_2<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
+double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
 {
   double x1,x2,y1,y2;
 
@@ -44,6 +44,6 @@ double TLine_2<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
 
 
 // explicit instantiation
-template class TLine_2<GEO_DIM>;
+template class TTriangle_3<GEO_DIM>;
 
 SParSH_NAMESPACE_END
