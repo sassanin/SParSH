@@ -16,7 +16,6 @@ TBoundFacet<dim>::TBoundFacet(FacetType type,  std::size_t id, std::size_t N_Ver
   if( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  )
    {    IsBDFacet = true;   }
  
-
   try { 
        if( !( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  ) )
         {

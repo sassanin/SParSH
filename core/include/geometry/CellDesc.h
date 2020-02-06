@@ -24,8 +24,6 @@ enum class CellType:sint {LINE_2, LINE_3,
                           PRISM_6, PRISM_15, PRISM_18,
                           HEXA_8, HEXA_20, HEXA_27 };
  
-
-
 template <sint dim=GEO_DIM> 
 class TCellDesc {
 
