@@ -2,6 +2,8 @@
 #include <SParSH_Database.h>
 #include <Mesh.h>
 #include <BoundFacet.h>
+#include <Triangle_3.h>
+#include <Line_2.h>
 
 #include <iostream>
 #include <fstream>
@@ -13,10 +15,10 @@ SParSH_NAMESPACE_BEGIN
 template <sint dim> 
 TSParSH_Database<dim>::TSParSH_Database() 
  {
-  /** \brief Initilize the SparSH Database */
-  // SParSH::TSParSH_Database<dim> SParSH_DB;
 
-   // std::cout<<  " Para :  "<<endl;
+  /** \brief Initilize the SparSH Database */
+
+   std::cout<<  " Para :  "<<endl;
  }
 
 /** \brief constructor with readin.data file */
@@ -168,18 +170,10 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
   dat.close();
 
-
   cout << "SParSH_Database : BASIC_DATA Read Completed "<<endl;
 
-  /** Initiate the based on the data given in readinfile */
-
-  TSParSH_Database::CellDB.resize(N_CellTypes);
-  for(size_t i_celltype = 0; i_celltype<TSParSH_Database::ParamDB->CellTypes.size(); i_celltype++ )
-   {
-    cout << "SParSH_Database : Cell type : " << N_CellTypes<<endl;
-
-      
-   }
+  /** initialise the descriptors */
+  this->InitDescriptors();
 
  } // TSParSH_Database
 
@@ -374,6 +368,36 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    dat.close();
 
  } // GenerateMesh
+
+
+template <sint dim> 
+void TSParSH_Database<dim>::InitDescriptors() 
+{
+
+ /** initialize the cell descriptors */
+ TSParSH_Database::CellDB.resize(N_CellTypes);
+
+ for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
+  {
+   switch (TSParSH_Database::ParamDB->CellTypes[i])
+   {
+   case 0:
+     TSParSH_Database::CellDB[0] = move(make_unique<TLine_2<dim>>());
+    break;
+
+   case 5:
+     TSParSH_Database::CellDB[5] = move(make_unique<TTriangle_3<dim>>());
+    break;
+   
+   default:
+    break;
+   }
+
+
+
+  }
+
+}
 
 
 // explicit instantiation

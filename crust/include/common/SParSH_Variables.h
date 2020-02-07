@@ -31,7 +31,8 @@
 #endif
 #define NULL nullptr
 
-#define sint uint_fast8_t
+// #define sint uint_fast8_t
+#define sint size_t
 
 SParSH_NAMESPACE_BEGIN
 #ifdef __3D__

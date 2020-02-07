@@ -21,10 +21,10 @@ struct TParamDB
   /** \brief variables for data output and input files  */   
   vector<string> OutFile{"SParsh1_Out"};  
   vector<string> MeshFile{"UnitSquareQuad.mesh"};
-  vector<sint> CellTypes{0};
+  vector<size_t> CellTypes{0};
 
   /** \brief parameters for grid generation     */
-  vector<sint> Uniform_Steps{1};
+  vector<size_t> Uniform_Steps{1};
   double Drift_X{0.0}, Drift_Y{0.0}, Drift_Z{0.0};
   double Scale_X{1.0}, Scale_Y{1.0}, Scale_Z{1.0};
 
@@ -73,11 +73,18 @@ class TSParSH_Database {
   static vector< unique_ptr< TMesh<dim> > > Meshes; 
 
   //constructor
+
+  /** default constructor */
   TSParSH_Database();
   
+  /** \brief read the data for the database from the given readin file */
   TSParSH_Database(string ReadinFile);
 
   //methods
+
+  /** \brief read the data for the database from the given readin file */
+  void InitDescriptors();
+
   /** \brief gererating a mesh using the given Gmsh file */
    void GenerateGmsh(string MeshFile);
 
