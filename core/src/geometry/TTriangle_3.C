@@ -13,21 +13,23 @@ SParSH_NAMESPACE_BEGIN
 
 using namespace std; 
 
-constexpr static const int DatEdgeVertex[3][2] = { {0, 1},  {1, 2},  {2, 0}};
-constexpr static const int DatVertexEdge[3][2] = { {2, 0},  {0, 1},  {1, 2}};
+
  
 // Constructor
 template <sint dim> 
 TTriangle_3<dim>::TTriangle_3()
 {
+ static constexpr sint DatEdgeVertex[3][2] = { {0, 1},  {1, 2},  {2, 0}};
+ static constexpr sint DatVertexEdge[3][2] = { {2, 0},  {0, 1},  {1, 2}};
+
  this->Type = CellType::TRI_3;
  this->N_Vertices = 3;   
  this->N_Edges = 3;   
  this->N_Facets = 3;    
  this->EdgeType = CellType::LINE_2;     
  this->MaxN_EpV = 2;
- this->EdgeVertex = (const int *) DatEdgeVertex;
- this->VertexEdge = (const int *) DatVertexEdge;   
+ this->EdgeVertex = (const sint *) DatEdgeVertex;
+ this->VertexEdge = (const sint *) DatVertexEdge;   
 }
 
 // Methods

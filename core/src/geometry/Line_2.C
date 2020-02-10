@@ -12,20 +12,20 @@
 SParSH_NAMESPACE_BEGIN
 
 using namespace std; 
-
-constexpr static const int DatEdgeVertex[1][2] = { {0, 1}};
-constexpr static const int DatVertexEdge[2][1] = { {0},  {0}};
  
 // Constructor
 template <sint dim> 
 TLine_2<dim>::TLine_2()
 {
-  this->MaxN_EpV = 1;
-  this->EdgeVertex = (const int *) DatEdgeVertex;
-  this->VertexEdge = (const int *) DatVertexEdge;
-  this->Type = CellType::LINE_2;
-  this->N_Vertices = 2;   
-  this->N_Facets = 2;   
+ static constexpr sint DatEdgeVertex[1][2] = { {0, 1}};
+ static constexpr sint DatVertexEdge[2][1] = { {0}, {0}};
+
+ this->MaxN_EpV = 1;
+ this->EdgeVertex = (const sint *) DatEdgeVertex;
+ this->VertexEdge = (const sint *) DatVertexEdge;
+ this->Type = CellType::LINE_2;
+ this->N_Vertices = 2;   
+ this->N_Facets = 2;   
 }
 
 // Methods

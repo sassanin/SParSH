@@ -33,65 +33,65 @@ class TCellDesc {
     CellType Type;
 
     /** \brief number of vertices in this cell */
-    int N_Vertices;
+    sint N_Vertices;
 
     /**  \brief number of edges in a cell */
-    int N_Edges;
+    sint N_Edges;
 
     /** \brief number of Facets: 1d::vertex, 2d::edge, 3d::face */
-    int N_Facets;
+    sint N_Facets;
 
     /** \brief Type contains the enum ID of the edge celltype of this cell */
     CellType EdgeType;
 
     /** \brief maximum number of edges per vertex */
-    int MaxN_EpV;
+    sint MaxN_EpV;
  
     /** \brief vertices that belong to one edge */
-    const int *EdgeVertex;
+    const sint *EdgeVertex;
 
     /** \brief edges that meet at a vertex */
-    const int *VertexEdge;
+    const sint *VertexEdge;
 
 #ifdef __3D__
     /**  \brief number of faces in a 3d cell */
-    int N_Faces;
+    sint N_Faces;
 
     /** \brief Type contains the enum ID of the face celltype of this cell */
     CellType FaceType;
 
     /** \brief maximum number of vertices per face */
-    int MaxN_VpF;
+    sint MaxN_VpF;
 
     /** \brief maximum number of faces per vertex */
-    int MaxN_FpV;
+    sint MaxN_FpV;
 
     /** \brief maximum number of edges per face */
-    int MaxN_EpF;
+    sint MaxN_EpF;
 
     /** \brief maximum number of faces per edge */
-    int MaxN_FpE;
+    sint MaxN_FpE;
 
     /** \brief \brief which vertices are on one face */
-    const int *FaceVertex;
+    const sint *FaceVertex;
     
     /** number of  vertices on one face */
-    const int *FaceVertexLen;
+    const sint *FaceVertexLen;
 
     /** \brief which edges are on one face */
-    const int *FaceEdge;
+    const sint *FaceEdge;
 
     /** \brief number of edges on one face */
-    const int *FaceEdgeLen;
+    const sint *FaceEdgeLen;
 
     /** \brief which shapes have the faces got */
     const Shapes *FaceType;
 
     /** \brief which faces meet at a vertex */
-    const int *VertexFace;
+    const sint *VertexFace;
     
     /** \brief which faces meet a one edge */
-    const int *EdgeFace;      
+    const sint *EdgeFace;      
 #endif
 
 

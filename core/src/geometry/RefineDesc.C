@@ -43,6 +43,6 @@ TRefineDesc<dim>::TRefineDesc()
 
 
 // explicit instantiation
-template class TRefineDesc<GEO_DIM>;
+template class TRefineDesc<SParSH::GEO_DIM>;
 
 SParSH_NAMESPACE_END

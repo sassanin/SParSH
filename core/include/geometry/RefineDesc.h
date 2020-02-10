@@ -27,53 +27,53 @@ class TRefineDesc {
   protected:
 
     /** \brief descriptor of this cell */
-    std::shared_ptr<int >  CellDesc;
+    std::shared_ptr<sint >  CellDesc;
     /** \brief Type contains the enum ID of the refinement type */
     RefineType Type;
     /** \brief number of vertices in this cell */
-    int N_Vertices;
+    sint N_Vertices;
     /** \brief number of edges in a cell */
-    int N_Edges;
+    sint N_Edges;
     /** \brief number of children */
-    int N_Children;
+    sint N_Children;
     /** \brief number of vertices of base cell */
-    int N_OrigVertices;
+    sint N_OrigVertices;
     /** \brief number of edges of base cell */
-    int N_OrigEdges;
+    sint N_OrigEdges;
    
 #ifdef __3D__
     /** \brief number of faces */
-    int N_Faces;
+    sint N_Faces;
     /**\brief  number of faces of base cell */
-    int N_OrigFaces;
+    sint N_OrigFaces;
     /** \brief number of inner faces */
-    int N_InnerFaces;  
+    sint N_InnerFaces;  
 #endif
     /** \brief number of new vertices, which equal to old vertices */
-    int N_NewVertEqOldVert;
+    sint N_NewVertEqOldVert;
     /** \brief number of new inner vertices */
-    int N_InnerVertices;
+    sint N_InnerVertices;
     /** \brief number of new edges, which equal to old edges */
-    int N_NewEdgeEqOldEdge;
+    sint N_NewEdgeEqOldEdge;
     /** \brief number of new inner edges */
-    int N_InnerEdges;
+    sint N_InnerEdges;
 
     /** \brief maximum number of vertices per cell */
-    int MaxN_VpC;
+    sint MaxN_VpC;
     /** \brief maximum number of cells per vertex */
-    int MaxN_CpV;
+    sint MaxN_CpV;
     /** \brief maximum number of edges per cell */
-    int MaxN_EpC;
+    sint MaxN_EpC;
     /** \brief maximum number of cells per edge */
-    int MaxN_CpE;
+    sint MaxN_CpE;
     /** \brief maximum number of edges per vertex */
-    int MaxN_EpV;
+    sint MaxN_EpV;
     /** \brief maximum number of inner vertices per edge */
-    int MaxN_iVpE;
+    sint MaxN_iVpE;
     /** \brief maximum number of new vertices per old edge */
-    int MaxN_nVpoE;
+    sint MaxN_nVpoE;
     /** \brief maximum number of new edges per old edge */
-    int MaxN_nEpoE;
+    sint MaxN_nEpoE;
 
     /** \brief type of children after refinement */
     std::shared_ptr<SParSH::TCellDesc<dim>>  ChildCellDesc;
@@ -82,15 +82,15 @@ class TRefineDesc {
     const RefineType *ChildType;
 
     /** \brief which vertices build a child */
-    const int *ChildVertex;
+    const sint *ChildVertex;
     /** \brief number of vertices per child */
-    const int *ChildVertexLen;
+    const sint *ChildVertexLen;
     /** \brief which children meet on a vertex */
-    const int *VertexChild;
+    const sint *VertexChild;
     /** \brief which local index has the vertex in each child */
-    const int *VertexChildIndex;
+    const sint *VertexChildIndex;
     /** \brief length of array VertexChild */
-    const int *VertexChildLen;
+    const sint *VertexChildLen;
 
   public:
   
