@@ -8,7 +8,8 @@
 ===========================================================================*/
 
 #include <Line_2.h>
- 
+#include <iostream>
+
 SParSH_NAMESPACE_BEGIN
 
 using namespace std; 
@@ -21,17 +22,17 @@ TLine_2<dim>::TLine_2()
  static constexpr sint DatVertexEdge[2][1] = { {0}, {0}};
 
  this->MaxN_EpV = 1;
- this->EdgeVertex = (const sint *) DatEdgeVertex;
- this->VertexEdge = (const sint *) DatVertexEdge;
+ this->EdgeVertex = static_cast<const sint *>(*DatEdgeVertex);
+ this->VertexEdge = static_cast<const sint *>(*DatVertexEdge);
  this->Type = CellType::LINE_2;
  this->N_Vertices = 2;   
  this->N_Facets = 2;   
 }
 
 // Methods
-// template <sint dim> 
-// double TLine_2<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
-// {
+template <sint dim> 
+double TLine_2<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
+{
   // double x1,x2,y1,y2;
 
   // x1 = Verts[0]->GetX();
@@ -40,7 +41,7 @@ TLine_2<dim>::TLine_2()
   // y2 = Verts[1]->GetY();
 
   // return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-// }
+}
 
 
 // explicit instantiation

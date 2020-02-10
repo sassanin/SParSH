@@ -1,13 +1,13 @@
 
 /** =======================================================================
-* @class     TTriangle_3
+* @class     TQuadrangle_4
 * @brief     TRI_3 (element) descriptors source 
 * @author    Sashikumaar Ganesan 
 * @date      06.02.2020
 * @History   
 ===========================================================================*/
 
-#include <Triangle_3.h>
+#include <Quadrangle_4.h>
 
 SParSH_NAMESPACE_BEGIN
 
@@ -15,15 +15,15 @@ using namespace std;
 
 // Constructor
 template <sint dim> 
-TTriangle_3<dim>::TTriangle_3()
+TQuadrangle_4<dim>::TQuadrangle_4()
 {
- static constexpr sint DatEdgeVertex[3][2] = { {0, 1},  {1, 2},  {2, 0}};
- static constexpr sint DatVertexEdge[3][2] = { {2, 0},  {0, 1},  {1, 2}};
+ static constexpr sint DatEdgeVertex[4][2] = { {0, 1},  {1, 2},  {2, 3},  {3, 0}};
+ static constexpr sint DatVertexEdge[4][2] = { {3, 0},  {0, 1},  {1, 2},  {2, 3}};
 
- this->Type = CellType::TRI_3;
- this->N_Vertices = 3;   
- this->N_Edges = 3;   
- this->N_Facets = 3;    
+ this->Type = CellType::QUAD_4;
+ this->N_Vertices = 4;   
+ this->N_Edges = 4;   
+ this->N_Facets = 4;    
  this->EdgeType = CellType::LINE_2;     
  this->MaxN_EpV = 2;
  this->EdgeVertex = static_cast<const sint *>(*DatEdgeVertex);
@@ -32,28 +32,28 @@ TTriangle_3<dim>::TTriangle_3()
 
 // Methods
 template <sint dim> 
-double TTriangle_3<dim>::GetDiameter(SParSH::TVertex<dim> **Verts)
+double TQuadrangle_4<dim>::GetDiameter(SParSH::TVertex<dim> **Verts)
 {
 
 return 0.;
 }
 
 template <sint dim> 
-double TTriangle_3<dim>::GetShortestEdge(SParSH::TVertex<dim> **Verts)
+double TQuadrangle_4<dim>::GetShortestEdge(SParSH::TVertex<dim> **Verts)
 {
 
 return 0.;
 }
 
 template <sint dim> 
-double TTriangle_3<dim>::GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts)
+double TQuadrangle_4<dim>::GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts)
 {
 
 return 0.;
 }
 
 template <sint dim> 
-double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
+double TQuadrangle_4<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
 {
   // double x1,x2,y1,y2;
 
@@ -68,6 +68,6 @@ double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
 
 
 // explicit instantiation
-template class TTriangle_3<SParSH::GEO_DIM>;
+template class TQuadrangle_4<SParSH::GEO_DIM>;
 
 SParSH_NAMESPACE_END

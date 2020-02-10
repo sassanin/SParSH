@@ -1,6 +1,6 @@
 /** =======================================================================
 * @class     TCellDesc
-* @brief     Cell (element) descriptors
+* @brief     Cell (element) descriptors, an abstract class
 * @author    Sashikumaar Ganesan 
 * @date      08.01.2020
 * @History   
@@ -53,12 +53,9 @@ class TCellDesc {
     /** \brief edges that meet at a vertex */
     const sint *VertexEdge;
 
-#ifdef __3D__
+// #ifdef __3D__
     /**  \brief number of faces in a 3d cell */
     sint N_Faces;
-
-    /** \brief Type contains the enum ID of the face celltype of this cell */
-    CellType FaceType;
 
     /** \brief maximum number of vertices per face */
     sint MaxN_VpF;
@@ -84,16 +81,15 @@ class TCellDesc {
     /** \brief number of edges on one face */
     const sint *FaceEdgeLen;
 
-    /** \brief which shapes have the faces got */
-    const Shapes *FaceType;
-
+    /** \brief Type contains the enum ID of the face celltype of this cell */
+    const CellType *FaceType;
+   
     /** \brief which faces meet at a vertex */
     const sint *VertexFace;
     
     /** \brief which faces meet a one edge */
     const sint *EdgeFace;      
-#endif
-
+// #endif
 
   public:
   
@@ -102,21 +98,83 @@ class TCellDesc {
     
   //methods 
 
-   /** \brief return the cell type */
+    /** \brief return the number of vertices */
+    sint GetN_Vertices()
+    { return N_Vertices; }
+    /** \brief return the number of edges */
+    sint GetN_Edges()
+    { return N_Edges; }
+    /** \brief return the number of joints */
+    sint GetN_Facets()
+    { return N_Facets; }
+
+    /** brief return the EdgeVertex array */
+    void GetEdgeVertex(const sint *&TmpEV)
+    {
+     TmpEV = EdgeVertex;
+    }
+
+    /** brief return the MaxN_EpV */
+    sint GetMaxN_EpV()
+    { return MaxN_EpV; }
+
+    /** brief return the EdgeVertex array */
+    void GetVertexEdge(const sint *&TmpVE)
+    {
+      TmpVE = VertexEdge;
+    }
+
+    // #ifdef __3D__
+      /** brief return the number of faces */
+      sint GetN_Faces()
+      { return N_Faces; }
+
+      /** brief return the FaceVertex array */
+      void GetFaceVertex(const sint *&TmpFV, const sint *&TmpLen, sint &MaxLen)
+      {
+        TmpFV = FaceVertex;
+        TmpLen = FaceVertexLen;
+        MaxLen = MaxN_VpF;
+      }
+
+      /** brief return the FaceEdge array */
+      void GetFaceEdge(const sint *&TmpFV, const sint *&TmpLen, sint &MaxLen)
+      {
+        TmpFV = FaceEdge;
+        TmpLen = FaceEdgeLen;
+        MaxLen = MaxN_EpF;
+      }
+
+      /** brief return the EdgeFace array */
+      void GetEdgeFace(const sint *&TmpEF, sint &MaxLen)
+      {
+        TmpEF = EdgeFace;
+        MaxLen = MaxN_FpE;
+      }
+
+      /** brief return the FaceType array */
+      void GetFaceType(const CellType *&TmpFT)
+      {
+        TmpFT = FaceType;
+      } 
+      
+    // #endif
+
+    /** \brief return the cell type */
     CellType GetCellType()
     { return Type; }
 
-    /** \brief return diameter of a cell */
-    // virtual double GetDiameter(SParSH::TVertex<dim> **Verts) = 0;
+    /** \brief  pure virtual function that is used in all derived classes to return diameter of a cell */
+    virtual double GetDiameter(SParSH::TVertex<dim> **Verts)=0;
 
-    // /** \brief return shortest of a cell */
-    // virtual double GetShortestEdge(SParSH::TVertex<dim> **Verts) = 0;
+    // /** \brief  pure virtual function that is used in all derived classes to return shortest of a cell */
+    virtual double GetShortestEdge(SParSH::TVertex<dim> **Verts)=0;
 
-    // /** \brief return the length of the cell defined with the reference map */
-    // virtual double GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts) = 0;
+    /** \brief  pure virtual function that is used in all derived classes to return the length of the cell defined with the reference map */
+    virtual double GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts)=0;
 
-    // /** \brief return measure of a cell */
-    // virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
+    /** \brief pure virtual function that is used in all derived classes to return the measure of the cell */
+    virtual double GetMeasure(SParSH::TVertex<dim> **Verts)=0;
 
 };
 

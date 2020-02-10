@@ -1,8 +1,8 @@
 /** =======================================================================
-* @class     TTriangle_3
-* @brief     TRI_3 (element) descriptors
+* @class     TQuadrangle_4
+* @brief     QUAD_4 (element) descriptors
 * @author    Sashikumaar Ganesan 
-* @date      06.02.2020
+* @date      10.02.2020
 * @History   
 ===========================================================================*/
 #include <SParSH_Variables.h>
@@ -12,14 +12,14 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-class TTriangle_3 : public TCellDesc<dim>
+class TQuadrangle_4 : public TCellDesc<dim>
 {
  protected:
 
   public:
   
   // Constructors
-  TTriangle_3();
+  TQuadrangle_4();
     
   //methods 
 

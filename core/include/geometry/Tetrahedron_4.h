@@ -1,25 +1,28 @@
 /** =======================================================================
-* @class     TTriangle_3
-* @brief     TRI_3 (element) descriptors
+* @class     TTetrahedron_4
+* @brief     TETRA_4 (element) descriptors
 * @author    Sashikumaar Ganesan 
-* @date      06.02.2020
+* @date      10.02.2020
 * @History   
 ===========================================================================*/
 #include <SParSH_Variables.h>
 #include <CellDesc.h>
 
+
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
+// #ifdef __3D__
+
 template <sint dim> 
-class TTriangle_3 : public TCellDesc<dim>
+class TTetrahedron_4 : public TCellDesc<dim>
 {
  protected:
 
   public:
   
   // Constructors
-  TTriangle_3();
+  TTetrahedron_4();
     
   //methods 
 
@@ -35,5 +38,6 @@ class TTriangle_3 : public TCellDesc<dim>
   /** \brief return measure of a cell */
   double GetMeasure(SParSH::TVertex<dim> **Verts);
 };
+// #endif
 
 SParSH_NAMESPACE_END

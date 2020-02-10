@@ -23,20 +23,20 @@ class TLine_2 : public TCellDesc<dim>
     
   //methods 
 
-  // /** \brief return diameter of a cell */
-  // virtual double GetDiameter(SParSH::TVertex **Verts)
-  // { return 0; }
+  /** \brief return diameter of a cell */
+  double GetDiameter(SParSH::TVertex<dim> **Verts)
+  { return 0.; }
 
-  // /** \brief return shortest edge of a cell */
-  // virtual double GetShortestEdge(TVertex **Verts)
-  // { return 0;  }  
+  /** \brief return shortest edge of a cell */
+  double GetShortestEdge(SParSH::TVertex<dim> **Verts)
+  { return 0.;  }  
 
   // /** \brief return the length of the cell defined with the reference map */
-  // virtual double GetLengthWithReferenceMap(TVertex **Verts)
-  // { return 0; }  
+  double GetLengthWithReferenceMap(SParSH::TVertex<dim> **Verts)
+  { return 0.; }  
 
   // /** \brief return measure of a cell */
-  // virtual double GetMeasure(SParSH::TVertex<dim> **Verts) = 0;
+  double GetMeasure(SParSH::TVertex<dim> **Verts);
 };
 
 SParSH_NAMESPACE_END

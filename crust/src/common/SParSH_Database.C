@@ -2,8 +2,9 @@
 #include <SParSH_Database.h>
 #include <Mesh.h>
 #include <BoundFacet.h>
-#include <Triangle_3.h>
 #include <Line_2.h>
+#include <Triangle_3.h>
+#include <Quadrangle_4.h>
 
 #include <iostream>
 #include <fstream>
@@ -376,27 +377,36 @@ void TSParSH_Database<dim>::InitDescriptors()
 
  /** initialize the cell descriptors */
  TSParSH_Database::CellDB.resize(N_CellTypes);
+ 
+ /** regular share of initialized by default */
+ TSParSH_Database::CellDB[0] = move(make_unique<TLine_2<dim>>());
+ TSParSH_Database::CellDB[2] = move(make_unique<TTriangle_3<dim>>());
+ TSParSH_Database::CellDB[5] = move(make_unique<TQuadrangle_4<dim>>());
 
- for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
-  {
-   switch (TSParSH_Database::ParamDB->CellTypes[i])
-   {
-   case 0:
-     TSParSH_Database::CellDB[0] = move(make_unique<TLine_2<dim>>());
-    break;
+#ifdef __3D__
 
-   case 5:
-     TSParSH_Database::CellDB[5] = move(make_unique<TTriangle_3<dim>>());
-    break;
-   
-   default:
-    break;
-   }
+#endif
 
+ //  /** initialize special cell descriptors on demand for the list given in readin file */
+ //  for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
+ //   {
+ //    switch (TSParSH_Database::ParamDB->CellTypes[i])
+ //    {
+ //     default:
+ //     break;
+ //    }
+ //   }
 
+  //verify
+  // if(TSParSH_Database::CellDB[5])
+  // {
+  //  cout << "SParSH_Database : InitDescriptors  Completed " << TSParSH_Database::CellDB[5]->GetN_Edges() <<endl;
 
-  }
-
+  //  const sint *TmpEV;
+  //  TSParSH_Database::CellDB[5]->GetEdgeVertex(TmpEV);
+  //    for (sint i=0; i<6; ++i)
+  //      cout << "TTriangle_3 EdgeVertex: " << TmpEV[i] <<endl;
+  // }
 }
 
 
