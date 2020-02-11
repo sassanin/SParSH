@@ -24,11 +24,11 @@ TTetrahedron_4<dim>::TTetrahedron_4()
  static constexpr sint DatFaceVertexLen[4] = { 3, 3, 3, 3}; 
  static constexpr sint DatVertexFace[4][3] = { {0, 1, 3},  {0, 2, 1},  {0, 3, 2},  {1, 2, 3}};
 
-static constexpr sint DatFaceEdge[4][3] = { {0, 1, 2},  {3, 4, 0},  {1, 4, 5},  {2, 5, 3}};
-static constexpr sint DatFaceEdgeLen[4] = { 3, 3, 3, 3};
-static constexpr sint DatEdgeFace[6][2] = { {1, 0},  {2, 0},  {3, 0}, {3, 1},  {1, 2},  {2, 3}};
+ static constexpr sint DatFaceEdge[4][3] = { {0, 1, 2},  {3, 4, 0},  {1, 4, 5},  {2, 5, 3}};
+ static constexpr sint DatFaceEdgeLen[4] = { 3, 3, 3, 3};
+ static constexpr sint DatEdgeFace[6][2] = { {1, 0},  {2, 0},  {3, 0}, {3, 1},  {1, 2},  {2, 3}};
 
-static const CellType DatFaceType[4] = { CellType::TRI_3, CellType::TRI_3, CellType::TRI_3, CellType::TRI_3};
+ static const CellType DatFaceType[4] = { CellType::TRI_3, CellType::TRI_3, CellType::TRI_3, CellType::TRI_3};
 
  this->Type = CellType::TETRA_4;
  this->N_Vertices = 4;   
