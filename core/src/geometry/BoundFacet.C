@@ -11,13 +11,13 @@ TBoundFacet<dim>::TBoundFacet(FacetType type,  std::size_t id, std::size_t N_Ver
 
   bool IsBDFacet = false;
 
-  //cout<< "TBoundFacet Type: " <<  static_cast<int> (type) <<endl;
+  cout<< "TBoundFacet Type: " <<  static_cast<int> (type) <<endl;
 
   if( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  )
    {    IsBDFacet = true;   }
  
   try { 
-       if( !( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  ) )
+       if( !static_cast<int>( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  ) )
         {
           throw std::runtime_error("Facte Type is not matching" ); 
         }
