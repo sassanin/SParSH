@@ -1,8 +1,6 @@
 #include <SParSH_IO.h>
 #include <Facet.h>
-// #include <Vertex.h>
-// #include <iostream> 
-// #include <vector> 
+
 
 SParSH_NAMESPACE_BEGIN
 
@@ -16,7 +14,7 @@ TFacet<dim>::TFacet()
  }
  
 template <sint dim> 
-TFacet<dim>::TFacet(FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert)
+TFacet<dim>::TFacet(SParSH::FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert)
  {
   Type = type;
   ID = id;

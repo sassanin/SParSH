@@ -5,25 +5,28 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TBoundFacet<dim>::TBoundFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert) :
+TBoundFacet<dim>::TBoundFacet(SParSH::FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert) :
                   TFacet<dim>(type, id, N_Vert, Vert)
  {
 
   bool IsBDFacet = false;
 
-  cout<< "TBoundFacet Type: " <<  static_cast<int> (type) <<endl;
+  // cout<< "TBoundFacet Type: " <<  static_cast<int> (type) <<endl;
 
   if( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  )
    {    IsBDFacet = true;   }
  
-  try { 
-       if( !static_cast<int>( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  ) )
+  // try { 
+       if( !( type==FacetType::BoundPoint ||  type==FacetType::BoundEdge || type==FacetType::BoundFace  ) )
         {
-          throw std::runtime_error("Facte Type is not matching" ); 
+          // throw std::runtime_error("Facte Type is not matching" ); 
+
+          cout<< "TBoundFacet Type Not Matching : " <<endl;
+          exit(-1);
         }
-      }
-  catch (std::exception &ex)
-      { sarshpout(ex); exit(-1); }
+      // }
+  // catch (std::exception &ex)
+  //     { sarshpout(ex); exit(-1); }
 
 
   BoundCondType = BoundCond::NotAssigned;

@@ -1,5 +1,5 @@
 # ===================================================================
-# This is an user configuration file for SParSH Version 1.0
+# This is an user configuration file for Scalable PARallel numeica for Hetrogenious systems (SParSH) Version 1.0
 # written by Sashikumaar Ganesan, CDS, IISc Bangalore, India
 # date: 28 Dec 2018
 # ===================================================================

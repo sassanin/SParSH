@@ -6,6 +6,11 @@
 #include <Triangle_3.h>
 #include <Quadrangle_4.h>
 
+#ifdef __3D__
+#include <Hexahedron_8.h>
+#include <Tetrahedron_4.h>
+#endif
+
 #include <iostream>
 #include <fstream>
 #include<string.h> 
@@ -379,12 +384,13 @@ void TSParSH_Database<dim>::InitDescriptors()
  TSParSH_Database::CellDB.resize(N_CellTypes);
  
  /** regular share of initialized by default */
- TSParSH_Database::CellDB[0] = move(make_unique<TLine_2<dim>>());
- TSParSH_Database::CellDB[2] = move(make_unique<TTriangle_3<dim>>());
- TSParSH_Database::CellDB[5] = move(make_unique<TQuadrangle_4<dim>>());
+ TSParSH_Database::CellDB[static_cast<int>(CellType::LINE_2)] = move(make_unique<TLine_2<dim>>());
+ TSParSH_Database::CellDB[static_cast<int>(CellType::TRI_3)] = move(make_unique<TTriangle_3<dim>>());
+ TSParSH_Database::CellDB[static_cast<int>(CellType::QUAD_4)] = move(make_unique<TQuadrangle_4<dim>>());
 
 #ifdef __3D__
-
+ TSParSH_Database::CellDB[static_cast<int>(CellType::TETRA_4)] = move(make_unique<TTetrahedron_4<dim>>());
+ TSParSH_Database::CellDB[static_cast<int>(CellType::HEXA_8)] = move(make_unique<THexahedron_8<dim>>());
 #endif
 
  //  /** initialize special cell descriptors on demand for the list given in readin file */

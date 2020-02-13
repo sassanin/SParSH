@@ -15,8 +15,10 @@ using namespace std;
 
 // Constructor
 template <sint dim> 
-TRefineDesc<dim>::TRefineDesc()
+TRefineDesc<dim>::TRefineDesc(TCellDesc<dim> celldesc)
 {
+//  CellDesc = celldesc;
+
 //  this->Type = CellType::TRI_3;
 //  this->N_Vertices = 3;   
 //  this->N_Edges = 3;   

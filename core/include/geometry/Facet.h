@@ -51,7 +51,7 @@ class TFacet {
  TFacet();
 
  /** \brief  Default constructor with coordinates of the vertex */
- TFacet(FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert);
+ TFacet(SParSH::FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert);
 
  //methods 
 

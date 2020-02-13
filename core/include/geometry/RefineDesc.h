@@ -1,11 +1,12 @@
 /** =======================================================================
 * @class     TRefineDesc
-* @brief     Refine descriptors
+* @brief     Refine descriptors 
+*            Terminologies are similar as in our in-house package ParMooN
 * @author    Sashikumaar Ganesan 
 * @date      07.02.2020
 * @History   
 * ===========================================================================*/
-
+#include <SParSH_IO.h>
 #include <SParSH_Variables.h>
 #include <CellDesc.h>
 #include <memory>
@@ -17,9 +18,9 @@ SParSH_NAMESPACE_BEGIN
 
 /** \brief Types of refinement */
 enum class RefineType:sint {NoRef, LineReg, TriReg, QuadReg, ParallReg, RectReg,
-                            TetraReg, PyraReg, PrismReg, HexaReg};
+                            TetraReg, PyraReg, PrismReg, HexaReg, NotDefined};
  
-enum class RefineMarker:sint {NoRefine, Refine, DeRefine};
+enum class RefineMarker:sint {NoRefine, Refine, DeRefine, NotDefined};
 
 template <sint dim=GEO_DIM> 
 class TRefineDesc {
@@ -27,9 +28,13 @@ class TRefineDesc {
   protected:
 
     /** \brief descriptor of this cell */
-    std::shared_ptr<sint >  CellDesc;
+    shared_ptr<TCellDesc<dim>> CellDesc;
+
+    /** \brief Type contains the enum ID of the cell type */
+    CellType Type;
+
     /** \brief Type contains the enum ID of the refinement type */
-    RefineType Type;
+    RefineType RefinementType;
     /** \brief number of vertices in this cell */
     sint N_Vertices;
     /** \brief number of edges in a cell */
@@ -76,10 +81,12 @@ class TRefineDesc {
     sint MaxN_nEpoE;
 
     /** \brief type of children after refinement */
-    std::shared_ptr<SParSH::TCellDesc<dim>>  ChildCellDesc;
+    vector<unique_ptr<TCellDesc<dim>>> ChildCellDesc;
  
     /** \brief refinement's types of the edges */
     const RefineType *ChildType;
+    /** refinement's types of the edges */
+    const RefineType *EdgeType;
 
     /** \brief which vertices build a child */
     const sint *ChildVertex;
@@ -176,7 +183,7 @@ class TRefineDesc {
       /** maximum number of new faces per old face */
       sint MaxN_nFpoF;
       /** refinement's types of the faces */
-      const Refinements *FaceType;
+      const RefineType *FaceType;
       /** which children meet on a face */
       const sint *FaceChild;
       /** which local index has the face in each child */
@@ -253,22 +260,333 @@ class TRefineDesc {
       /** on which old face does a new face lie */
       const sint *NewFaceOldFace;
 
-      /** ??? */
+      /**   */
       const sint *OldFaceNewLocFace;
 
-      /** ??? */
+      /**   */
       const sint *ChildTwistIndex;
     #endif
-
-
 
   public:
   
   // Constructors
-  TRefineDesc();
+  TRefineDesc(TCellDesc<dim> celldesc);
     
   //methods 
- 
+  /** \brief return type of refinement */
+  RefineType GetType()
+   { return RefinementType; }
+  
+  /** return number of children */
+  sint GetN_Children()
+   { return N_Children; }
+  
+  /** return number of edges */
+  sint GetN_Edges()
+   { return N_Edges; }
+   
+  /** return number of vertices */
+  sint GetN_Vertices()
+   { return N_Vertices; }
+
+  /** return number of edges on base cell */
+  sint GetN_OrigEdges()
+   { return N_OrigEdges; }
+  
+  /** return number of vertices on base cell */
+  sint GetN_OrigVertices()
+   { return N_OrigVertices; }
+
+  #ifdef __3D__
+  /** return number of faces */
+  sint GetN_OrigFaces()
+   { return N_OrigFaces; }
+   
+  /** return number of faces on base cell*/
+  sint GetN_Faces()
+    { return N_Faces; }
+  #endif
+
+  /** return a bool, whether to refine or not */
+  virtual bool IsToRefine()
+   { return true; }
+    
+  /** return shape descriptor */
+  std::shared_ptr<SParSH::TCellDesc<dim>> GetCellDesc()
+   { return CellDesc; }
+
+  /** return refinement type of edge pos */
+  RefineType GetEdgeRef(sint pos)
+    { return EdgeType[pos]; }
+   
+  //return the raw pointer of the type of child number pos */
+  TCellDesc<dim> *GetChildType(sint pos)
+    { return (ChildCellDesc.at(pos)).get(); }   
+
+  /** return number of new vertices, which equal old vertices */
+  sint GetN_NewVertEqOldVert()
+   { return N_NewVertEqOldVert; }
+  
+  /** return number of new inner vertices */
+  sint GetN_InnerVertices()
+   { return N_InnerVertices; }
+  
+  /** return number of new edges, which equal old edges */
+  sint GetN_NewEdgeEqOldEdge() 
+   { return N_NewEdgeEqOldEdge; }
+  
+  /** return number of new inner edges */
+  sint GetN_InnerEdges()
+   { return N_InnerEdges; }
+
+  /** return auxilary fields in order to copy existing vertices */
+  void GetNewVertEqOldVert(const sint *&TmpValues, const sint *&TmpIndex)
+   {
+    TmpValues = NewVertexEqOldVertex;
+    TmpIndex = NewVertexEqOldVertexIndex;
+   }
+
+  /** return auxilary fields in order to create new inner vertices */
+  void GetInnerVerts(const sint *&TmpValues, const double *&TmpPos, sint &MaxLen)
+   {
+    TmpValues = InteriorVertexOfCell;
+    TmpPos = PositionOfIntVert;
+    MaxLen = N_OrigVertices;
+  }
+
+  /** return auxilary fields in order to copy existing edges */
+  void GetNewEdgeEqOldEdge(const sint *&TmpValues, const sint *&TmpIndex)
+   {
+    TmpValues = NewEdgeEqOldEdge;
+    TmpIndex = NewEdgeEqOldEdgeIndex;
+   }
+
+  /** return auxilary fields in order to create new inner edges */
+  sint GetInnerEdges(const sint *&TmpinE, const sint *&TmpEC, sint &MaxLen)
+   {
+    TmpinE = InteriorEdgeOfCell;
+    TmpEC = EdgeChild;
+    MaxLen = MaxN_CpE;
+   }
+
+  /** return the array OldEdgeNewEdge */
+  void GetOldEdgeNewEdge(const sint *&TmpoEnE, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpoEnE = OldEdgeNewEdge;
+    TmpLen = InteriorVertexOfEdgeLen;
+    MaxLen = MaxN_nEpoE;
+   }
+
+  /** return the array OldEdgeNewLocEdge */
+  void GetOldEdgeNewLocEdge(const sint *&TmpoEnlE)
+   { TmpoEnlE=OldEdgeNewLocEdge; }
+
+  /** return the array NewEdgeOldEdge */
+  void GetNewEdgeOldEdge(const sint *&TmpnEoE)
+   { TmpnEoE = NewEdgeOldEdge; }
+
+  /** return the array EdgeChild */
+  void GetEdgeChild(const sint *&TmpEC, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpEC = EdgeChild;
+    TmpLen = EdgeChildLen;
+    MaxLen = MaxN_CpE;
+   }
+
+  /** return the array EdgeChildIndex */
+  void GetEdgeChildIndex(const sint *&TmpECI, const sint *&TmpLen, sint &MaxLen)
+    {
+     TmpECI = EdgeChildIndex;
+     TmpLen = EdgeChildLen;
+     MaxLen = MaxN_CpE;
+    }
+
+  /** return the array OldEdgeNewVertex */
+  void GetOldEdgeNewVertex(const sint *&TmpoEnV, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpoEnV = OldEdgeNewVertex;
+    TmpLen = InteriorVertexOfEdgeLen;
+    MaxLen = MaxN_nVpoE;
+   }
+    
+  /** return the array EdgeVertex */
+  void GetEdgeVertex(const sint *&TmpEV)
+   { TmpEV = EdgeVertex; }
+
+  /** return the array VertexEdge */
+  void GetVertexEdge(const sint *&TmpVE, const sint *&TmpLen, sint &MaxLen)
+    {
+     TmpVE = VertexEdge;
+     TmpLen = VertexEdgeLen;
+     MaxLen = MaxN_EpV;
+    }
+
+  /** return the array VertexEdgeIndex */
+  void GetVertexEdgeIndex(const sint *&TmpVEI, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpVEI = VertexEdgeIndex;
+    TmpLen = VertexEdgeLen;
+    MaxLen = MaxN_EpV;
+   }
+
+  /** return the array VertexChild */
+  void GetVertexChild(const sint *&TmpVC, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpVC = VertexChild;
+    TmpLen = VertexChildLen;
+    MaxLen = MaxN_CpV;
+   }
+
+  /** return the array VertexChildIndex */
+  void GetVertexChildIndex(const sint *&TmpVCI, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpVCI = VertexChildIndex;
+    TmpLen = VertexChildLen;
+    MaxLen = MaxN_CpV;
+    }
+
+    /** return the array ChildVertex */
+  void GetChildVertex(const sint *&TmpCV, sint &MaxLen)
+   {
+    TmpCV =  ChildVertex;
+    MaxLen = MaxN_VpC;
+   }
+
+  /** return the array ChildEdge */
+  void GetChildEdge(const sint *&TmpCE, sint &MaxLen)
+   {
+    TmpCE =  ChildEdge;
+    MaxLen = MaxN_EpC;
+   }
+
+  #ifdef __3D__
+   /** return number of inner faces */
+   sint GetN_InnerFaces()
+    {return N_InnerFaces; }
+   
+ /** return auxilary fields in order to create new inner faces */
+  void GetInnerFaces(const sint *&TmpinF, const sint *&TmpFC, sint &MaxLen)
+   {
+    TmpinF = InteriorFaceOfCell;
+    TmpFC = FaceChild;
+    MaxLen = MaxN_CpF;
+   }
+
+  /** return field of new vertices on an old face */
+  void GetOldFaceNewInnerVertex(const sint *&TmpoFniV, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpoFniV = OldFaceNewInnerVertices;
+    TmpLen = OldFaceNewInnerVerticesLen;
+    MaxLen = MaxN_niVpoF;
+   }
+
+  /** return field of new faces on old faces */
+  void GetOldFaceNewFace(const sint *&TmpoFnF, const sint *&TmpLen,sint &MaxLen)
+   {
+    TmpoFnF = OldFaceNewFace;
+    TmpLen = OldFaceNewFaceLen;
+    MaxLen = MaxN_nFpoF;
+   }
+
+  /** return the refinement type of face i */
+  RefineType GetFaceRef(sint i)
+   { return FaceType[i]; }
+
+  /** return number of new faces equal old faces */
+  sint GetN_NewFaceEqOldFace()
+   { return N_NewFaceEqOldFace; }
+
+  /** return the array NewFaceEqOldFace */
+  void GetNewFaceEqOldFace(const sint *&TmpValues, const sint *&TmpIndex)
+   {
+    TmpValues = NewFaceEqOldFace;
+    TmpIndex = NewFaceEqOldFaceIndex;
+   }
+
+  /** return the array FaceChild */
+  void GetFaceChild(const sint *&TmpFC, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpFC = FaceChild;
+    TmpLen = FaceChildLen;
+    MaxLen = MaxN_CpF;
+   }
+
+  /** return the array FaceChildIndex */
+  void GetFaceChildIndex(const sint *&TmpFCI, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpFCI = FaceChildIndex;
+    TmpLen = FaceChildLen;
+    MaxLen = MaxN_CpF;
+   }
+
+  /** return the array FaceEdge */
+  void GetFaceEdge(const sint *&TmpFE, sint &MaxLen)
+   {
+    TmpFE =  FaceEdge;
+    MaxLen = MaxN_EpF;
+   }
+
+  /** return field NewVertsOnOldFace for face i */
+  void GetNewVertsOnOldFace(const sint *&TmpNV, const double *&TmpPos, sint &MaxLen)
+   {
+    TmpNV = NewVertsOnOldFace;
+    TmpPos = NewVertsOnOldFacePos;
+    MaxLen = MaxN_nVpoF;
+   }
+
+  /** return the field ChildFace */
+  void GetChildFace(const sint *&TmpCF, sint &MaxLen)
+   {
+    TmpCF = ChildFace;
+    MaxLen = MaxN_FpC;
+   }
+
+  /** return the field OldFaceNewVertex */
+  void GetOldFaceNewVertex(const sint *&TmpoFnV, const sint *&TmpLen, sint &MaxLen)
+   {
+    TmpoFnV = OldFaceNewVertex;
+    TmpLen = OldFaceNewVertexLen;
+    MaxLen = MaxN_nVpoF;
+   }
+
+  /** return the field OldFaceNewVertex */
+  void GetOldFaceNewVertex(const sint *&TmpoFnV, const double *&TmpPos,
+                           const sint *&TmpLen, sint &MaxLen1, sint &MaxLen2)
+   {
+    TmpoFnV = OldFaceNewVertex;
+    TmpPos = OldFaceNewVertexPos;
+    TmpLen = OldFaceNewVertexLen;
+    MaxLen1 = MaxN_nVpoF;
+    MaxLen2 = MaxN_oVpoF;
+   }
+
+  /** return the field NewFaceOldFace */
+  void GetNewFaceOldFace(const sint *&TmpnFoF)
+   {
+    TmpnFoF = NewFaceOldFace;
+   }
+
+  /** return the array OldFaceNewLocFace */
+  void GetOldFaceNewLocFace(const sint *&TmpoFnlF)
+   {
+    TmpoFnlF = OldFaceNewLocFace;
+   }
+
+  /** return the array ChildTwistIndex */
+  void GetChildTwistIndex(const sint *&TmpCTI)
+   {
+    TmpCTI = ChildTwistIndex;
+   }
+      
+  /** return the array FaceVertex **/
+  void GetFaceVertex (const sint *&TmpFV, sint &TmpLen)
+   {
+	  TmpFV = FaceVertex;
+	  TmpLen = MaxN_VpF;
+   }
+
+    #endif 
+
 };
 
 SParSH_NAMESPACE_END
