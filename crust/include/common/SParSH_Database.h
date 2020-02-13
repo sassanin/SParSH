@@ -8,6 +8,7 @@
 
 #include <SParSH_Variables.h>
 #include <CellDesc.h>
+#include <RefineDesc.h>
 #include <Mesh.h>
 
 using namespace std; 
@@ -69,6 +70,7 @@ class TSParSH_Database {
 
   /** database of shape descriptors */
   static vector<unique_ptr<TCellDesc<dim> > > CellDB;
+  static vector<unique_ptr<TRefineDesc<dim> > > RefineDescDB;
 
   static vector< unique_ptr< TMesh<dim> > > Meshes; 
 
@@ -97,5 +99,9 @@ unique_ptr<SParSH::TParamDB<dim>> SParSH::TSParSH_Database<dim>::ParamDB(make_un
 /** \brief initialize the static CellDB */
 template <sint dim> 
 vector<unique_ptr<SParSH::TCellDesc<dim>>> SParSH::TSParSH_Database<dim>::CellDB;
+
+/** \brief initialize the static RefineDescDB */
+template <sint dim> 
+vector<unique_ptr<SParSH::TRefineDesc<dim>>> SParSH::TSParSH_Database<dim>::RefineDescDB;
 
 SParSH_NAMESPACE_END

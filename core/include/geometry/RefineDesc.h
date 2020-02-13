@@ -17,8 +17,8 @@ SParSH_NAMESPACE_BEGIN
 #define N_RefineTypes  11
 
 /** \brief Types of refinement */
-enum class RefineType:sint {NoRef, LineReg, TriReg, QuadReg, ParallReg, RectReg,
-                            TetraReg, PyraReg, PrismReg, HexaReg, NotDefined};
+enum class RefineType:sint {NoRef, Line_2Reg, Tri_3Reg, Quad_4Reg, ParallReg, RectReg,
+                            Tetra_4Reg, Pyra_5Reg, Prism_6Reg, Hexa_8Reg, NotDefined};
  
 enum class RefineMarker:sint {NoRefine, Refine, DeRefine, NotDefined};
 
@@ -27,22 +27,24 @@ class TRefineDesc {
 
   protected:
 
-    /** \brief descriptor of this cell */
-    shared_ptr<TCellDesc<dim>> CellDesc;
-
-    /** \brief Type contains the enum ID of the cell type */
-    CellType Type;
+    /** \brief descriptor (raw) of this cell */
+    TCellDesc<dim> *CellDesc;
 
     /** \brief Type contains the enum ID of the refinement type */
     RefineType RefinementType;
+
     /** \brief number of vertices in this cell */
     sint N_Vertices;
+
     /** \brief number of edges in a cell */
     sint N_Edges;
+
     /** \brief number of children */
     sint N_Children;
+
     /** \brief number of vertices of base cell */
     sint N_OrigVertices;
+
     /** \brief number of edges of base cell */
     sint N_OrigEdges;
    
@@ -84,7 +86,8 @@ class TRefineDesc {
     vector<unique_ptr<TCellDesc<dim>>> ChildCellDesc;
  
     /** \brief refinement's types of the edges */
-    const RefineType *ChildType;
+    const CellType *ChildType;
+    
     /** refinement's types of the edges */
     const RefineType *EdgeType;
 
@@ -270,7 +273,7 @@ class TRefineDesc {
   public:
   
   // Constructors
-  TRefineDesc(TCellDesc<dim> celldesc);
+  TRefineDesc(TCellDesc<dim> *celldesc);
     
   //methods 
   /** \brief return type of refinement */
@@ -311,9 +314,9 @@ class TRefineDesc {
   virtual bool IsToRefine()
    { return true; }
     
-  /** return shape descriptor */
-  std::shared_ptr<SParSH::TCellDesc<dim>> GetCellDesc()
-   { return CellDesc; }
+  /** return cell (raw) descriptor */
+  // TCellDesc<dim> *GetCellDesc()
+  //  { return CellDesc; }
 
   /** return refinement type of edge pos */
   RefineType GetEdgeRef(sint pos)

@@ -1,4 +1,3 @@
-
 /** =======================================================================
 * @class     TRefineDesc
 * @brief     RefineDesc descriptors source 
@@ -15,34 +14,106 @@ using namespace std;
 
 // Constructor
 template <sint dim> 
-TRefineDesc<dim>::TRefineDesc(TCellDesc<dim> celldesc)
+TRefineDesc<dim>::TRefineDesc(TCellDesc<dim> *celldesc)
 {
-//  CellDesc = celldesc;
+ CellDesc = celldesc;
+ RefinementType = RefineType::NoRef;
+ N_OrigEdges = CellDesc->GetN_Edges();   
+ N_OrigVertices = CellDesc->GetN_Vertices();   
+ N_Edges = 0;
+ N_Vertices = 0;
+ N_Children = 0;
+ N_NewVertEqOldVert = 0;
+ N_InnerVertices = 0;
+ N_NewEdgeEqOldEdge = 0;
+ N_InnerEdges = 0;
+ MaxN_VpC = 0;
+ MaxN_CpV = 0;
+ MaxN_EpC = 0;
+ MaxN_CpE = 0;
+ MaxN_EpV = 0;
+ MaxN_iVpE = 0;
+ MaxN_nVpoE = 0;
+ MaxN_nEpoE = 0;
 
-//  this->Type = CellType::TRI_3;
-//  this->N_Vertices = 3;   
-//  this->N_Edges = 3;   
-//  this->N_Facets = 3;    
-//  this->EdgeType = CellType::LINE_2;     
-//  this->MaxN_EpV = 2;
-//  this->EdgeVertex = (const int *) DatEdgeVertex;
-//  this->VertexEdge = (const int *) DatVertexEdge;   
+ ChildType = nullptr;
+ EdgeType = nullptr;
+
+ ChildVertex = nullptr;
+ VertexChild = nullptr;
+ VertexChildIndex = nullptr;
+ VertexChildLen = nullptr;
+
+ ChildEdge = nullptr;
+ EdgeChild = nullptr;
+ EdgeChildIndex = nullptr;
+ EdgeChildLen = nullptr;
+
+ EdgeVertex = nullptr;
+ VertexEdge = nullptr;
+ VertexEdgeIndex = nullptr;
+ VertexEdgeLen = nullptr;
+
+ NewVertexEqOldVertex = nullptr;
+ NewVertexEqOldVertexIndex = nullptr;
+
+ NewEdgeEqOldEdge = nullptr;
+ NewEdgeEqOldEdgeIndex = nullptr;
+
+ InteriorEdgeOfCell = nullptr;
+ InteriorVertexOfEdge = nullptr;
+ InteriorVertexOfEdgeLen = nullptr;
+
+ OldEdgeNewVertex = nullptr;
+ OldEdgeNewVertexLen = nullptr;
+ OldEdgeNewLocEdge = nullptr;
+  
+ OldEdgeNewEdge = nullptr;
+ OldEdgeNewEdgeLen = nullptr;
+ NewEdgeOldEdge = nullptr;
+
+ #ifdef __3D__
+  N_OrigFaces = CellDesc->GetN_Faces();
+  N_Faces = 0;
+
+  FaceType = nullptr;
+
+  ChildFace = nullptr;
+  FaceChild = nullptr;
+  FaceChildIndex = nullptr;
+  FaceChildLen = nullptr;
+
+  FaceVertex = nullptr;
+  VertexFace = nullptr;
+  VertexFaceIndex = nullptr;
+  VertexFaceLen = nullptr;
+
+  FaceEdge = nullptr;
+  EdgeFace = nullptr;
+  EdgeFaceIndex = nullptr;
+  EdgeFaceLen = nullptr;
+
+  InteriorFaceOfCell = nullptr;
+  InteriorVertexOfFace = nullptr;
+  InteriorVertexOfFaceLen = nullptr;
+  InteriorEdgeOfFace = nullptr;
+  InteriorEdgeOfFaceLen = nullptr;
+
+  NewFaceOldFace = nullptr;
+
+  OldFaceNewVertex = nullptr;
+  OldFaceNewVertexPos = nullptr;
+  OldFaceNewVertexLen = nullptr;
+  OldFaceNewEdge = nullptr;
+  OldFaceNewEdgeLen = nullptr;
+  OldFaceNewFace = nullptr;
+  OldFaceNewFaceLen = nullptr;
+
+  OldFaceNewLocFace = nullptr;
+  ChildTwistIndex = nullptr;
+
+ #endif
 }
-
-// Methods
-// template <sint dim> 
-// double TTriangle_3<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
-// {
-  // double x1,x2,y1,y2;
-
-  // x1 = Verts[0]->GetX();
-  // y1 = Verts[0]->GetY();
-  // x2 = Verts[1]->GetX();
-  // y2 = Verts[1]->GetY();
-
-  // return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
-// }
-
 
 // explicit instantiation
 template class TRefineDesc<SParSH::GEO_DIM>;
