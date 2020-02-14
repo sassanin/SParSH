@@ -17,40 +17,46 @@ TRefineQuad_4Desc<dim>::TRefineQuad_4Desc(TCellDesc<dim> *celldesc) : TRefineDes
 {
  static constexpr CellType DatChildType[4] = { CellType::QUAD_4, CellType::QUAD_4, CellType::QUAD_4, CellType::QUAD_4};
  static constexpr RefineType DatEdgeType[3] = { RefineType::Line_2Reg, RefineType::Line_2Reg, RefineType::Line_2Reg};
- static constexpr sint DatChildVertex[4][3] = { {0, 3, 5},  {1, 4, 3},  {2, 5, 4},  {3, 4, 5}};
- static constexpr sint DatVertexChild[6][3] = { {0}, {1}, {2}, {0, 1, 3},  {1, 2, 3},  {0, 2, 3}}; 
- static constexpr sint DatVertexChildIndex[6][3] = { {0}, {0}, {0}, {1, 2, 0},  {1, 2, 1},  {2, 1, 2}};
- static constexpr sint DatVertexChildLen[6] = { 1,  1,  1,  3,  3,  3};
- static constexpr sint DatChildEdge[4][3] = { {0, 8, 5},  {2, 6, 1},  {4, 7, 3},  {6, 7, 8}};
- static constexpr sint DatEdgeChild[9][2] ={ {0}, {1}, {1}, {2}, {2}, {0}, {1, 3}, {2, 3}, {0, 3}};
- static constexpr sint DatEdgeChildIndex[9][2] = { {0}, {2}, {0}, {2}, {0}, {2}, {1, 0}, {1, 1}, {1, 2}};
- static constexpr sint DatEdgeChildLen[9] = { 1,  1,  1,  1,  1,  1,  2,  2,  2};
- static constexpr sint DatEdgeVertex[9][2] = { {0, 3},  {3, 1},  {1, 4},  {4, 2},  {2, 5},
-                                         {5, 0},  {3, 4},  {4, 5},  {5, 3} };
- static constexpr sint DatVertexEdge[6][4] = { {0, 5},  {1, 2},  {3, 4},  {0, 1, 6, 8},
-                                         {2, 3, 6, 7},  {4, 5, 7, 8} };
- static constexpr sint DatVertexEdgeIndex[6][4] = { {0, 1},  {1, 0},  {1, 0},  {1, 0, 0, 1},
-                                             {1, 0, 1, 0},  {1, 0, 1, 0}};
- static constexpr sint DatVertexEdgeLen[6] = { 2,  2,  2,  4,  4,  4};
- static constexpr sint DatNewVertexEqOldVertex[3] = { 0, 1, 2};
- static constexpr sint DatNewVertexEqOldVertexIndex[3] = { 0, 1, 2};
- static constexpr sint DatInteriorEdgeOfCell[3] = { 6, 7, 8};
- static constexpr sint DatInteriorVertexOfEdge[3][1] = { {3},  {4},  {5} };
- static constexpr sint DatInteriorVertexOfEdgeLen[3] = { 1,  1,  1};
- static constexpr sint DatOldEdgeNewVertex[3][3] = { {0, 3, 1}, {1, 4, 2},  {2, 5, 0}};
- static constexpr sint DatOldEdgeNewEdge[3][2] = { {0, 1},  {2, 3},  {4, 5}};
- static constexpr sint DatOldEdgeNewLocEdge[4][3] = { {0, -1, 2}, {2, 0, -1}, {-1, 2, 0}, {-1, -1, -1} };
- static constexpr sint DatNewEdgeOldEdge[9] ={ 0,  0,  1,  1,  2,  2, -1, -1, -1};
+ static constexpr sint DatChildVertex[4][4] = { {0, 4, 8, 7},  {1, 5, 8, 4},  {2, 6, 8, 5},  {3, 7, 8, 6}};
+ static constexpr sint DatVertexChild[9][4] = { {0},  {1},  {2},  {3},  {0, 1},  {1, 2},  {2, 3}, {0, 3},  {0, 1, 2, 3}};
+ static constexpr sint DatVertexChildIndex[9][4] = { {0},  {0},  {0},  {0},  {1, 3},  {1, 3},  {1, 3}, {3, 1},  {2, 2, 2, 2}};
+ static constexpr sint DatVertexChildLen[9] = { 1,  1,  1,  1,  2,  2,  2,  2,  4};
+ static constexpr sint DatChildEdge[4][4] = { {0, 8,11, 7},  {2, 9, 8, 1},  {4,10, 9, 3},  {6,11,10, 5}};
+ static constexpr sint DatEdgeChild[12][2] = { {0},  {1},  {1},  {2},  {2},  {3},  {3},  {0}, {0, 1},  {1, 2},  {2, 3},  {0, 3}};
+ static constexpr sint DatEdgeChildIndex[12][2] = { {0},  {3},  {0},  {3},  {0},  {3},  {0},  {3}, {1, 2},  {1, 2},  {1, 2},  {2, 1}};
+ static constexpr sint DatEdgeChildLen[12] = { 1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2};
+ static constexpr sint DatEdgeVertex[12][2] = { {0, 4},  {4, 1},  {1, 5},  {5, 2},  {2, 6},  {6, 3},
+                                               {3, 7},  {7, 0},  {4, 8},  {5, 8},  {6, 8},  {7, 8}};
+ static constexpr sint DatVertexEdge[9][4] = { {0, 7},  {1, 2},  {3, 4},  {5, 6},  {0, 1, 8},
+                                               {2, 3, 9},  {4, 5,10},  {6, 7,11},  {8, 9,10,11}};
+ static constexpr sint DatVertexEdgeIndex[9][4] = { {0, 1},  {1, 0},  {1, 0},  {1,0},  {1, 0, 0},
+                                                    {1, 0, 0},  {1, 0, 0},  {1, 0, 0},  {1, 1, 1, 1}};
+ static constexpr sint DatVertexEdgeLen[9] = {2,  2,  2,  2,  3,  3,  3,  3,  4};
+ static constexpr sint DatNewVertexEqOldVertex[4] = {0, 1, 2, 3};
+ static constexpr sint DatNewVertexEqOldVertexIndex[4] = {0, 1, 2, 3};
  
- this->RefinementType = RefineType::Tri_3Reg;
- this->N_Edges = 9;
- this->N_Vertices = 6;
- this->N_Children = 4;
- this->N_NewVertEqOldVert = 3;
+ static constexpr sint DatInteriorVertexOfCell[1] = {8};
+ static constexpr double DatPositionOfIntVert[1][4] = {{0.25, 0.25, 0.25, 0.25}};
 
- this->MaxN_VpC = 3;
- this->MaxN_CpV = 3;
- this->MaxN_EpC = 3;
+ static constexpr sint DatInteriorEdgeOfCell[4] = {8, 9, 10, 11};
+ static constexpr sint DatInteriorVertexOfEdge[4][1] = {{4}, {5}, {6}, {7} };
+ static constexpr sint DatInteriorVertexOfEdgeLen[4] = {1,  1,  1,  1};
+ static constexpr sint DatOldEdgeNewVertex[4][3] = { {0, 4, 1},  {1, 5, 2},  {2, 6, 3},  {3, 7, 0}};
+ static constexpr sint DatOldEdgeNewEdge[4][2] = { {0, 1},  {2, 3},  {4, 5},  {6, 7}};
+ static constexpr sint DatOldEdgeNewLocEdge[4][4] = { {0, -1, -1, 3}, {3, 0, -1, -1}, {-1, 3, 0, -1}, {-1, -1, 3, 0} };
+ static constexpr sint DatNewEdgeOldEdge[12] ={0,  0,  1,  1,  2,  2,  3,  3,  -1,  -1,  -1,  -1};
+ 
+ this->RefinementType = RefineType::Quad_4Reg;
+ this->N_Edges = 12;
+ this->N_Vertices = 9;
+ this->N_Children = 4;
+ this->N_NewVertEqOldVert = 4;
+ this->N_InnerVertices = 1;    
+ this->N_InnerEdges = 4;
+
+ this->MaxN_VpC = 4;
+ this->MaxN_CpV = 4;
+ this->MaxN_EpC = 4;
  this->MaxN_CpE = 2;
  this->MaxN_EpV = 4;
  this->MaxN_iVpE = 1;
@@ -73,6 +79,8 @@ TRefineQuad_4Desc<dim>::TRefineQuad_4Desc(TCellDesc<dim> *celldesc) : TRefineDes
  this->VertexEdgeLen = static_cast<const sint *>(DatVertexEdgeLen);
  this->NewVertexEqOldVertex = static_cast<const sint *>(DatNewVertexEqOldVertex);
  this->NewVertexEqOldVertexIndex = static_cast<const sint *>(DatNewVertexEqOldVertexIndex);
+ this->InteriorVertexOfCell = static_cast<const sint *>(DatInteriorVertexOfCell);
+ this->PositionOfIntVert = static_cast<const double *>(*DatPositionOfIntVert);
  this->InteriorEdgeOfCell = static_cast<const sint *>(DatInteriorEdgeOfCell);
  this->InteriorVertexOfEdge = static_cast<const sint *>(*DatInteriorVertexOfEdge);
  this->InteriorVertexOfEdgeLen = static_cast<const sint *>(DatInteriorVertexOfEdgeLen);

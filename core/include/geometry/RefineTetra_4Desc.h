@@ -1,8 +1,8 @@
 /** =======================================================================
-* @class     TRefineLine_2Desc
-* @brief     refinement descriptor for line
+* @class     TRefineTetra_4Desc
+* @brief     refinement descriptor for Tetra_4
 * @author    Sashikumaar Ganesan 
-* @date      13.02.2020
+* @date      14.02.2020
 * @History   
 ===========================================================================*/
 #include <RefineDesc.h>
@@ -11,14 +11,14 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-class TRefineLine_2Desc : public TRefineDesc<dim>
+class TRefineTetra_4Desc : public TRefineDesc<dim>
 {
   protected:
 
   public:
     // Constructor
-    /** \brief build a descriptor for regular refinement of a line */
-    TRefineLine_2Desc(TCellDesc<dim> *celldesc);
+    /** \brief build a descriptor for regular refinement of a quad_4 */
+    TRefineTetra_4Desc(TCellDesc<dim> *celldesc);
 
     // Methods
 };

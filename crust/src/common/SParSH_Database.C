@@ -7,6 +7,7 @@
 #include <Quadrangle_4.h>
 #include <RefineLine_2Desc.h>
 #include <RefineTria_3Desc.h>
+#include <RefineQuad_4Desc.h>
 
 #ifdef __3D__
 #include <Hexahedron_8.h>
@@ -396,6 +397,7 @@ void TSParSH_Database<dim>::InitDescriptors()
 
  pos = static_cast<int>(CellType::QUAD_4);
  TSParSH_Database::CellDB[pos] = move(make_unique<TQuadrangle_4<dim>>());
+ TSParSH_Database::RefineDescDB[static_cast<int>(RefineType::Quad_4Reg)] = move(make_unique<TRefineQuad_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
 
 #ifdef __3D__
  TSParSH_Database::CellDB[static_cast<int>(CellType::TETRA_4)] = move(make_unique<TTetrahedron_4<dim>>());

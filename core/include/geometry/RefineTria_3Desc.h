@@ -6,7 +6,6 @@
 * @History   
 ===========================================================================*/
 #include <RefineDesc.h>
-#include <CellDesc.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
