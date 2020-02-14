@@ -16,19 +16,19 @@ using namespace std;
 template <sint dim> 
 TRefineLine_2Desc<dim>::TRefineLine_2Desc(TCellDesc<dim> *celldesc) : TRefineDesc<dim>(celldesc)
 {
- static constexpr sint DatEdgeVertex[1][2] = { {0, 1}};
- static constexpr sint DatVertexEdge[2][1] = { {0}, {0}};
+ static constexpr int DatEdgeVertex[1][2] = { {0, 1}};
+ static constexpr int DatVertexEdge[2][1] = { {0}, {0}};
 
  static constexpr CellType DatChildType[2] = { CellType::LINE_2, CellType::LINE_2};
 
- static constexpr sint DatChildVertex[2][2] = { {0, 2},  {2, 1}};
- static constexpr sint DatVertexChild[3][2] = { {0},  {1},  {0, 1}};
- static constexpr sint DatVertexChildIndex[3][2] = { {0},  {1},  {1, 0}};
+ static constexpr int DatChildVertex[2][2] = { {0, 2},  {2, 1}};
+ static constexpr int DatVertexChild[3][2] = { {0},  {1},  {0, 1}};
+ static constexpr int DatVertexChildIndex[3][2] = { {0},  {1},  {1, 0}};
 
- static constexpr sint DatNewVertexEqOldVertex[2] = { 0, 1};
- static constexpr sint DatNewVertexEqOldVertexIndex[2] = { 0, 1};
+ static constexpr int DatNewVertexEqOldVertex[2] = { 0, 1};
+ static constexpr int DatNewVertexEqOldVertexIndex[2] = { 0, 1};
 
- static constexpr sint DatInteriorVertexOfCell[1] = { 2};
+ static constexpr int DatInteriorVertexOfCell[1] = { 2};
  static constexpr double DatPositionOfIntVert[1][2] = { {0.5, 0.5}};
 
  this->RefinementType = RefineType::Line_2Reg;
@@ -41,15 +41,15 @@ TRefineLine_2Desc<dim>::TRefineLine_2Desc(TCellDesc<dim> *celldesc) : TRefineDes
  this->MaxN_CpV = 2;
 
  this->ChildType = static_cast<const CellType *>(DatChildType);
- this->ChildVertex = static_cast<const sint *>(*DatChildVertex);
+ this->ChildVertex = static_cast<const int *>(*DatChildVertex);
 
- this->VertexChild = static_cast<const sint *>(*DatVertexChild);
- this->VertexChildIndex = static_cast<const sint *>(*DatVertexChildIndex);
+ this->VertexChild = static_cast<const int *>(*DatVertexChild);
+ this->VertexChildIndex = static_cast<const int *>(*DatVertexChildIndex);
 
- this->NewVertexEqOldVertex = static_cast<const sint *>(DatNewVertexEqOldVertex);
- this->NewVertexEqOldVertexIndex = static_cast<const sint *>(DatNewVertexEqOldVertexIndex);
+ this->NewVertexEqOldVertex = static_cast<const int *>(DatNewVertexEqOldVertex);
+ this->NewVertexEqOldVertexIndex = static_cast<const int *>(DatNewVertexEqOldVertexIndex);
 
- this->InteriorVertexOfCell = static_cast<const sint *>(DatInteriorVertexOfCell);
+ this->InteriorVertexOfCell = static_cast<const int *>(DatInteriorVertexOfCell);
  this->PositionOfIntVert = static_cast<const double *> (*DatPositionOfIntVert);
 }
 

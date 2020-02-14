@@ -34,53 +34,53 @@ class TRefineDesc {
     RefineType RefinementType;
 
     /** \brief number of vertices in this cell */
-    sint N_Vertices;
+    int N_Vertices;
 
     /** \brief number of edges in a cell */
-    sint N_Edges;
+    int N_Edges;
 
     /** \brief number of children */
-    sint N_Children;
+    int N_Children;
 
     /** \brief number of vertices of base cell */
-    sint N_OrigVertices;
+    int N_OrigVertices;
 
     /** \brief number of edges of base cell */
-    sint N_OrigEdges;
+    int N_OrigEdges;
    
 #ifdef __3D__
     /** \brief number of faces */
-    sint N_Faces;
+    int N_Faces;
     /**\brief  number of faces of base cell */
-    sint N_OrigFaces;
+    int N_OrigFaces;
     /** \brief number of inner faces */
-    sint N_InnerFaces;  
+    int N_InnerFaces;  
 #endif
     /** \brief number of new vertices, which equal to old vertices */
-    sint N_NewVertEqOldVert;
+    int N_NewVertEqOldVert;
     /** \brief number of new inner vertices */
-    sint N_InnerVertices;
+    int N_InnerVertices;
     /** \brief number of new edges, which equal to old edges */
-    sint N_NewEdgeEqOldEdge;
+    int N_NewEdgeEqOldEdge;
     /** \brief number of new inner edges */
-    sint N_InnerEdges;
+    int N_InnerEdges;
 
     /** \brief maximum number of vertices per cell */
-    sint MaxN_VpC;
+    int MaxN_VpC;
     /** \brief maximum number of cells per vertex */
-    sint MaxN_CpV;
+    int MaxN_CpV;
     /** \brief maximum number of edges per cell */
-    sint MaxN_EpC;
+    int MaxN_EpC;
     /** \brief maximum number of cells per edge */
-    sint MaxN_CpE;
+    int MaxN_CpE;
     /** \brief maximum number of edges per vertex */
-    sint MaxN_EpV;
+    int MaxN_EpV;
     /** \brief maximum number of inner vertices per edge */
-    sint MaxN_iVpE;
+    int MaxN_iVpE;
     /** \brief maximum number of new vertices per old edge */
-    sint MaxN_nVpoE;
+    int MaxN_nVpoE;
     /** \brief maximum number of new edges per old edge */
-    sint MaxN_nEpoE;
+    int MaxN_nEpoE;
 
     /** \brief type of children after refinement */
     vector<unique_ptr<TCellDesc<dim>>> ChildCellDesc;
@@ -92,182 +92,182 @@ class TRefineDesc {
     const RefineType *EdgeType;
 
     /** \brief which vertices build a child */
-    const sint *ChildVertex;
+    const int *ChildVertex;
     /** \brief number of vertices per child */
-    const sint *ChildVertexLen;
+    const int *ChildVertexLen;
     /** \brief which children meet on a vertex */
-    const sint *VertexChild;
+    const int *VertexChild;
     /** \brief which local index has the vertex in each child */
-    const sint *VertexChildIndex;
+    const int *VertexChildIndex;
     /** \brief length of array VertexChild */
-    const sint *VertexChildLen;
+    const int *VertexChildLen;
 
     /** which edges build a child */
-    const sint *ChildEdge;
+    const int *ChildEdge;
     /** which children are connectred with an edge */
-    const sint *EdgeChild;
+    const int *EdgeChild;
     /** which local index has the edge in each child */
-    const sint *EdgeChildIndex;
+    const int *EdgeChildIndex;
     /** length of array EdgeChild */
-    const sint *EdgeChildLen;
+    const int *EdgeChildLen;
 
     /** which vertices belong to an edge */
-    const sint *EdgeVertex;
+    const int *EdgeVertex;
     /** which edges meet on a vertex */
-    const sint *VertexEdge;
+    const int *VertexEdge;
     /** which index has the vertex in each edge */
-    const sint *VertexEdgeIndex;
+    const int *VertexEdgeIndex;
     /** length of array VertexEdge */
-    const sint *VertexEdgeLen;
+    const int *VertexEdgeLen;
 
     /** which new vertices are equal to old vertices */
-    const sint *NewVertexEqOldVertex;
+    const int *NewVertexEqOldVertex;
     /** which old indices have the new vertices */
-    const sint *NewVertexEqOldVertexIndex;
+    const int *NewVertexEqOldVertexIndex;
 
     /** which new edges are equal to old edges */
-    const sint *NewEdgeEqOldEdge;
+    const int *NewEdgeEqOldEdge;
     /** which old indices have the new edges */
-    const sint *NewEdgeEqOldEdgeIndex;
+    const int *NewEdgeEqOldEdgeIndex;
 
     /** indices of new inner vertices */
-    const sint *InteriorVertexOfCell;
+    const int *InteriorVertexOfCell;
     /** position of new inner vertices as the coefficients for a linear
         combination of the old vertices */
     const double *PositionOfIntVert;
 
     /** indices  of new inner edges */
-    const sint *InteriorEdgeOfCell;
+    const int *InteriorEdgeOfCell;
     /** indices of inner vertices on an edge */
-    const sint *InteriorVertexOfEdge;
+    const int *InteriorVertexOfEdge;
     /** length of array InteriorVertexOfEdge */
-    const sint *InteriorVertexOfEdgeLen;
+    const int *InteriorVertexOfEdgeLen;
 
     /** which new vertices are on an old edge */
-    const sint *OldEdgeNewVertex;
+    const int *OldEdgeNewVertex;
     /** length of array NewVertex per old edge */
-    const sint *OldEdgeNewVertexLen;
+    const int *OldEdgeNewVertexLen;
 
     /** which local edge of a child lies on an old edge (for each child) */
-    const sint *OldEdgeNewLocEdge;
+    const int *OldEdgeNewLocEdge;
 
     /** which new edges lie on which old edge */
-    const sint *OldEdgeNewEdge;
+    const int *OldEdgeNewEdge;
     /** length of array NewEdge per old edge */
-    const sint *OldEdgeNewEdgeLen;
+    const int *OldEdgeNewEdgeLen;
     /** to which old edge belongs a new edge */
-    const sint *NewEdgeOldEdge;
+    const int *NewEdgeOldEdge;
 
     #ifdef __3D__
       /** maximum number of vertices per face */
-      sint MaxN_VpF;
+      int MaxN_VpF;
       /** maximum number of old vertices per old face */
-      sint MaxN_oVpoF;
+      int MaxN_oVpoF;
       /** maximum number of faces per vertex */
-      sint MaxN_FpV;
+      int MaxN_FpV;
       /** maximum number of edges per face */
-      sint MaxN_EpF;
+      int MaxN_EpF;
       /** maximum number of faces per edge */
-      sint MaxN_FpE;
+      int MaxN_FpE;
       /** maximum number of cells per face */
-      sint MaxN_CpF;
+      int MaxN_CpF;
       /** maximum number of faces per cell */
-      sint MaxN_FpC;
+      int MaxN_FpC;
       /** maximum number of inner vertices per face */
-      sint MaxN_iVpF;
+      int MaxN_iVpF;
       /** maximum number of inner edges per face */
-      sint MaxN_iEpF;
+      int MaxN_iEpF;
       /** maximum number of new edges per old face */
-      sint MaxN_nEpoF;
+      int MaxN_nEpoF;
       /** maximum number of new vertices per old face */
-      sint MaxN_nVpoF;
+      int MaxN_nVpoF;
       /** maximum number of new inner vertices per old face */
-      sint MaxN_niVpoF;
+      int MaxN_niVpoF;
       /** maximum number of new faces per old face */
-      sint MaxN_nFpoF;
+      int MaxN_nFpoF;
       /** refinement's types of the faces */
       const RefineType *FaceType;
       /** which children meet on a face */
-      const sint *FaceChild;
+      const int *FaceChild;
       /** which local index has the face in each child */
-      const sint *FaceChildIndex;
+      const int *FaceChildIndex;
       /** length of array FaceChild */
-      const sint *FaceChildLen;
+      const int *FaceChildLen;
 
       /** which edges built a face */
-      const sint *FaceEdge;
+      const int *FaceEdge;
       /** which faces are connected with edge . */
-      const sint *EdgeFace;
-      const sint *EdgeFaceLen;
+      const int *EdgeFace;
+      const int *EdgeFaceLen;
       /** which local index has the edge in each face */
-      const sint *EdgeFaceIndex;
+      const int *EdgeFaceIndex;
 
       /** which vertices built a face */
-      const sint *FaceVertex;
+      const int *FaceVertex;
       /** which faces are connected with vertex . */
-      const sint *VertexFace;
-      const sint *VertexFaceLen;
+      const int *VertexFace;
+      const int *VertexFaceLen;
       /** which local index has the vertex in each face */
-      const sint *VertexFaceIndex;
+      const int *VertexFaceIndex;
 
       /** field of new inner faces */
-      const sint *InteriorFaceOfCell;
+      const int *InteriorFaceOfCell;
 
       /** which vertices lie on interior of old face */
-      const sint *InteriorVertexOfFace;
-      const sint *InteriorVertexOfFaceLen;
+      const int *InteriorVertexOfFace;
+      const int *InteriorVertexOfFaceLen;
 
       /** which edges lie on interior of old face */
-      const sint *InteriorEdgeOfFace;
-      const sint *InteriorEdgeOfFaceLen;
+      const int *InteriorEdgeOfFace;
+      const int *InteriorEdgeOfFaceLen;
 
       /** which new Inner vertices lie on which old face */
-      const sint *OldFaceNewInnerVertices;
+      const int *OldFaceNewInnerVertices;
       /** lenght of OldFaceNewVertices entries */
-      const sint *OldFaceNewInnerVerticesLen;
+      const int *OldFaceNewInnerVerticesLen;
 
       /** number of new faces equal old faces */
-      sint N_NewFaceEqOldFace;
+      int N_NewFaceEqOldFace;
       /** which new faces are equal to old faces */
-      const sint *NewFaceEqOldFace;
+      const int *NewFaceEqOldFace;
       /** which old indices have the new faces */
-      const sint *NewFaceEqOldFaceIndex;
+      const int *NewFaceEqOldFaceIndex;
 
       /** number of new vertices on an old face */
-      const sint *N_NewVertsOnOldFace;
+      const int *N_NewVertsOnOldFace;
       /** new vertices on an old face */
-      const sint *NewVertsOnOldFace;
+      const int *NewVertsOnOldFace;
       /** position of new vertices on an old face */
       const double *NewVertsOnOldFacePos;
 
       /** which faces built a child */
-      const sint *ChildFace;
+      const int *ChildFace;
 
       /** which new vertices belong to an old face */
-      const sint *OldFaceNewVertex;
+      const int *OldFaceNewVertex;
       /** position of new vertices on old face (convex linear combination) */
       const double *OldFaceNewVertexPos;
       /** number of new vertices which belong to an old face */
-      const sint *OldFaceNewVertexLen;
+      const int *OldFaceNewVertexLen;
 
       /** which new edges belong to an old face */
-      const sint *OldFaceNewEdge;
+      const int *OldFaceNewEdge;
       /** number of new vertices which belong to an old face */
-      const sint *OldFaceNewEdgeLen;
+      const int *OldFaceNewEdgeLen;
 
       /** which new faces belong to an old face */
-      const sint *OldFaceNewFace;
+      const int *OldFaceNewFace;
       /** number of new faces which belong to an old face */
-      const sint *OldFaceNewFaceLen;
+      const int *OldFaceNewFaceLen;
 
       /** on which old face does a new face lie */
-      const sint *NewFaceOldFace;
+      const int *NewFaceOldFace;
 
       /**   */
-      const sint *OldFaceNewLocFace;
+      const int *OldFaceNewLocFace;
 
       /**   */
-      const sint *ChildTwistIndex;
+      const int *ChildTwistIndex;
     #endif
 
   public:
@@ -281,32 +281,32 @@ class TRefineDesc {
    { return RefinementType; }
   
   /** return number of children */
-  sint GetN_Children()
+  int GetN_Children()
    { return N_Children; }
   
   /** return number of edges */
-  sint GetN_Edges()
+  int GetN_Edges()
    { return N_Edges; }
    
   /** return number of vertices */
-  sint GetN_Vertices()
+  int GetN_Vertices()
    { return N_Vertices; }
 
   /** return number of edges on base cell */
-  sint GetN_OrigEdges()
+  int GetN_OrigEdges()
    { return N_OrigEdges; }
   
   /** return number of vertices on base cell */
-  sint GetN_OrigVertices()
+  int GetN_OrigVertices()
    { return N_OrigVertices; }
 
   #ifdef __3D__
   /** return number of faces */
-  sint GetN_OrigFaces()
+  int GetN_OrigFaces()
    { return N_OrigFaces; }
    
   /** return number of faces on base cell*/
-  sint GetN_Faces()
+  int GetN_Faces()
     { return N_Faces; }
   #endif
 
@@ -319,38 +319,38 @@ class TRefineDesc {
   //  { return CellDesc; }
 
   /** return refinement type of edge pos */
-  RefineType GetEdgeRef(sint pos)
+  RefineType GetEdgeRef(int pos)
     { return EdgeType[pos]; }
    
   //return the raw pointer of the type of child number pos */
-  TCellDesc<dim> *GetChildType(sint pos)
+  TCellDesc<dim> *GetChildType(int pos)
     { return (ChildCellDesc.at(pos)).get(); }   
 
   /** return number of new vertices, which equal old vertices */
-  sint GetN_NewVertEqOldVert()
+  int GetN_NewVertEqOldVert()
    { return N_NewVertEqOldVert; }
   
   /** return number of new inner vertices */
-  sint GetN_InnerVertices()
+  int GetN_InnerVertices()
    { return N_InnerVertices; }
   
   /** return number of new edges, which equal old edges */
-  sint GetN_NewEdgeEqOldEdge() 
+  int GetN_NewEdgeEqOldEdge() 
    { return N_NewEdgeEqOldEdge; }
   
   /** return number of new inner edges */
-  sint GetN_InnerEdges()
+  int GetN_InnerEdges()
    { return N_InnerEdges; }
 
   /** return auxilary fields in order to copy existing vertices */
-  void GetNewVertEqOldVert(const sint *&TmpValues, const sint *&TmpIndex)
+  void GetNewVertEqOldVert(const int *&TmpValues, const int *&TmpIndex)
    {
     TmpValues = NewVertexEqOldVertex;
     TmpIndex = NewVertexEqOldVertexIndex;
    }
 
   /** return auxilary fields in order to create new inner vertices */
-  void GetInnerVerts(const sint *&TmpValues, const double *&TmpPos, sint &MaxLen)
+  void GetInnerVerts(const int *&TmpValues, const double *&TmpPos, int &MaxLen)
    {
     TmpValues = InteriorVertexOfCell;
     TmpPos = PositionOfIntVert;
@@ -358,14 +358,14 @@ class TRefineDesc {
   }
 
   /** return auxilary fields in order to copy existing edges */
-  void GetNewEdgeEqOldEdge(const sint *&TmpValues, const sint *&TmpIndex)
+  void GetNewEdgeEqOldEdge(const int *&TmpValues, const int *&TmpIndex)
    {
     TmpValues = NewEdgeEqOldEdge;
     TmpIndex = NewEdgeEqOldEdgeIndex;
    }
 
   /** return auxilary fields in order to create new inner edges */
-  sint GetInnerEdges(const sint *&TmpinE, const sint *&TmpEC, sint &MaxLen)
+  int GetInnerEdges(const int *&TmpinE, const int *&TmpEC, int &MaxLen)
    {
     TmpinE = InteriorEdgeOfCell;
     TmpEC = EdgeChild;
@@ -373,7 +373,7 @@ class TRefineDesc {
    }
 
   /** return the array OldEdgeNewEdge */
-  void GetOldEdgeNewEdge(const sint *&TmpoEnE, const sint *&TmpLen, sint &MaxLen)
+  void GetOldEdgeNewEdge(const int *&TmpoEnE, const int *&TmpLen, int &MaxLen)
    {
     TmpoEnE = OldEdgeNewEdge;
     TmpLen = InteriorVertexOfEdgeLen;
@@ -381,15 +381,15 @@ class TRefineDesc {
    }
 
   /** return the array OldEdgeNewLocEdge */
-  void GetOldEdgeNewLocEdge(const sint *&TmpoEnlE)
+  void GetOldEdgeNewLocEdge(const int *&TmpoEnlE)
    { TmpoEnlE=OldEdgeNewLocEdge; }
 
   /** return the array NewEdgeOldEdge */
-  void GetNewEdgeOldEdge(const sint *&TmpnEoE)
+  void GetNewEdgeOldEdge(const int *&TmpnEoE)
    { TmpnEoE = NewEdgeOldEdge; }
 
   /** return the array EdgeChild */
-  void GetEdgeChild(const sint *&TmpEC, const sint *&TmpLen, sint &MaxLen)
+  void GetEdgeChild(const int *&TmpEC, const int *&TmpLen, int &MaxLen)
    {
     TmpEC = EdgeChild;
     TmpLen = EdgeChildLen;
@@ -397,7 +397,7 @@ class TRefineDesc {
    }
 
   /** return the array EdgeChildIndex */
-  void GetEdgeChildIndex(const sint *&TmpECI, const sint *&TmpLen, sint &MaxLen)
+  void GetEdgeChildIndex(const int *&TmpECI, const int *&TmpLen, int &MaxLen)
     {
      TmpECI = EdgeChildIndex;
      TmpLen = EdgeChildLen;
@@ -405,7 +405,7 @@ class TRefineDesc {
     }
 
   /** return the array OldEdgeNewVertex */
-  void GetOldEdgeNewVertex(const sint *&TmpoEnV, const sint *&TmpLen, sint &MaxLen)
+  void GetOldEdgeNewVertex(const int *&TmpoEnV, const int *&TmpLen, int &MaxLen)
    {
     TmpoEnV = OldEdgeNewVertex;
     TmpLen = InteriorVertexOfEdgeLen;
@@ -413,11 +413,11 @@ class TRefineDesc {
    }
     
   /** return the array EdgeVertex */
-  void GetEdgeVertex(const sint *&TmpEV)
+  void GetEdgeVertex(const int *&TmpEV)
    { TmpEV = EdgeVertex; }
 
   /** return the array VertexEdge */
-  void GetVertexEdge(const sint *&TmpVE, const sint *&TmpLen, sint &MaxLen)
+  void GetVertexEdge(const int *&TmpVE, const int *&TmpLen, int &MaxLen)
     {
      TmpVE = VertexEdge;
      TmpLen = VertexEdgeLen;
@@ -425,7 +425,7 @@ class TRefineDesc {
     }
 
   /** return the array VertexEdgeIndex */
-  void GetVertexEdgeIndex(const sint *&TmpVEI, const sint *&TmpLen, sint &MaxLen)
+  void GetVertexEdgeIndex(const int *&TmpVEI, const int *&TmpLen, int &MaxLen)
    {
     TmpVEI = VertexEdgeIndex;
     TmpLen = VertexEdgeLen;
@@ -433,7 +433,7 @@ class TRefineDesc {
    }
 
   /** return the array VertexChild */
-  void GetVertexChild(const sint *&TmpVC, const sint *&TmpLen, sint &MaxLen)
+  void GetVertexChild(const int *&TmpVC, const int *&TmpLen, int &MaxLen)
    {
     TmpVC = VertexChild;
     TmpLen = VertexChildLen;
@@ -441,7 +441,7 @@ class TRefineDesc {
    }
 
   /** return the array VertexChildIndex */
-  void GetVertexChildIndex(const sint *&TmpVCI, const sint *&TmpLen, sint &MaxLen)
+  void GetVertexChildIndex(const int *&TmpVCI, const int *&TmpLen, int &MaxLen)
    {
     TmpVCI = VertexChildIndex;
     TmpLen = VertexChildLen;
@@ -449,14 +449,14 @@ class TRefineDesc {
     }
 
     /** return the array ChildVertex */
-  void GetChildVertex(const sint *&TmpCV, sint &MaxLen)
+  void GetChildVertex(const int *&TmpCV, int &MaxLen)
    {
     TmpCV =  ChildVertex;
     MaxLen = MaxN_VpC;
    }
 
   /** return the array ChildEdge */
-  void GetChildEdge(const sint *&TmpCE, sint &MaxLen)
+  void GetChildEdge(const int *&TmpCE, int &MaxLen)
    {
     TmpCE =  ChildEdge;
     MaxLen = MaxN_EpC;
@@ -464,11 +464,11 @@ class TRefineDesc {
 
   #ifdef __3D__
    /** return number of inner faces */
-   sint GetN_InnerFaces()
+   int GetN_InnerFaces()
     {return N_InnerFaces; }
    
  /** return auxilary fields in order to create new inner faces */
-  void GetInnerFaces(const sint *&TmpinF, const sint *&TmpFC, sint &MaxLen)
+  void GetInnerFaces(const int *&TmpinF, const int *&TmpFC, int &MaxLen)
    {
     TmpinF = InteriorFaceOfCell;
     TmpFC = FaceChild;
@@ -476,7 +476,7 @@ class TRefineDesc {
    }
 
   /** return field of new vertices on an old face */
-  void GetOldFaceNewInnerVertex(const sint *&TmpoFniV, const sint *&TmpLen, sint &MaxLen)
+  void GetOldFaceNewInnerVertex(const int *&TmpoFniV, const int *&TmpLen, int &MaxLen)
    {
     TmpoFniV = OldFaceNewInnerVertices;
     TmpLen = OldFaceNewInnerVerticesLen;
@@ -484,7 +484,7 @@ class TRefineDesc {
    }
 
   /** return field of new faces on old faces */
-  void GetOldFaceNewFace(const sint *&TmpoFnF, const sint *&TmpLen,sint &MaxLen)
+  void GetOldFaceNewFace(const int *&TmpoFnF, const int *&TmpLen,int &MaxLen)
    {
     TmpoFnF = OldFaceNewFace;
     TmpLen = OldFaceNewFaceLen;
@@ -492,22 +492,22 @@ class TRefineDesc {
    }
 
   /** return the refinement type of face i */
-  RefineType GetFaceRef(sint i)
+  RefineType GetFaceRef(int i)
    { return FaceType[i]; }
 
   /** return number of new faces equal old faces */
-  sint GetN_NewFaceEqOldFace()
+  int GetN_NewFaceEqOldFace()
    { return N_NewFaceEqOldFace; }
 
   /** return the array NewFaceEqOldFace */
-  void GetNewFaceEqOldFace(const sint *&TmpValues, const sint *&TmpIndex)
+  void GetNewFaceEqOldFace(const int *&TmpValues, const int *&TmpIndex)
    {
     TmpValues = NewFaceEqOldFace;
     TmpIndex = NewFaceEqOldFaceIndex;
    }
 
   /** return the array FaceChild */
-  void GetFaceChild(const sint *&TmpFC, const sint *&TmpLen, sint &MaxLen)
+  void GetFaceChild(const int *&TmpFC, const int *&TmpLen, int &MaxLen)
    {
     TmpFC = FaceChild;
     TmpLen = FaceChildLen;
@@ -515,7 +515,7 @@ class TRefineDesc {
    }
 
   /** return the array FaceChildIndex */
-  void GetFaceChildIndex(const sint *&TmpFCI, const sint *&TmpLen, sint &MaxLen)
+  void GetFaceChildIndex(const int *&TmpFCI, const int *&TmpLen, int &MaxLen)
    {
     TmpFCI = FaceChildIndex;
     TmpLen = FaceChildLen;
@@ -523,14 +523,14 @@ class TRefineDesc {
    }
 
   /** return the array FaceEdge */
-  void GetFaceEdge(const sint *&TmpFE, sint &MaxLen)
+  void GetFaceEdge(const int *&TmpFE, int &MaxLen)
    {
     TmpFE =  FaceEdge;
     MaxLen = MaxN_EpF;
    }
 
   /** return field NewVertsOnOldFace for face i */
-  void GetNewVertsOnOldFace(const sint *&TmpNV, const double *&TmpPos, sint &MaxLen)
+  void GetNewVertsOnOldFace(const int *&TmpNV, const double *&TmpPos, int &MaxLen)
    {
     TmpNV = NewVertsOnOldFace;
     TmpPos = NewVertsOnOldFacePos;
@@ -538,14 +538,14 @@ class TRefineDesc {
    }
 
   /** return the field ChildFace */
-  void GetChildFace(const sint *&TmpCF, sint &MaxLen)
+  void GetChildFace(const int *&TmpCF, int &MaxLen)
    {
     TmpCF = ChildFace;
     MaxLen = MaxN_FpC;
    }
 
   /** return the field OldFaceNewVertex */
-  void GetOldFaceNewVertex(const sint *&TmpoFnV, const sint *&TmpLen, sint &MaxLen)
+  void GetOldFaceNewVertex(const int *&TmpoFnV, const int *&TmpLen, int &MaxLen)
    {
     TmpoFnV = OldFaceNewVertex;
     TmpLen = OldFaceNewVertexLen;
@@ -553,8 +553,8 @@ class TRefineDesc {
    }
 
   /** return the field OldFaceNewVertex */
-  void GetOldFaceNewVertex(const sint *&TmpoFnV, const double *&TmpPos,
-                           const sint *&TmpLen, sint &MaxLen1, sint &MaxLen2)
+  void GetOldFaceNewVertex(const int *&TmpoFnV, const double *&TmpPos,
+                           const int *&TmpLen, int &MaxLen1, int &MaxLen2)
    {
     TmpoFnV = OldFaceNewVertex;
     TmpPos = OldFaceNewVertexPos;
@@ -564,25 +564,25 @@ class TRefineDesc {
    }
 
   /** return the field NewFaceOldFace */
-  void GetNewFaceOldFace(const sint *&TmpnFoF)
+  void GetNewFaceOldFace(const int *&TmpnFoF)
    {
     TmpnFoF = NewFaceOldFace;
    }
 
   /** return the array OldFaceNewLocFace */
-  void GetOldFaceNewLocFace(const sint *&TmpoFnlF)
+  void GetOldFaceNewLocFace(const int *&TmpoFnlF)
    {
     TmpoFnlF = OldFaceNewLocFace;
    }
 
   /** return the array ChildTwistIndex */
-  void GetChildTwistIndex(const sint *&TmpCTI)
+  void GetChildTwistIndex(const int *&TmpCTI)
    {
     TmpCTI = ChildTwistIndex;
    }
       
   /** return the array FaceVertex **/
-  void GetFaceVertex (const sint *&TmpFV, sint &TmpLen)
+  void GetFaceVertex (const int *&TmpFV, int &TmpLen)
    {
 	  TmpFV = FaceVertex;
 	  TmpLen = MaxN_VpF;
