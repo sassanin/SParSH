@@ -95,7 +95,11 @@ class TCellDesc {
   
   // Constructors
   TCellDesc();
-    
+
+    // Detructors
+    virtual ~TCellDesc() 
+    { }  
+
   //methods 
 
     /** \brief return the number of vertices */

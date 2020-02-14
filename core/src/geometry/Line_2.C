@@ -41,6 +41,7 @@ double TLine_2<dim>::GetMeasure(SParSH::TVertex<dim> **Verts)
   // y2 = Verts[1]->GetY();
 
   // return sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+  return 0.;
 }
 
 

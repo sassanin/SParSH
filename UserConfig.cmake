@@ -28,7 +28,7 @@ set(CMAKE_VERBOSE_MAKEFILE FALSE)
 
 
 # selection of architect type (LINUX64 MAC64 INTEL64 TYRONE64 CRAY64)
-set(SParSH_ARCH "INTEL64" CACHE STRING "select the machine type")
+set(SParSH_ARCH "MAC64" CACHE STRING "select the machine type")
 
 #  selection of program type (SEQUENTIAL SMPI MPI OMPONLY HYBRID)
 set(SParSH_PARALLEL_TYPE "SEQUENTIAL" CACHE STRING "select the parallel type")
