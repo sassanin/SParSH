@@ -1,14 +1,14 @@
 /** =======================================================================
-* @class     TRefineTetra_4Desc
-* @brief     RefineLine descriptors source 
+* @class     TRefineHexa_8Desc
+* @brief     Refine Hexa_8 descriptors source 
 * @author    Sashikumaar Ganesan 
-* @date      14.02.2020
+* @date      15.02.2020
 * @History   
 ===========================================================================*/
 
 #ifdef __3D__
 
-#include <RefineTetra_4Desc.h>
+#include <RefineHexa_8Desc.h>
 
 SParSH_NAMESPACE_BEGIN
 
@@ -16,21 +16,24 @@ using namespace std;
 
 // Constructor
 template <sint dim> 
-TRefineTetra_4Desc<dim>::TRefineTetra_4Desc(TCellDesc<dim> *celldesc) : TRefineDesc<dim>(celldesc)
+TRefineHexa_8Desc<dim>::TRefineHexa_8Desc(TCellDesc<dim> *celldesc) : TRefineDesc<dim>(celldesc)
 {
- static constexpr CellType DatChildType[8] = {CellType::TETRA_4, CellType::TETRA_4, CellType::TETRA_4, CellType::TETRA_4,
-                                               CellType::TETRA_4, CellType::TETRA_4, CellType::TETRA_4, CellType::TETRA_4};
- static constexpr RefineType DatEdgeType[6] = {RefineType::Line_2Reg, RefineType::Line_2Reg, RefineType::Line_2Reg,
-                                                RefineType::Line_2Reg, RefineType::Line_2Reg, RefineType::Line_2Reg };
+ static constexpr CellType DatChildType[8] = {CellType::HEXA_8, CellType::HEXA_8, CellType::HEXA_8, CellType::HEXA_8,
+                                               CellType::HEXA_8, CellType::HEXA_8, CellType::HEXA_8, CellType::HEXA_8};
+ static constexpr RefineType DatEdgeType[6] = {RefineType::Hexa_8Reg, RefineType::Hexa_8Reg, RefineType::Hexa_8Reg,
+                                                RefineType::Hexa_8Reg, RefineType::Hexa_8Reg, RefineType::Hexa_8Reg };
+ static constexpr RefineType DatFaceType[12] = {RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg,
+        RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg,
+        RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg };
+ static constexpr int DatChildVertex[8][8] = { { 0,  8, 12, 11, 15, 16, 26, 24}, { 1,  9, 12,  8, 13, 19, 26, 16},
+           { 2, 10, 12,  9, 17, 22, 26, 19}, { 3, 11, 12, 10, 20, 24, 26, 22},
+           { 4, 23, 25, 14, 15, 24, 26, 16}, { 5, 14, 25, 18, 13, 16, 26, 19},
+           { 6, 18, 25, 21, 17, 19, 26, 22}, { 7, 21, 25, 23, 20, 22, 26, 24}};
 
 
 
- static constexpr RefineType DatFaceType[4] = {RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg, RefineType::Tri_3Reg};
+           
 
-
-
- static constexpr int DatChildVertex[8][4] = {{0, 4, 6, 7}, {4, 1, 5, 8}, {6, 5, 2, 9}, {7, 8, 9, 3},
-                                                {4, 6, 7, 8}, {5, 6, 4, 8}, {6, 7, 8, 9}, {8, 5, 6, 9} };
  static constexpr int DatVertexChild[10][6] = {{0}, {1}, {2}, {3}, {0, 1, 4, 5}, {1, 2, 5, 7}, {0, 2, 4, 5, 6, 7},
                                                 {0, 3, 4, 6}, {1, 3, 4, 5, 6, 7}, {2, 3, 6, 7} };
  static constexpr int DatVertexChildIndex[10][6] = {{0}, {1}, {2}, {3}, {1, 0, 0, 2}, {2, 1, 0, 1}, {2, 0, 1, 1, 0, 2}, 
@@ -206,7 +209,7 @@ static constexpr int DatChildTwistIndex[24] = {0, 0, -1, 0, 1, 2, 1, -1, 2, -1, 
 }
 
 // explicit instantiation
-template class TRefineTetra_4Desc<SParSH::GEO_DIM>;
+template class TRefineHexa_8Desc<SParSH::GEO_DIM>;
 
 SParSH_NAMESPACE_END
 

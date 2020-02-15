@@ -1,8 +1,8 @@
 /** =======================================================================
-* @class     TRefineTetra_4Desc
-* @brief     refinement descriptor for Tetra_4
+* @class     TRefineHexa_8Desc.
+* @brief     refinement descriptor for Hexa_8
 * @author    Sashikumaar Ganesan 
-* @date      14.02.2020
+* @date      15.02.2020
 * @History   
 ===========================================================================*/
 #ifdef __3D__
@@ -13,14 +13,14 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-class TRefineTetra_4Desc : public TRefineDesc<dim>
+class TRefineHexa_8Desc : public TRefineDesc<dim>
 {
   protected:
 
   public:
     // Constructor
     /** \brief build a descriptor for regular refinement of a quad_4 */
-    TRefineTetra_4Desc(TCellDesc<dim> *celldesc);
+    TRefineHexa_8Desc(TCellDesc<dim> *celldesc);
 
     // Methods
 };
