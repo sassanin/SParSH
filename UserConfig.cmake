@@ -8,7 +8,7 @@
 set(CMAKE_VERBOSE_MAKEFILE FALSE)
 
 # selection of dimension (2D 3D)
- set(SParSH_GEO "3D" CACHE STRING "Change SParSH_GEO, to select the Dimensio of the problem")
+ set(SParSH_GEO "2D" CACHE STRING "Change SParSH_GEO, to select the Dimensio of the problem")
 
  #...................................................................................................................................................
 # select this line accordingly to include your main program

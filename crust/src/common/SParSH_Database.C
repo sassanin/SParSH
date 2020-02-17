@@ -8,13 +8,13 @@
 #include <RefineLine_2Desc.h>
 #include <RefineTria_3Desc.h>
 #include <RefineQuad_4Desc.h>
+#include <RefineNoRef.h>
 
 #ifdef __3D__
 #include <Hexahedron_8.h>
 #include <Tetrahedron_4.h>
 #include <RefineTetra_4Desc.h>
-
-
+#include <RefineHexa_8Desc.h>
 #endif
 
 #include <iostream>
@@ -381,45 +381,57 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
  } // GenerateMesh
 
-
 template <sint dim> 
 void TSParSH_Database<dim>::InitDescriptors() 
 {
  int pos;
  /** initialize the cell descriptors */
  TSParSH_Database::CellDB.resize(N_CellTypes);
- TSParSH_Database::RefineDescDB.resize(N_RefineTypes);
+ TSParSH_Database::RefineDescDB.resize(N_CellTypes+N_RefineTypes);
 
  pos = static_cast<int>(CellType::LINE_2);
  TSParSH_Database::CellDB[pos] = move(make_unique<TLine_2<dim>>());
- TSParSH_Database::RefineDescDB[static_cast<int>(RefineType::Line_2Reg)] = move(make_unique<TRefineLine_2Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+ TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+ TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Line_2Reg)] = move(make_unique<TRefineLine_2Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+ 
+  /** initialize special cell descriptors on demand for the list given in readin file */
+  for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
+   {
+    pos = TSParSH_Database::ParamDB->CellTypes[i];
+    switch (pos)
+    {
+     case static_cast<int>(CellType::TRI_3):
+      TSParSH_Database::CellDB[pos] = move(make_unique<TTriangle_3<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));      
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Tri_3Reg)] = move(make_unique<TRefineTria_3Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
 
- pos = static_cast<int>(CellType::TRI_3);
- TSParSH_Database::CellDB[pos] = move(make_unique<TTriangle_3<dim>>());
- TSParSH_Database::RefineDescDB[static_cast<int>(RefineType::Tri_3Reg)] = move(make_unique<TRefineTria_3Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
-
- pos = static_cast<int>(CellType::QUAD_4);
- TSParSH_Database::CellDB[pos] = move(make_unique<TQuadrangle_4<dim>>());
- TSParSH_Database::RefineDescDB[static_cast<int>(RefineType::Quad_4Reg)] = move(make_unique<TRefineQuad_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     case static_cast<int>(CellType::QUAD_4):
+      TSParSH_Database::CellDB[pos] = move(make_unique<TQuadrangle_4<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));         
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Quad_4Reg)] = move(make_unique<TRefineQuad_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
 
 #ifdef __3D__
- pos = static_cast<int>(CellType::TETRA_4);
- TSParSH_Database::CellDB[pos] = move(make_unique<TTetrahedron_4<dim>>());
- TSParSH_Database::RefineDescDB[static_cast<int>(RefineType::Tetra_4Reg)] = move(make_unique<TRefineTetra_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     case static_cast<int>(CellType::TETRA_4):
+      TSParSH_Database::CellDB[pos] = move(make_unique<TTetrahedron_4<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));         
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Tetra_4Reg)] = move(make_unique<TRefineTetra_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
 
-
- TSParSH_Database::CellDB[static_cast<int>(CellType::HEXA_8)] = move(make_unique<THexahedron_8<dim>>());
+     case static_cast<int>(CellType::HEXA_8):
+      TSParSH_Database::CellDB[pos] = move(make_unique<THexahedron_8<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));   
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Hexa_8Reg)] = move(make_unique<TRefineHexa_8Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
 #endif
 
- //  /** initialize special cell descriptors on demand for the list given in readin file */
- //  for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
- //   {
- //    switch (TSParSH_Database::ParamDB->CellTypes[i])
- //    {
- //     default:
- //     break;
- //    }
- //   }
+     default:
+      ErrMsg("Define CellTypes in the readin file") 
+
+     break;
+    }
+   }
 
   //verify
   // if(TSParSH_Database::CellDB[5])
