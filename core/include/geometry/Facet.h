@@ -7,7 +7,7 @@
 ===========================================================================*/
 
 #include <SParSH_Variables.h>
-#include <Cell.h>
+#include <CellDesc.h>
 #include <Vertex.h>
 
 using namespace std;

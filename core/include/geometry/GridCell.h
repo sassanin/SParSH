@@ -1,38 +1,28 @@
 /** =======================================================================
 *
-* @class     TCell
+* @class     TGridCell
 * @brief     base class for Cell (element)
 * @author    Sashikumaar Ganesan 
 * @date      05.01.2020
 * @History   
 ===========================================================================*/
-
-#include <SParSH_Variables.h>
-#include <CellDesc.h>
+#include <BaseCell.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
 
-template <CellType celltype > 
-class TCell {
-
+template <sint dim> 
+class TGridCell : public TBaseCell<dim>
+{
   private: 
 //    double V[dim]; 
  
   public:
   
-//   // Constructors
-//   TGridCell(double *X);
+  // Constructors
+  TGridCell();
 
-//   //methods 
-//   void SetCoords(double *X);
-  
-//   void GetCoords(double *X);
-
-//   double* GetCoordsPtr()
-//   { return V; }
-  
-//   bool IsBoundVert();
+  //methods 
 
 };
 

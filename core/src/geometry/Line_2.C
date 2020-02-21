@@ -1,4 +1,3 @@
-
 /** =======================================================================
 * @class     TLINE_2
 * @brief     LINE_2 (element) descriptors source 

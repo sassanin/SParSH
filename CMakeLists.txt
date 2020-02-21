@@ -1,5 +1,6 @@
 # =======================================================================
-# PURPOSE :  configuration file for the SParSH Version 1.1
+# PURPOSE : Version 1.1: configuration file for 
+#           Scalable PARallel numeics for Hetrogenious systems (SParSH) 
 # AUTHOR  : Sashikumaar Ganesan, CDS, IISc Bangalore, India
 # DATE    : 05 June 2015
 # ========================================================================

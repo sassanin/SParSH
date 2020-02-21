@@ -9,7 +9,7 @@
 #include <SParSH_Variables.h>
 #include <Vertex.h>
 #include <Facet.h>
-#include <Cell.h>
+// #include <Cell.h>
 #include <memory>
 #include <iostream>
 
