@@ -11,7 +11,7 @@ SParSH_NAMESPACE_BEGIN
 
 // Constructor
 template <sint dim> 
-TBaseCell<dim>::TBaseCell()
+TBaseCell<dim>::TBaseCell(const TCellDesc<dim> *CellDesc)
 {
  
 }

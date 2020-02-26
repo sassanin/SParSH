@@ -9,7 +9,7 @@
 #include <SParSH_Variables.h>
 #include <Vertex.h>
 #include <Facet.h>
-// #include <Cell.h>
+#include <GridCell.h>
 #include <memory>
 #include <iostream>
 
@@ -35,7 +35,7 @@ class TMesh {
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
-  static vector<TCellDesc<dim>> Cells; 
+  vector<TGridCell<dim>> Cells; 
 
   private:
 
@@ -50,6 +50,8 @@ class TMesh {
   TMesh(size_t N_Vertices);
 
   // methods 
+  void SetN_Cells(size_t N_cells)
+   { Cells.reserve(N_cells); }
 
   //send the raw pointer of the vertex V[at]
   TVertex<dim>* GetVerticesAT(size_t pos)

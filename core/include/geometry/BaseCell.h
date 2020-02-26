@@ -7,6 +7,7 @@
 * @History   
 ===========================================================================*/
 #include <SParSH_Variables.h>
+#include <CellDesc.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -20,7 +21,7 @@ class TBaseCell {
   public:
   
   // Constructors
-  TBaseCell();
+  TBaseCell(const TCellDesc<dim> *CellDesc);
 
   //methods 
  

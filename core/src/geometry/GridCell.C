@@ -11,7 +11,7 @@ SParSH_NAMESPACE_BEGIN
 
 // Constructor
 template <sint dim> 
-TGridCell<dim>::TGridCell()
+TGridCell<dim>::TGridCell(const TCellDesc<dim> *CellDesc, int reflevel) : TBaseCell<dim>(CellDesc)
 {
  
 }

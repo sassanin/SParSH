@@ -20,7 +20,7 @@ class TGridCell : public TBaseCell<dim>
   public:
   
   // Constructors
-  TGridCell();
+  TGridCell(const TCellDesc<dim> *CellDesc, int reflevel);
 
   //methods 
 

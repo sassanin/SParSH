@@ -250,6 +250,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
  
      vert = make_unique<TVertex<dim>>(X);
      localmesh->AddVertex(std::move(vert));
+
      //svert = localmesh->GetVerticesAT(i_vert);
      //svert->GetCoords(Y);
      //std::cout<<  X[0] << " Coord:  " << Y[0] <<endl;
@@ -274,23 +275,22 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     dat.getline (line, 99);
    }  
 
-  //std::cout<<  " localmesh NEdges :  " << NBDEdges <<endl;
+  // std::cout<<  " localmesh NEdges :  " << NBDEdges <<endl;
   std::size_t v1, v2, v3, BoundaryMarker, CellMarker;
 
-  std::vector<std::size_t> BdEdges;
-  std::vector<std::size_t> BdMarker;
+  std::vector<std::size_t> BdEdges(2*NBDEdges);
+  std::vector<std::size_t> BdMarker(NBDEdges);
   std::vector<std::size_t> UniqueBdMarker;
   bool Mark;
-  // std::cout<<  " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
+  // std::cout<<  BdMarker.size() << " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
 
   for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
     dat.getline (line, 99);
     dat >> v1 >> v2 >> BoundaryMarker;
-    BdEdges.push_back(v1-1); // C-format,  
-    BdEdges.push_back(v2-1); // C-format, 
-    BdMarker.push_back(BoundaryMarker); 
-
+    BdEdges[2*i_edge] = v1-1; // C-format,  
+    BdEdges[2*i_edge+1] = v2-1; // C-format, 
+    BdMarker[i_edge] = BoundaryMarker; 
     Mark=true;
     for(std::size_t j_edge=0; j_edge<UniqueBdMarker.size(); ++j_edge)
       {
@@ -314,7 +314,6 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
   unique_ptr<TBoundFacet<dim>> BDFacet;
   std::size_t* BDFacet_ptr = BdMarker.data();
   TVertex<dim> *FacetVert[2];
-
 
   for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
@@ -351,17 +350,28 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     dat.getline (line, 99);   
    }
 
-  cout<<"Number of RootCells: "<< N_RootCells<<endl;
+  // cout<<"Number of RootCells: "<< N_RootCells<<endl;
 
+  std::vector<std::size_t> CellVertices(3*N_RootCells);
+  vector<unique_ptr<TBaseCell<dim>>> CellTree(N_RootCells);
+  /* get the raw pointer of tria_3 */
+  TCellDesc<dim> *TriaDesc = (TSParSH_Database::CellDB[static_cast<int>(CellType::TRI_3)]).get();
+
+  std::size_t threei;
   for (size_t i=0;i<N_RootCells;i++)
    {
     dat.getline (line, 99);
     dat >> v1 >> v2 >> v3  >> CellMarker;  
-    // CellVertices[3*i    ] = v1-1; // C-format,  
-    //  CellVertices[3*i + 1] = v2-1; // C-format,  
-    //  CellVertices[3*i + 2] = v3-1; // C-format,  
-     
-    //  CellTree[i] = new TMacroCell(TDatabase::RefDescDB[Triangle], 0);
+    threei = 3*i;
+    CellVertices[threei    ] = v1-1; // C-format,  
+    CellVertices[threei + 1] = v2-1; // C-format,  
+    CellVertices[threei + 2] = v3-1; // C-format,  
+      
+    //  vert = make_unique<TVertex<dim>>(X);
+    //  localmesh->AddVertex(std::move(vert));
+
+
+     CellTree[i] = make_unique<TGridCell<dim>>(TriaDesc, 0);
 
     //  CellTree[i]->SetVertex(0, NewVertices[CellVertices[3*i    ]]);
     //  CellTree[i]->SetVertex(1, NewVertices[CellVertices[3*i + 1]]);
@@ -372,7 +382,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     //  ((TMacroCell *) CellTree[i])->SetSubGridID(0);
     }
    
-
+    // localmesh->AddCellTree(std::move(CellTree));
 
     //  for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
       //  cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;
@@ -427,7 +437,7 @@ void TSParSH_Database<dim>::InitDescriptors()
 #endif
 
      default:
-      ErrMsg("Define CellTypes in the readin file") 
+      ErrMsg("Check CellTypes in the readin file") 
 
      break;
     }
