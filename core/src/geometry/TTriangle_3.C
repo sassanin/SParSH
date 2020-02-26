@@ -8,6 +8,7 @@
 ===========================================================================*/
 
 #include <Triangle_3.h>
+#include <SParSH_IO.h>
 
 SParSH_NAMESPACE_BEGIN
 

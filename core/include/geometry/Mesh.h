@@ -47,8 +47,6 @@ class TMesh {
   /** \brief  Default constructor with coordinates of the vertex */
   TMesh();
 
-  TMesh(size_t N_Vertices);
-
   // methods 
   void SetN_Cells(size_t N_cells)
    { Cells.reserve(N_cells); }
@@ -56,6 +54,10 @@ class TMesh {
   //send the raw pointer of the vertex V[at]
   TVertex<dim>* GetVerticesAT(size_t pos)
    { return (Vertices.at(pos)).get(); }
+
+  /** \brief  set a set of vertires to the mesh */
+  void SetVertices(vector<unique_ptr<TVertex<dim>>> && Verticies)
+  { Vertices = std::move(Verticies); }
 
   /** \brief  add a vertex to the mesh */
   void AddVertex(unique_ptr<TVertex<dim>> && Vert)

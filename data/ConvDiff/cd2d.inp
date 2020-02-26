@@ -12,6 +12,7 @@ MeshFile[0]:   ../../SParSH/data/mesh/UnitSqureTria.mesh
 # TETRA_4(8), TETRA_10(9), TETRA_14(10), PYRA_5, PYRA_13, PYRA_14, 
 # PRISM_6, PRISM_15, PRISM_18, HEXA_8, HEXA_20, HEXA_27
 # ----------------------------------------------------------------------
+CellTypes[0]: 2
 CellTypes[0]: 5
 
 # ----------------------------------------------------------------------

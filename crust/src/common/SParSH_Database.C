@@ -236,30 +236,25 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     dat.getline (line, 99);
    }
 
-  std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>(N_Vertices));
+  std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>());
   // std::cout<<  " localmesh size :  " << sizeof(localmesh) <<endl;
 
-  //TVertex<dim> *svert;
-  unique_ptr<TVertex<dim> > vert;
+  vector<unique_ptr<TVertex<dim>>> NewVertices(N_Vertices);
+  
   double X[3], Y[3];
-
   for(std::size_t i_vert=0; i_vert<N_Vertices; ++i_vert)
    {
      dat.getline (line, 99);
      dat >> X[0] >> X[1] >> X[2];      
  
-     vert = make_unique<TVertex<dim>>(X);
-     localmesh->AddVertex(std::move(vert));
+     NewVertices[i_vert] = make_unique<TVertex<dim>>(X);
+    //  localmesh->AddVertex(std::move(vert));
 
      //svert = localmesh->GetVerticesAT(i_vert);
      //svert->GetCoords(Y);
-     //std::cout<<  X[0] << " Coord:  " << Y[0] <<endl;
-
-      // if (X > Xmax) Xmax = X;
-      // if (X < Xmin) Xmin = X;
-      // if (Y > Ymax) Ymax = Y;
-      // if (Y < Ymin) Ymin = Y;
    } 
+
+  localmesh->SetVertices(std::move(NewVertices));
 
   std::size_t NBDEdges;
   while (!dat.eof())
@@ -355,7 +350,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
   std::vector<std::size_t> CellVertices(3*N_RootCells);
   vector<unique_ptr<TBaseCell<dim>>> CellTree(N_RootCells);
   /* get the raw pointer of tria_3 */
-  TCellDesc<dim> *TriaDesc = (TSParSH_Database::CellDB[static_cast<int>(CellType::TRI_3)]).get();
+  TRefineDesc<dim> *TriaRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)]).get();
 
   std::size_t threei;
   for (size_t i=0;i<N_RootCells;i++)
@@ -363,19 +358,16 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     dat.getline (line, 99);
     dat >> v1 >> v2 >> v3  >> CellMarker;  
     threei = 3*i;
-    CellVertices[threei    ] = v1-1; // C-format,  
-    CellVertices[threei + 1] = v2-1; // C-format,  
-    CellVertices[threei + 2] = v3-1; // C-format,  
+
+    CellVertices[threei    ] = --v1; // C-format,  
+    CellVertices[threei + 1] = --v2; // C-format,  
+    CellVertices[threei + 2] = --v3; // C-format,  
       
-    //  vert = make_unique<TVertex<dim>>(X);
-    //  localmesh->AddVertex(std::move(vert));
+    CellTree[i] = make_unique<TGridCell<dim>>(TriaRefDesc, 0);
 
-
-     CellTree[i] = make_unique<TGridCell<dim>>(TriaDesc, 0);
-
-    //  CellTree[i]->SetVertex(0, NewVertices[CellVertices[3*i    ]]);
-    //  CellTree[i]->SetVertex(1, NewVertices[CellVertices[3*i + 1]]);
-    //  CellTree[i]->SetVertex(2, NewVertices[CellVertices[3*i + 2]]);
+    CellTree[i]->SetVertGlobalIdx(0, v1);
+    CellTree[i]->SetVertGlobalIdx(1, v1);
+    CellTree[i]->SetVertGlobalIdx(2, v3);
 
     //  CellTree[i]->SetRegionID(CellMarker);
     //  CellTree[i]->SetClipBoard(i);     

@@ -17,11 +17,10 @@ using namespace std;
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TMesh<dim>::TMesh(size_t N_Vertices) 
+TMesh<dim>::TMesh() 
  {
-  Vertices.reserve(N_Vertices);
+  
  }
-
 
 template <sint dim> 
 void TMesh<dim>::AddBoundIDs(vector<size_t> && BDIDs)

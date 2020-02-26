@@ -315,8 +315,8 @@ class TRefineDesc {
    { return true; }
     
   /** return cell (raw) descriptor */
-  // TCellDesc<dim> *GetCellDesc()
-  //  { return CellDesc; }
+  TCellDesc<dim> *GetCellDesc()
+   { return CellDesc; }
 
   /** return refinement type of edge pos */
   RefineType GetEdgeRef(int pos)

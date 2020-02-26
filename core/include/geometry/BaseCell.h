@@ -7,7 +7,7 @@
 * @History   
 ===========================================================================*/
 #include <SParSH_Variables.h>
-#include <CellDesc.h>
+#include <RefineDesc.h>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -15,16 +15,22 @@ SParSH_NAMESPACE_BEGIN
 template <sint dim > 
 class TBaseCell {
 
+  protected:
+   
+  /**  @brief raw pointer of Cell (Shape) descriptor */
+  TRefineDesc<dim> *RefinDesc;
+
+
   private: 
 //    double V[dim]; 
  
   public:
   
   // Constructors
-  TBaseCell(const TCellDesc<dim> *CellDesc);
+  TBaseCell(TRefineDesc<dim> *refindesc);
 
   //methods 
- 
+  virtual void SetVertGlobalIdx(int localidx, std::size_t globalidx)=0;
 
 };
 

@@ -14,15 +14,21 @@ SParSH_NAMESPACE_BEGIN
 template <sint dim> 
 class TGridCell : public TBaseCell<dim>
 {
+  protected:
+   vector <std::size_t> GlobalVertIndex;
+
+
   private: 
 //    double V[dim]; 
  
   public:
   
   // Constructors
-  TGridCell(const TCellDesc<dim> *CellDesc, int reflevel);
+  TGridCell(TRefineDesc<dim> *refindesc, int reflevel);
 
   //methods 
+  virtual void SetVertGlobalIdx(int localidx, std::size_t globalidx)
+  {GlobalVertIndex[localidx] = globalidx; }
 
 };
 
