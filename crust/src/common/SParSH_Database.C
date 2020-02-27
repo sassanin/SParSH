@@ -408,10 +408,12 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     }
 
    // generate new edges
-  const vector<std::unique_ptr<TBaseCell<dim>>> Coll;
-  // Coll = localmesh->GetCollection();
+  //  vector<TBaseCell<dim>> Cells = localmesh->GetCollection();
 
-  //  cout<< "maxEpV : " << maxEpV << endl;
+  //  *Cells[0]->SetVertGlobalIdx(0, v1);
+  //  for (auto & x : Cells)
+      //  {   x.SetVertGlobalIdx(0, v1); } 
+  //  cout<<N_RootCells <<  " maxEpV : " << Cells.size() << endl;
   //  output(maxEpV);
 
    dat.close();

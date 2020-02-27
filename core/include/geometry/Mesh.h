@@ -37,7 +37,11 @@ class TMesh {
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
   vector<unique_ptr<TBaseCell<dim>>> Cells; 
 
+
+
   private:
+
+  std::vector<reference_wrapper<TBaseCell<dim>>> CellsRefs; 
 
    /** \brief return the locallly stored index for the given BDID */
   size_t GetBoundIndex(size_t BDID);
@@ -59,8 +63,7 @@ class TMesh {
   void AddCellTree(vector<unique_ptr<TBaseCell<dim>>> && cells)
   { Cells = std::move(cells); }
 
-  vector<std::unique_ptr<TBaseCell<dim>>> const& GetCollection() const
-  { return Cells; }
+  vector<reference_wrapper<TBaseCell<dim>>> GetCollection();
 
   //send the raw pointer of the vertex V[at]
   TVertex<dim>* GetVerticesAT(size_t pos)

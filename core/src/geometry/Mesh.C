@@ -11,7 +11,6 @@
 #include <iostream> 
 #include <vector> 
 
-
 using namespace std;
 
 SParSH_NAMESPACE_BEGIN
@@ -20,6 +19,23 @@ template <sint dim>
 TMesh<dim>::TMesh() 
  {
   
+ }
+
+template <sint dim> 
+vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection()  {
+  size_t N_Cells = Cells.size();
+
+  // output(N_Cells);
+  
+  if(CellsRefs.size()==0 && N_Cells!=0)
+   {
+    for (auto &ptr : Cells) 
+     {
+      CellsRefs.push_back(std::ref(*ptr));
+     }
+   }
+
+  return CellsRefs;
  }
 
 template <sint dim> 
