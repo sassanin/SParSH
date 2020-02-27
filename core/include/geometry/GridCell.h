@@ -15,8 +15,12 @@ template <sint dim>
 class TGridCell : public TBaseCell<dim>
 {
   protected:
-   vector <std::size_t> GlobalVertIndex;
+  
+  /** Global index of the local vertices  */
+  vector <std::size_t> GlobalVertIndex;
 
+  /** Region/Phase ID of the cell */
+  int RegionID;
 
   private: 
 //    double V[dim]; 
@@ -28,7 +32,11 @@ class TGridCell : public TBaseCell<dim>
 
   //methods 
   virtual void SetVertGlobalIdx(int localidx, std::size_t globalidx)
-  {GlobalVertIndex[localidx] = globalidx; }
+  { GlobalVertIndex[localidx] = globalidx; }
+
+   /** set the region I of this cell */
+  virtual void SetRegionID(int id)
+  {  RegionID = id; }
 
 };
 

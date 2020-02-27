@@ -13,7 +13,7 @@ MeshFile[0]:   ../../SParSH/data/mesh/UnitSqureTria.mesh
 # PRISM_6, PRISM_15, PRISM_18, HEXA_8, HEXA_20, HEXA_27
 # ----------------------------------------------------------------------
 CellTypes[0]: 2
-CellTypes[0]: 5
+CellTypes[1]: 5
 
 # ----------------------------------------------------------------------
 # number of uniform refinement steps at beginning for MeshFile[i]

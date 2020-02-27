@@ -27,6 +27,7 @@ using namespace std::chrono;
 void OpenFiles();
 void CloseFiles();
 
+#define output(x) {cout << "SParSH Out: "<<__FILE__<<", line "<<__LINE__<<": "<< x <<endl;}
 #define OutPut(x) {OutFile << x; cout << x;}
 #define ErrMsg(x) { cerr <<"Error in file "<<__FILE__<<", line "<<__LINE__<<":\n"<<x<<endl; OutFile<<"Error in file "<<__FILE__<<", line "<<__LINE__<<":\n"<<x<<endl;}
 #define Error(x) {ErrMsg(x)}

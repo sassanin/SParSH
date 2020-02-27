@@ -14,6 +14,7 @@ template <sint dim>
 TGridCell<dim>::TGridCell(TRefineDesc<dim> *refindesc, int reflevel) : TBaseCell<dim>(refindesc)
 {
  GlobalVertIndex.reserve( (this->RefinDesc)->GetN_OrigVertices() );
+ RegionID = 0;
 }
 
 // explicit instantiation

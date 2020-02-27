@@ -17,6 +17,7 @@
 #include <RefineHexa_8Desc.h>
 #endif
 
+#include <algorithm>
 #include <iostream>
 #include <fstream>
 #include<string.h> 
@@ -349,11 +350,19 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
   std::vector<std::size_t> CellVertices(3*N_RootCells);
   vector<unique_ptr<TBaseCell<dim>>> CellTree(N_RootCells);
+
+  TRefineDesc<dim> *TriaRefDesc;
   /* get the raw pointer of tria_3 */
-  TRefineDesc<dim> *TriaRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)]).get();
+  if(TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)])
+   { TriaRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)]).get();}
+   else
+   {
+     ErrMsg("Trianlge_3 is not selected in Readin your file for Gmsh");
+     exit(0);
+   }
 
   std::size_t threei;
-  for (size_t i=0;i<N_RootCells;i++)
+  for (size_t i=0;i<N_RootCells; ++i)
    {
     dat.getline (line, 99);
     dat >> v1 >> v2 >> v3  >> CellMarker;  
@@ -364,20 +373,46 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     CellVertices[threei + 2] = --v3; // C-format,  
       
     CellTree[i] = make_unique<TGridCell<dim>>(TriaRefDesc, 0);
-
     CellTree[i]->SetVertGlobalIdx(0, v1);
     CellTree[i]->SetVertGlobalIdx(1, v1);
     CellTree[i]->SetVertGlobalIdx(2, v3);
-
-    //  CellTree[i]->SetRegionID(CellMarker);
+    CellTree[i]->SetRegionID(CellMarker);
     //  CellTree[i]->SetClipBoard(i);     
-    //  ((TMacroCell *) CellTree[i])->SetSubGridID(0);
     }
    
-    // localmesh->AddCellTree(std::move(CellTree));
+    localmesh->AddCellTree(std::move(CellTree));
 
     //  for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
       //  cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;
+
+   // search neighbours
+   vector<int> PointNeighb(N_RootCells,0); 
+   size_t ThreeTimesRootcells = 3*N_RootCells;
+
+   for (size_t i=0;i<ThreeTimesRootcells;++i)
+    PointNeighb[CellVertices[i]]++;
+
+   size_t maxEpV=*std::max_element(PointNeighb.begin(), PointNeighb.end());
+
+   size_t len = ++maxEpV * N_RootCells;
+   PointNeighb.assign(len, 0);
+
+   // for every vertex, first column contains the number of cells incident with this vertex
+   // at further columns we set the index of corresponding cells 
+   size_t j;
+   for(size_t i=0;i<ThreeTimesRootcells;++i)
+    {
+     j = CellVertices[i]*maxEpV;
+     PointNeighb[j]++;
+     PointNeighb[j + PointNeighb[j]] = i/3;
+    }
+
+   // generate new edges
+  const vector<std::unique_ptr<TBaseCell<dim>>> Coll;
+  // Coll = localmesh->GetCollection();
+
+  //  cout<< "maxEpV : " << maxEpV << endl;
+  //  output(maxEpV);
 
    dat.close();
 

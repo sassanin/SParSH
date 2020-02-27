@@ -35,7 +35,7 @@ class TMesh {
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
-  vector<TGridCell<dim>> Cells; 
+  vector<unique_ptr<TBaseCell<dim>>> Cells; 
 
   private:
 
@@ -48,13 +48,6 @@ class TMesh {
   TMesh();
 
   // methods 
-  void SetN_Cells(size_t N_cells)
-   { Cells.reserve(N_cells); }
-
-  //send the raw pointer of the vertex V[at]
-  TVertex<dim>* GetVerticesAT(size_t pos)
-   { return (Vertices.at(pos)).get(); }
-
   /** \brief  set a set of vertires to the mesh */
   void SetVertices(vector<unique_ptr<TVertex<dim>>> && Verticies)
   { Vertices = std::move(Verticies); }
@@ -62,6 +55,16 @@ class TMesh {
   /** \brief  add a vertex to the mesh */
   void AddVertex(unique_ptr<TVertex<dim>> && Vert)
   { Vertices.push_back(move(Vert)); }
+
+  void AddCellTree(vector<unique_ptr<TBaseCell<dim>>> && cells)
+  { Cells = std::move(cells); }
+
+  vector<std::unique_ptr<TBaseCell<dim>>> const& GetCollection() const
+  { return Cells; }
+
+  //send the raw pointer of the vertex V[at]
+  TVertex<dim>* GetVerticesAT(size_t pos)
+  { return (Vertices.at(pos)).get(); }
 
   /** \brief adding list of IDs  of physical Boundaries  */
   void AddBoundIDs(vector<size_t> && BDIDs);

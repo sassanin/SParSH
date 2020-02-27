@@ -22,7 +22,7 @@ class TBaseCell {
 
 
   private: 
-//    double V[dim]; 
+ 
  
   public:
   
@@ -31,6 +31,8 @@ class TBaseCell {
 
   //methods 
   virtual void SetVertGlobalIdx(int localidx, std::size_t globalidx)=0;
+
+  virtual void SetRegionID(int id)=0;
 
 };
 
