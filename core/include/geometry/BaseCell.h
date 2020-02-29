@@ -30,9 +30,16 @@ class TBaseCell {
   TBaseCell(TRefineDesc<dim> *refindesc);
 
   //methods 
+
+  /**  @brief return the number of joints */
+  int GetN_Facets()
+  {  return RefinDesc->GetCellDesc()->GetN_Facets(); }
+
   virtual void SetVertGlobalIdx(int localidx, std::size_t globalidx)=0;
 
   virtual void SetRegionID(int id)=0;
+
+
 
 };
 

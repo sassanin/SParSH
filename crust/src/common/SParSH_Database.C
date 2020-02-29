@@ -21,6 +21,7 @@
 #include <iostream>
 #include <fstream>
 #include<string.h> 
+#include <functional>
 
 SParSH_NAMESPACE_BEGIN
 
@@ -408,12 +409,16 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     }
 
    // generate new edges
-  //  vector<TBaseCell<dim>> Cells = localmesh->GetCollection();
+   int N_Facets;
+   vector<reference_wrapper<TBaseCell<dim>>> Cells = localmesh->GetCollection();
+   for(auto x : Cells)
+    {   
+      N_Facets = x.get().GetN_Facets();
 
-  //  *Cells[0]->SetVertGlobalIdx(0, v1);
-  //  for (auto & x : Cells)
-      //  {   x.SetVertGlobalIdx(0, v1); } 
-  //  cout<<N_RootCells <<  " maxEpV : " << Cells.size() << endl;
+         //  cout<<" N_Facets  : " << x.get().GetN_Facets() << endl;
+      // &x->SetVertGlobalIdx(0, v1);
+    } 
+   cout<<N_RootCells <<  " maxEpV : " << Cells.size() << endl;
   //  output(maxEpV);
 
    dat.close();
