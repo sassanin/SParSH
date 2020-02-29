@@ -79,7 +79,7 @@ class TMesh {
    Facets[idx].push_back(move(facet)); 
   }
 
-  /** \brief  Return the arry of facets for given BoundIDs. Default for internal facets is 0 */
+  /** \brief  Return the array of facets for given BoundIDs. Default for internal facets is 0 */
   const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID)
   { return Facets[this->GetBoundIndex(BDID)]; }
   

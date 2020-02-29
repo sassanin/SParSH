@@ -22,7 +22,7 @@ TInnerFacet<dim>::TInnerFacet(FacetType type,  std::size_t id, std::size_t N_Ver
 
 /** constructor with one initial neighbour */
 template <sint dim> 
-TInnerFacet<dim>::TInnerFacet(SParSH::TCellDesc<dim> *owncell) : 
+TInnerFacet<dim>::TInnerFacet(SParSH::TBaseCell<dim> *owncell) : 
                   TFacet<dim>()
 {
  // make OwnCell as dependent by using this->
@@ -31,11 +31,12 @@ TInnerFacet<dim>::TInnerFacet(SParSH::TCellDesc<dim> *owncell) :
 
  /** constructor with two initial neighbours */
  template <sint dim> 
-TInnerFacet<dim>::TInnerFacet(SParSH::TCellDesc<dim> *owncell, SParSH::TCellDesc<dim> *neibcell):
+TInnerFacet<dim>::TInnerFacet(SParSH::TBaseCell<dim> *owncell, SParSH::TBaseCell<dim> *neibcell):
                   TFacet<dim>()
 {
  this->OwnCell = owncell;
  this->NeibCell = neibcell;
+ this->Type = FacetType::InnerEdge;
 }
 
 // explicit instantiation

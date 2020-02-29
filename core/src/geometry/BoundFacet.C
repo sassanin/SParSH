@@ -34,7 +34,7 @@ TBoundFacet<dim>::TBoundFacet(SParSH::FacetType type,  std::size_t id, std::size
 
 /** constructor with own cell */
 template <sint dim> 
-TBoundFacet<dim>::TBoundFacet(SParSH::TCellDesc<dim> *owncell) : 
+TBoundFacet<dim>::TBoundFacet(SParSH::TBaseCell<dim> *owncell) : 
                   TFacet<dim>()
 {
  // make OwnCell as dependent by using this->

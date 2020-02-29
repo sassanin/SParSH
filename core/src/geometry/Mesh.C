@@ -22,7 +22,8 @@ TMesh<dim>::TMesh()
  }
 
 template <sint dim> 
-vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection()  {
+vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection() 
+{
   size_t N_Cells = Cells.size();
 
   // output(N_Cells);
@@ -36,7 +37,7 @@ vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection()  {
    }
 
   return CellsRefs;
- }
+}
 
 template <sint dim> 
 void TMesh<dim>::AddBoundIDs(vector<size_t> && BDIDs)
@@ -44,8 +45,8 @@ void TMesh<dim>::AddBoundIDs(vector<size_t> && BDIDs)
 
  BoundIDs = move(BDIDs);
 
- /** Arracy contains the internal facets and boundary factes */ 
- Facets.resize(BoundIDs.size()+1);
+ /** Array contains the internal facets and boundary factes */ 
+ Facets.reserve(BoundIDs.size()+1);
 
 //  for(size_t i_edge=0; i_edge<BoundIDs.size(); ++i_edge)
 //        cout << "BDIDs[i] :" << BoundIDs[i_edge] << endl;

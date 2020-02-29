@@ -2,6 +2,7 @@
 #include <SParSH_Database.h>
 #include <Mesh.h>
 #include <BoundFacet.h>
+#include <InnerFacet.h>
 #include <Line_2.h>
 #include <Triangle_3.h>
 #include <Quadrangle_4.h>
@@ -22,6 +23,7 @@
 #include <fstream>
 #include<string.h> 
 #include <functional>
+#include <iterator> 
 
 SParSH_NAMESPACE_BEGIN
 
@@ -349,7 +351,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
   // cout<<"Number of RootCells: "<< N_RootCells<<endl;
 
-  std::vector<std::size_t> CellVertices(3*N_RootCells);
+  vector<size_t> CellVertices(3*N_RootCells);
   vector<unique_ptr<TBaseCell<dim>>> CellTree(N_RootCells);
 
   TRefineDesc<dim> *TriaRefDesc;
@@ -409,15 +411,118 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     }
 
    // generate new edges
-   int N_Facets;
+   int N_Facets, k, kk, iii, a, b, Neib[2], CurrNeib, len1, len2, Neighb_tmp;
+   int neib0marker, neib1marker;
+   vector<size_t>::iterator  it = CellVertices.begin();
+   vector<size_t>::iterator Cell_itr;
+   TBaseCell<dim> *cell, *neib0, *neib1;  
+   unique_ptr<TInnerFacet<dim>> InnerFacet;    
    vector<reference_wrapper<TBaseCell<dim>>> Cells = localmesh->GetCollection();
-   for(auto x : Cells)
+
+   for(size_t i=0;i<N_RootCells; ++i)   
     {   
-      N_Facets = x.get().GetN_Facets();
+     cell = &Cells[i].get();
+     N_Facets = cell->GetN_Facets();
+     Cell_itr = next(it, 3*i);
+  
+     for(size_t ii=0;ii<N_Facets; ++ii)
+      {
+        kk = (ii+1)%3;
+        a = Cell_itr[ii];
+        b = Cell_itr[kk];
+        Neib[0] = -1;
+        Neib[1] = -1;
+        CurrNeib = 0;
+
+        len1 = PointNeighb[a*maxEpV];
+        len2 = PointNeighb[b*maxEpV];
+
+         // find indices of cells containing the current edge/facet
+         for(iii=1;iii<=len1;iii++)
+          {
+           Neighb_tmp = PointNeighb[a*maxEpV + iii];
+           for (k=1;k<=len2;k++)
+            if (Neighb_tmp == PointNeighb[b*maxEpV + k])
+             {
+              Neib[CurrNeib++] = Neighb_tmp;
+              break;
+             } 
+           if (CurrNeib == 2) break;
+          } // for (j=1;j<=len1;j++
+
+        // inner edge or interface between two domains
+        if(CurrNeib == 2)
+         {
+          neib0 = &Cells[Neib[0]].get();            
+          neib1 = &Cells[Neib[1]].get();         
+          neib0marker = neib0->GetPhaseID();
+          neib1marker = neib1->GetPhaseID();    
+      
+          if(neib0marker==neib1marker)   
+           {
+            InnerFacet = make_unique<TInnerFacet<dim>>(neib0, neib1);
+            // localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);            
+           }
+          else // interface joint
+           {
+          //    CompID = GetBDEdgeCompID(a, b, NBdEdges,  BdEdges, BdMarkers);  
+  
+          //    if(CompID>=2000)
+          //    { BdID = CompID + N_BdEdgeComp -2000; } // interface ID markers are in 2000s 
+          //    else
+          //    { BdID = CompID - 1000; } // PlaneBD ID markers are in 1000s
+
+          //    BdComp = BdParts[0]->GetBdComp(BdID);
+
+          //    if(UsePRM!=0)
+          //    { 
+          //     if(BdComp->GetTofXY(NewVertices[a]->GetX(), NewVertices[a]->GetY(), T[1]) ||
+          //        BdComp->GetTofXY(NewVertices[b]->GetX(), NewVertices[b]->GetY(), T[2]))
+          //       {
+          //        cerr<<"Error: could not set parameter values"<<endl;
+          //        OutPut(NewVertices[a]<<endl);
+          //        OutPut(NewVertices[b]<<endl);
+          //        cout << " CurrComp " << CurrComp <<endl;
+          //        //  exit(0);
+          //       }
+          //     }
+                
+          //    if(CompID>=2000)
+          //     { Joint = new TIsoInterfaceJoint(BdComp, T[1], T[2], neib0, neib1); }
+          //    else
+          //     { Joint = new TInterfaceJoint(BdComp, T[1], T[2], neib0, neib1); }
+            } // else    
+          } //  if(CurrNeib == 2)
+         else if (CurrNeib == 1) // Boundary face
+          {
+
+           for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
+            {
+ 
+              if( a==BdEdges[2*i_edge] && b== BdEdges[2*i_edge+1])
+              {
+               output("found Bdedge")
+              }
+
+              
+            }
+
+          } //  else if (CurrNeib == 1)
+         else
+          {
+           output("Error !!!!!!!! in finding face neighbours!");
+           exit(0);  
+          }
+      } // 
+
+  //  exit(0);
+
 
          //  cout<<" N_Facets  : " << x.get().GetN_Facets() << endl;
       // &x->SetVertGlobalIdx(0, v1);
-    } 
+    } // for(size_t i=0;
+
+
    cout<<N_RootCells <<  " maxEpV : " << Cells.size() << endl;
   //  output(maxEpV);
 

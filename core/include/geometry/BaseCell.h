@@ -8,6 +8,8 @@
 ===========================================================================*/
 #include <SParSH_Variables.h>
 #include <RefineDesc.h>
+// #include <Facet.h>
+#include <memory>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -20,6 +22,14 @@ class TBaseCell {
   /**  @brief raw pointer of Cell (Shape) descriptor */
   TRefineDesc<dim> *RefinDesc;
 
+  /** No. of facets in the cell */
+  int N_Facets;
+
+  /**  @brief array of all joints */
+  // vector<unique_ptr<TFacet<dim>>> Facets;
+
+  /** Phase ID of the cell , default 0 */  
+  int PhaseID;
 
   private: 
  
@@ -31,9 +41,31 @@ class TBaseCell {
 
   //methods 
 
-  /**  @brief return the number of joints */
+  /**\brief set PhaseID to this cell   */
+  void SetPhaseID(int val)
+  {PhaseID = val;}
+
+  /** \brief set PhaseID to this cell   */
+  int GetPhaseID() const
+  {return PhaseID;}   
+
+  /** \brief return the number of joints */
   int GetN_Facets()
-  {  return RefinDesc->GetCellDesc()->GetN_Facets(); }
+  {  return N_Facets; }
+
+  // /** \brief  retun the facet for the given index */
+  // TFacet<dim> *GetFacet(int idx)
+  // { 
+  //   TFacet<dim> *ret_ptr = nullptr;
+  //   // output(Facets.size());
+  //   if(Facets.size()<idx) {ret_ptr = nullptr; }
+  //   else {
+  //      output(idx);
+  //     // ret_ptr = (Facets.at(idx)).get(); 
+  //     }
+
+  //   return ret_ptr;
+  // }
 
   virtual void SetVertGlobalIdx(int localidx, std::size_t globalidx)=0;
 

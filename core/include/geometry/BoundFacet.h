@@ -26,7 +26,7 @@ class TBoundFacet : public TFacet<dim>  {
  TBoundFacet(SParSH::FacetType type, std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert);
 
  /** constructor with one initial neighbour */
- TBoundFacet(SParSH::TCellDesc<dim> *owncell);
+ TBoundFacet(SParSH::TBaseCell<dim> *owncell);
 
  //methods 
 

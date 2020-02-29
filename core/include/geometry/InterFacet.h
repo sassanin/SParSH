@@ -22,10 +22,10 @@ class TInterFacet : public TFacet<dim>  {
  TInterFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert);
 
  /** constructor with one initial neighbour */
- TInterFacet(SParSH::TCellDesc<dim> *owncell);
+ TInterFacet(SParSH::TBaseCell<dim> *owncell);
 
  /** constructor with two initial neighbours */
- TInterFacet(SParSH::TCellDesc<dim> *owncell, SParSH::TCellDesc<dim> *neibcell);
+ TInterFacet(SParSH::TBaseCell<dim> *owncell, SParSH::TBaseCell<dim> *neibcell);
 
  //methods 
 

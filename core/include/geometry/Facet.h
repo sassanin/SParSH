@@ -7,7 +7,7 @@
 ===========================================================================*/
 
 #include <SParSH_Variables.h>
-#include <CellDesc.h>
+#include <BaseCell.h>
 #include <Vertex.h>
 
 using namespace std;
@@ -41,7 +41,7 @@ class TFacet {
  vector<TVertex<dim> *> Vertices; 
 
  /** \brief raw pointers for the own and neib cells */
- SParSH::TCellDesc<dim> *OwnCell, *NeibCell;
+ SParSH::TBaseCell<dim> *OwnCell, *NeibCell;
 
  bool BD_Facet=false;
 

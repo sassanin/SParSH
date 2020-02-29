@@ -24,10 +24,10 @@ class TInnerFacet : public TFacet<dim>  {
  TInnerFacet(FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert);
 
  /** constructor with one initial neighbour */
- TInnerFacet(SParSH::TCellDesc<dim> *owncell);
+ TInnerFacet(SParSH::TBaseCell<dim> *owncell);
 
  /** constructor with two initial neighbours */
- TInnerFacet(SParSH::TCellDesc<dim> *owncell, SParSH::TCellDesc<dim> *neibcell);
+ TInnerFacet(SParSH::TBaseCell<dim> *owncell, SParSH::TBaseCell<dim> *neibcell);
 
  //methods 
 

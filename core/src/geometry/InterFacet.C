@@ -20,7 +20,7 @@ TInterFacet<dim>::TInterFacet(FacetType type,  std::size_t id, std::size_t N_Ver
 
 /** constructor with one initial neighbour */
 template <sint dim> 
-TInterFacet<dim>::TInterFacet(SParSH::TCellDesc<dim> *owncell) : 
+TInterFacet<dim>::TInterFacet(SParSH::TBaseCell<dim> *owncell) : 
                   TFacet<dim>()
 {
  // make OwnCell as dependent by using this->
@@ -29,7 +29,7 @@ TInterFacet<dim>::TInterFacet(SParSH::TCellDesc<dim> *owncell) :
 
  /** constructor with two initial neighbours */
  template <sint dim> 
-TInterFacet<dim>::TInterFacet(SParSH::TCellDesc<dim> *owncell, SParSH::TCellDesc<dim> *neibcell):
+TInterFacet<dim>::TInterFacet(SParSH::TBaseCell<dim> *owncell, SParSH::TBaseCell<dim> *neibcell):
                   TFacet<dim>()
 {
  this->OwnCell = owncell;
