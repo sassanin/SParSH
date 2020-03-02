@@ -308,7 +308,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    }// for(std::size_t i_edge=0
 
    /** store the unique boundaries in the mesh */
-  localmesh->AddBoundIDs(std::move(UniqueBdMarker));
+  // localmesh->AddBoundIDs(std::move(UniqueBdMarker));
 
   unique_ptr<TBoundFacet<dim>> BDFacet;
   std::size_t* BDFacet_ptr = BdMarker.data();
@@ -323,7 +323,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
      if(BoundaryMarker>99 && BoundaryMarker<199 )
        BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, FacetVert);
-     localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
+    //  localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
    }
 
   size_t N_FacetPerCell, N_RootCells;
@@ -362,10 +362,10 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    {
      ErrMsg("Trianlge_3 is not selected in Readin your file for Gmsh");
      exit(0);
-   }
+  }
 
-  std::size_t threei;
-  for (size_t i=0;i<N_RootCells; ++i)
+   std::size_t threei;
+   for (size_t i=0;i<N_RootCells; ++i)
    {
     dat.getline (line, 99);
     dat >> v1 >> v2 >> v3  >> CellMarker;  
@@ -513,9 +513,9 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
            output("Error !!!!!!!! in finding face neighbours!");
            exit(0);  
           }
-      } // 
+      } // ii
 
-  //  exit(0);
+     //  exit(0);
 
 
          //  cout<<" N_Facets  : " << x.get().GetN_Facets() << endl;

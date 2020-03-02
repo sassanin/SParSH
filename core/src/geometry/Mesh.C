@@ -18,7 +18,9 @@ SParSH_NAMESPACE_BEGIN
 template <sint dim> 
 TMesh<dim>::TMesh() 
  {
-  
+  N_InnerFacets = 0;
+  N_InterfaceFacts = 0;
+  N_BoundaryFacts = 0;   
  }
 
 template <sint dim> 
@@ -39,36 +41,36 @@ vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection()
   return CellsRefs;
 }
 
-template <sint dim> 
-void TMesh<dim>::AddBoundIDs(vector<size_t> && BDIDs)
-{
+// template <sint dim> 
+// void TMesh<dim>::AddBoundIDs(vector<size_t> && BDIDs)
+// {
 
- BoundIDs = move(BDIDs);
+//  BoundIDs = move(BDIDs);
 
- /** Array contains the internal facets and boundary factes */ 
- Facets.reserve(BoundIDs.size()+1);
+//  /** Array contains the internal facets and boundary factes */ 
+//  Facets.reserve(BoundIDs.size()+1);
 
-//  for(size_t i_edge=0; i_edge<BoundIDs.size(); ++i_edge)
-//        cout << "BDIDs[i] :" << BoundIDs[i_edge] << endl;
+// //  for(size_t i_edge=0; i_edge<BoundIDs.size(); ++i_edge)
+// //        cout << "BDIDs[i] :" << BoundIDs[i_edge] << endl;
 
-}// AddVertex
+// }// AddVertex
 
-template <sint dim> 
-size_t TMesh<dim>::GetBoundIndex(size_t BDID)
- {
-  size_t i_edge;
+// template <sint dim> 
+// size_t TMesh<dim>::GetBoundIndex(size_t BDID)
+//  {
+//   size_t i_edge;
 
-  for( i_edge=0; i_edge<BoundIDs.size(); ++i_edge)
-   if(BDID == BoundIDs[i_edge])
-    { break; }
+//   for( i_edge=0; i_edge<BoundIDs.size(); ++i_edge)
+//    if(BDID == BoundIDs[i_edge])
+//     { break; }
 
-  try { if (i_edge == BoundIDs.size()) throw runtime_error("Could not find the BD for the given component");  }
+//   try { if (i_edge == BoundIDs.size()) throw runtime_error("Could not find the BD for the given component");  }
 
-  catch (exception &ex)
-    { sarshpout(ex); exit(-1); }
+//   catch (exception &ex)
+//     { sarshpout(ex); exit(-1); }
 
-  return (i_edge);
- }
+//   return (i_edge);
+//  }
 
 // explicit instantiation
 template class TMesh<GEO_DIM>;

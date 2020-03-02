@@ -29,15 +29,23 @@ class TMesh {
   /** \brief list of IDs of physical Boundaries */
   vector<size_t>  BoundIDs;
 
-  /** \brief Facets contains the list of all boundaries of all cell in this mesh:
+  /** \brief   list of all Facets in this mesh:
+   * first inner facet, then interface and finally boundary facets
    *         face in 3d, edge in 2d, vertex in 1d   */
-  vector<vector<shared_ptr<SParSH::TFacet<dim>> > > Facets; 
+  vector<shared_ptr<SParSH::TFacet<dim>>> Facets; 
+
+  /** \brief No. of inner facets */
+  size_t N_InnerFacets = 0;
+
+  /** \brief No. of interface facets */
+  size_t N_InterfaceFacts = 0;
+
+  /** \brief No. of interface facets */
+  size_t N_BoundaryFacts = 0;
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
   vector<unique_ptr<TBaseCell<dim>>> Cells; 
-
-
 
   private:
 
@@ -72,16 +80,16 @@ class TMesh {
   /** \brief adding list of IDs  of physical Boundaries  */
   void AddBoundIDs(vector<size_t> && BDIDs);
 
-  /** \brief  add a BDFacet to the mesh */
-  void MoveBDFacet(unique_ptr<TFacet<dim>> && facet, size_t BDID)
-  { 
-   size_t idx = this->GetBoundIndex(BDID);
-   Facets[idx].push_back(move(facet)); 
-  }
+  // /** \brief  add a BDFacet to the mesh */
+  // void MoveBDFacet(unique_ptr<TFacet<dim>> && facet, size_t BDID)
+  // { 
+  //  size_t idx = this->GetBoundIndex(BDID);
+  //  Facets[idx].push_back(move(facet)); 
+  // }
 
-  /** \brief  Return the array of facets for given BoundIDs. Default for internal facets is 0 */
-  const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID)
-  { return Facets[this->GetBoundIndex(BDID)]; }
+  // /** \brief  Return the array of facets for given BoundIDs. Default for internal facets is 0 */
+  // const vector<shared_ptr<SParSH::TFacet<dim>> > GetFacets(size_t BDID)
+  // { return Facets[this->GetBoundIndex(BDID)]; }
   
 
 
