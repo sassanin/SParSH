@@ -37,8 +37,8 @@ class TFacet {
  /** \brief ID (inner is 0) of the facet */
  size_t ID;
 
- /** \brief raw pointer of vertices in this facet */
- vector<TVertex<dim> *> Vertices; 
+ /** \brief Indices of vertices in this facet */
+ vector<size_t> VertIndices; 
 
  /** \brief raw pointers for the own and neib cells */
  SParSH::TBaseCell<dim> *OwnCell, *NeibCell;
@@ -51,7 +51,7 @@ class TFacet {
  TFacet();
 
  /** \brief  Default constructor with coordinates of the vertex */
- TFacet(SParSH::FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert);
+ TFacet(SParSH::FacetType type, size_t id, size_t N_Vert, vector<size_t>::iterator itr);
 
  //methods 
 

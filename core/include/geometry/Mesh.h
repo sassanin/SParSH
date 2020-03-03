@@ -32,7 +32,7 @@ class TMesh {
   /** \brief   list of all Facets in this mesh:
    * first inner facet, then interface and finally boundary facets
    *         face in 3d, edge in 2d, vertex in 1d   */
-  vector<shared_ptr<SParSH::TFacet<dim>>> Facets; 
+  vector<unique_ptr<TFacet<dim>>> Facets; 
 
   /** \brief No. of inner facets */
   size_t N_InnerFacets = 0;

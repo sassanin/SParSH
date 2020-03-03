@@ -14,14 +14,14 @@ TFacet<dim>::TFacet()
  }
  
 template <sint dim> 
-TFacet<dim>::TFacet(SParSH::FacetType type, size_t id, size_t N_Vert, TVertex<dim> **Vert)
+TFacet<dim>::TFacet(SParSH::FacetType type, size_t id, size_t N_Vert, vector<size_t>::iterator itr)
  {
   Type = type;
   ID = id;
 
-  for(std::size_t i; i<N_Vert ; ++i )
+  for(std::size_t i=0; i<N_Vert ; ++i )
     {
-     Vertices.push_back(Vert[i]);
+     VertIndices.push_back(itr[i]);
     }
 
   OwnCell = NULL;

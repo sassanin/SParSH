@@ -5,8 +5,8 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TBoundFacet<dim>::TBoundFacet(SParSH::FacetType type,  std::size_t id, std::size_t N_Vert, TVertex<dim> **Vert) :
-                  TFacet<dim>(type, id, N_Vert, Vert)
+TBoundFacet<dim>::TBoundFacet(SParSH::FacetType type,  std::size_t id, std::size_t N_Vert, vector<size_t>::iterator itr) :
+                  TFacet<dim>(type, id, N_Vert, itr)
  {
 
   bool IsBDFacet = false;

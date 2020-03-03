@@ -7,8 +7,8 @@
 SParSH_NAMESPACE_BEGIN
 
 template <sint dim> 
-TInnerFacet<dim>::TInnerFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  TVertex<dim> **Vert) :
-                  TFacet<dim>(type, id, N_Vert, Vert)
+TInnerFacet<dim>::TInnerFacet(FacetType type,  std::size_t id, std::size_t N_Vert,  vector<size_t>::iterator itr) :
+                  TFacet<dim>(type, id, N_Vert, itr)
  {
 
   try { 

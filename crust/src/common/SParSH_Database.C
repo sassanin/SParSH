@@ -252,10 +252,6 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
      dat >> X[0] >> X[1] >> X[2];      
  
      NewVertices[i_vert] = make_unique<TVertex<dim>>(X);
-    //  localmesh->AddVertex(std::move(vert));
-
-     //svert = localmesh->GetVerticesAT(i_vert);
-     //svert->GetCoords(Y);
    } 
 
   localmesh->SetVertices(std::move(NewVertices));
@@ -310,19 +306,24 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    /** store the unique boundaries in the mesh */
   // localmesh->AddBoundIDs(std::move(UniqueBdMarker));
 
-  unique_ptr<TBoundFacet<dim>> BDFacet;
-  std::size_t* BDFacet_ptr = BdMarker.data();
-  TVertex<dim> *FacetVert[2];
+  vector<unique_ptr<TBoundFacet<dim>>> BDFacets;
+  vector<size_t>::iterator it = BdEdges.begin();
+  vector<size_t>::iterator itr;
 
   for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
-     /**\brief Boundary Marker ID must be in the range of 100 and 199 */
-     BoundaryMarker = BdMarker[i_edge];
-     FacetVert[0] = localmesh->GetVerticesAT(BdEdges[2*i_edge]);
-     FacetVert[1] = localmesh->GetVerticesAT(BdEdges[(2*i_edge) + 1]);
+    /**\brief Boundary Marker ID must be in the range of 100 and 199 */
+    BoundaryMarker = BdMarker[i_edge];
+    itr = next(it, 2*i_edge);
 
      if(BoundaryMarker>99 && BoundaryMarker<199 )
-       BDFacet = make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, FacetVert);
+      { 
+       BDFacets.push_back(std::move(make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, itr)));       
+      }
+      else
+      {
+        ErrMsg("BoundaryMarker should be between 99 an 199 in GmSH file");
+      }
     //  localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
    }
 
@@ -360,7 +361,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    { TriaRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)]).get();}
    else
    {
-     ErrMsg("Trianlge_3 is not selected in Readin your file for Gmsh");
+     ErrMsg("Trianlge_3 is not selected in Readin file for Gmsh");
      exit(0);
   }
 
@@ -413,23 +414,24 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    // generate new edges
    int N_Facets, k, kk, iii, a, b, Neib[2], CurrNeib, len1, len2, Neighb_tmp;
    int neib0marker, neib1marker;
-   vector<size_t>::iterator  it = CellVertices.begin();
-   vector<size_t>::iterator Cell_itr;
+
    TBaseCell<dim> *cell, *neib0, *neib1;  
    unique_ptr<TInnerFacet<dim>> InnerFacet;    
    vector<reference_wrapper<TBaseCell<dim>>> Cells = localmesh->GetCollection();
+   int FacetIDX = 0;
 
+   it = CellVertices.begin();
    for(size_t i=0;i<N_RootCells; ++i)   
     {   
      cell = &Cells[i].get();
      N_Facets = cell->GetN_Facets();
-     Cell_itr = next(it, 3*i);
+     itr = next(it, 3*i);
   
      for(size_t ii=0;ii<N_Facets; ++ii)
       {
         kk = (ii+1)%3;
-        a = Cell_itr[ii];
-        b = Cell_itr[kk];
+        a = itr[ii];
+        b = itr[kk];
         Neib[0] = -1;
         Neib[1] = -1;
         CurrNeib = 0;
@@ -496,16 +498,20 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
          else if (CurrNeib == 1) // Boundary face
           {
 
-           for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
-            {
- 
-              if( a==BdEdges[2*i_edge] && b== BdEdges[2*i_edge+1])
-              {
-               output("found Bdedge")
-              }
-
+          //  for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
+            // {
+              // if(a==BdEdges[2*i_edge] && b== BdEdges[2*i_edge+1])
+              // {
+              //  output("found Bdedge")
+              //  ++FacetIDX;
+              // }
+            //   else if (b==BdEdges[2*i_edge] && a== BdEdges[2*i_edge+1])
+            //  {
+            //   //  output("found Bdedge")
+            //    FacetIDX +=1;
+            //   }     
               
-            }
+            // }
 
           } //  else if (CurrNeib == 1)
          else
@@ -517,12 +523,13 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
      //  exit(0);
 
-
+  FacetIDX = 3;
          //  cout<<" N_Facets  : " << x.get().GetN_Facets() << endl;
       // &x->SetVertGlobalIdx(0, v1);
     } // for(size_t i=0;
 
-
+   cout << " FacetIDX " << ++FacetIDX << endl;
+   output(++FacetIDX);
    cout<<N_RootCells <<  " maxEpV : " << Cells.size() << endl;
   //  output(maxEpV);
 
