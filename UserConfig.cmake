@@ -28,14 +28,14 @@ set(CMAKE_VERBOSE_MAKEFILE FALSE)
 
 
 
-# selection of architect type (LINUX64 MAC64 INTEL64 TYRONE64 CRAY64)
-set(SParSH_ARCH "INTEL64" CACHE STRING "select the machine type")
+# selection of architect type (LINUX64 MAC64 INTEL64 AMD64 TYRONE64 CRAY64)
+set(SParSH_ARCH "AMD64" CACHE STRING "select the machine type")
 
 #  selection of program type (SEQUENTIAL SMPI MPI OMPONLY HYBRID)
 set(SParSH_PARALLEL_TYPE "SEQUENTIAL" CACHE STRING "select the parallel type")
 
-#  selection of program type (MPICH OPENMPI INTELMPI CRAYMPI MACMPI)
-set(SParSH_MPI_IMPLEMENTATION "INTELMPI" CACHE STRING "select the MPI Implementation type")
+#  selection of program type (MPICH OPENMPI INTELMPI AMDMPI CRAYMPI MACMPI)
+set(SParSH_MPI_IMPLEMENTATION "AMDMPI" CACHE STRING "select the MPI Implementation type")
  
 # set the path to save the exe file ....................................................................................
 #.......................................................................................................................
@@ -57,7 +57,8 @@ set(EXE_BUILD_TYPE DEBUG)
 
 # set FALSE, if you want to use libs provided in SParSH 
 # if you set TRUE, it will search in all you lib paths and if not found, SParSH libs will be used
-set(SParSH_USE_SYSTEM_MKLBLAS TRUE)
+set(SParSH_USE_SYSTEM_MKLBLAS FALSE)
+set(SParSH_USE_SYSTEM_AMDBLAS TRUE)
 set(SParSH_USE_SYSTEM_UMFPACK TRUE)
 set(SParSH_USE_SYSTEM_MUMPS TRUE)
 set(SParSH_USE_SYSTEM_GRIDGEN TRUE)
@@ -84,13 +85,13 @@ elseif("${SParSH_GEO}" STREQUAL "3D")
 endif()  
 
 # selection of all architects
-set_property(CACHE SParSH_ARCH PROPERTY STRINGS LINUX64 MAC64 INTEL64 TYRONE64 CRAY64)
+set_property(CACHE SParSH_ARCH PROPERTY STRINGS LINUX64 MAC64 INTEL64 AMD64 TYRONE64 CRAY64)
 
 # selection of all program types
 set_property(CACHE SParSH_PARALLEL_TYPE PROPERTY STRINGS SEQUENTIAL SMPI MPI OMPONLY HYBRID)
 
 # selection of all program types
-set_property(CACHE SParSH_MPI_IMPLEMENTATION PROPERTY STRINGS MPICH OPENMPI INTELMPI CRAYMPI MACMPI)
+set_property(CACHE SParSH_MPI_IMPLEMENTATION PROPERTY STRINGS MPICH OPENMPI INTELMPI AMDMPI CRAYMPI MACMPI)
 
 # selection of all output folder
 if("${SParSH_GEO}" STREQUAL "2D")
@@ -123,6 +124,9 @@ endif()
  elseif("${SParSH_ARCH}" STREQUAL "INTEL64")
    set(SParSH_CXX_DEF "${SParSH_CXX_DEF}  -std=c++1z  -qopenmp ")
    set(SParSH_C_DEF "  ${SParSH_C_DEF}   -DREDUCED -DNO_TIMER -DMKL_ILP64 -m64  ")
+ elseif("${SParSH_ARCH}" STREQUAL "AMD64")
+   set(SParSH_CXX_DEF "${SParSH_CXX_DEF} -fstruct-layout=5 -std=c++1z ")
+   set(SParSH_C_DEF "  ${SParSH_C_DEF}   -DREDUCED -DNO_TIMER -m64  ")   
  elseif("${SParSH_ARCH}" STREQUAL "TYRONE64")
    set(SParSH_CXX_DEF "${SParSH_CXX_DEF} -DREDUCED -DNO_TIMER")
    set(SParSH_C_DEF "  ${SParSH_C_DEF}  -DREDUCED -DNO_TIMER  -DMPICH_IGNORE_CXX_SEEK ")  
