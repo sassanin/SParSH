@@ -7,6 +7,7 @@
 ===========================================================================*/
 
 #include <SParSH_Variables.h>
+#include <iostream>
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
@@ -35,6 +36,9 @@ class TVertex {
   /** \brief  Return the address of the vertex */
   double* GetCoordsPtr()
   { return V; }
+
+  /** write the Vert coords to the given dat */
+  void WriteVert(std::ofstream &dat);
   
   /** \brief  Return the type (bpoundary vertex or not) of the vertex */
   bool IsBoundVert();

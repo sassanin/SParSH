@@ -8,11 +8,15 @@
 ===========================================================================*/
 #include <SParSH_Variables.h>
 #include <RefineDesc.h>
-// #include <Facet.h>
 #include <memory>
+
+/** forward decleration */
+
 
 #pragma once
 SParSH_NAMESPACE_BEGIN
+template <sint dim> 
+class TFacet;
 
 template <sint dim > 
 class TBaseCell {
@@ -26,8 +30,8 @@ class TBaseCell {
   int N_Facets;
 
   /**  @brief array of all joints */
-  // vector<unique_ptr<TFacet<dim>>> Facets;
-
+  vector<shared_ptr<TFacet<dim>>> Facets;
+ 
   /** Phase ID of the cell , default 0 */  
   int PhaseID;
 
@@ -40,6 +44,10 @@ class TBaseCell {
   TBaseCell(TRefineDesc<dim> *refindesc);
 
   //methods 
+
+  /**\brief set Facet to this cell   */
+  void SetFacet(int i, shared_ptr<TFacet<dim>> facet)
+  { Facets.at(i) = facet; }
 
   /**\brief set PhaseID to this cell   */
   void SetPhaseID(int val)

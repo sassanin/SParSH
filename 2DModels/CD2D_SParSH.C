@@ -23,13 +23,10 @@ int main(int argc, char* argv[])
   /** initiate the database with the give readin file (argv[1]) at execution */
   unique_ptr<TSParSH_Database<GEO_DIM> > DataBase(make_unique<TSParSH_Database<GEO_DIM>>(argv[1]));
  
-  
-  //std::cout<<  " ParamDB : " << TSParSH_Database<2>::ParamDB.UserIntParameter.size() <<" :  "<<endl;
+  /** Generate mesh with the givem mesh file */
+  DataBase->GenerateGmsh(SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0]);
 
-  // cout << " outstring : "<< SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0] <<endl;
-
-  DataBase->GenerateGmsh( SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0] );
-
+  SParSH::TSParSH_Database<2>::Domain->WriteVTKMesh();
 
     int N = 100000;
     vector<int> values(100000); 

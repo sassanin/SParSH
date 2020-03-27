@@ -33,6 +33,19 @@ bool TVertex<dim, BD_Vert>::IsBoundVert()
   return BD_Vert;
  }
 
+template <sint dim, bool BD_Vert> 
+void TVertex<dim, BD_Vert>::WriteVert(std::ofstream &dat)
+ {
+  for(int i=0; i<dim; ++i)
+   dat << V[i] << " ";
+
+  if(dim==1)
+   { dat << double(0) << " " <<  double(0)  << endl; }
+  else if(dim==2)
+   { dat << double(0)  << endl; }
+ }
+
+
 // explicit instantiation
  template class TVertex<SParSH::GEO_DIM>;
 

@@ -13,9 +13,19 @@ SParSH_NAMESPACE_BEGIN
 template <sint dim> 
 TGridCell<dim>::TGridCell(TRefineDesc<dim> *refindesc, int reflevel) : TBaseCell<dim>(refindesc)
 {
- GlobalVertIndex.reserve( (this->RefinDesc)->GetN_OrigVertices() );
+ GlobalVertIndex.resize( (this->RefinDesc)->GetN_OrigVertices() );
  RegionID = 0;
 }
+
+template <sint dim> 
+void TGridCell<dim>::WriteCell(std::ofstream &dat)
+ {
+  int N = size(GlobalVertIndex);
+  dat <<  N << " ";
+  for(int i=0; i<N; ++i) 
+   dat << GlobalVertIndex[i] << " ";
+  dat << endl;
+ }
 
 // explicit instantiation
 template class TGridCell<SParSH::GEO_DIM>;

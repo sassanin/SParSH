@@ -24,7 +24,7 @@ class TMesh {
  protected: 
 
   /** \brief Vertices contains the list of all vertices in this mesh. */
-  vector< unique_ptr< TVertex<dim> > > Vertices; 
+  vector< shared_ptr< TVertex<dim> > > Vertices; 
 
   /** \brief list of IDs of physical Boundaries */
   vector<size_t>  BoundIDs;
@@ -32,7 +32,7 @@ class TMesh {
   /** \brief   list of all Facets in this mesh:
    * first inner facet, then interface and finally boundary facets
    *         face in 3d, edge in 2d, vertex in 1d   */
-  vector<unique_ptr<TFacet<dim>>> Facets; 
+  vector<shared_ptr<TFacet<dim>>> Facets; 
 
   /** \brief No. of inner facets */
   size_t N_InnerFacets = 0;
@@ -45,11 +45,11 @@ class TMesh {
 
   /** \brief Cells contains the list of cells/elements in this mesh:
    *         tetra/pyra/Prism/hexa in 3d, tria/quad in 2d, line in 1d  */
-  vector<unique_ptr<TBaseCell<dim>>> Cells; 
+  vector<shared_ptr<TGridCell<dim>>> Cells; 
 
   private:
 
-  std::vector<reference_wrapper<TBaseCell<dim>>> CellsRefs; 
+  std::vector<reference_wrapper<TGridCell<dim>>> CellsRefs; 
 
    /** \brief return the locallly stored index for the given BDID */
   size_t GetBoundIndex(size_t BDID);
@@ -60,18 +60,21 @@ class TMesh {
   TMesh();
 
   // methods 
-  /** \brief  set a set of vertires to the mesh */
-  void SetVertices(vector<unique_ptr<TVertex<dim>>> && Verticies)
-  { Vertices = std::move(Verticies); }
+  /** \brief  set of vertires of the mesh */
+  void MoveVertices(vector<shared_ptr<TVertex<dim>>> && vertices)
+  { 
+    Vertices = std::move(vertices);
+  }
 
   /** \brief  add a vertex to the mesh */
   void AddVertex(unique_ptr<TVertex<dim>> && Vert)
   { Vertices.push_back(move(Vert)); }
 
-  void AddCellTree(vector<unique_ptr<TBaseCell<dim>>> && cells)
-  { Cells = std::move(cells); }
+  /** \brief move the cells to this mesh */
+  void MoveCellTree(vector<shared_ptr<TGridCell<dim>>>  && cells_all)
+  { Cells = std::move(cells_all); }
 
-  vector<reference_wrapper<TBaseCell<dim>>> GetCollection();
+  vector<reference_wrapper<TGridCell<dim>>> GetCollection();
 
   //send the raw pointer of the vertex V[at]
   TVertex<dim>* GetVerticesAT(size_t pos)
@@ -79,6 +82,29 @@ class TMesh {
 
   /** \brief adding list of IDs  of physical Boundaries  */
   void AddBoundIDs(vector<size_t> && BDIDs);
+
+  /** \brief Set the N_InnerFacets */
+  void SetN_InnerFacets(size_t n)
+  {N_InnerFacets= n;}
+
+  /** \brief Set the N_InterfaceFacts */
+  void SetN_InterfaceFacets(size_t n)
+  {N_InterfaceFacts= n;}
+
+  /** \brief Set the N_BoundaryFacts */
+  void SetN_BoundaryFacts(size_t n)
+  {N_BoundaryFacts= n;}
+
+  /** \brief  store all Facets of this mesh */
+  void MoveFacets(vector<shared_ptr<TFacet<dim>>> && facets_all)
+  {  Facets = std::move(facets_all);  }
+
+  /** Send N_Vertices in the mesh */
+  int GetN_Vertices()
+  { return Vertices.size(); }
+
+  /** Writing the vertices in the give dat file */
+  void WriteMesh(std::ofstream &dat);
 
   // /** \brief  add a BDFacet to the mesh */
   // void MoveBDFacet(unique_ptr<TFacet<dim>> && facet, size_t BDID)

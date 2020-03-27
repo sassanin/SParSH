@@ -243,7 +243,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
   std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>());
   // std::cout<<  " localmesh size :  " << sizeof(localmesh) <<endl;
 
-  vector<unique_ptr<TVertex<dim>>> NewVertices(N_Vertices);
+  vector<shared_ptr<TVertex<dim>>> NewVertices(N_Vertices);
   
   double X[3], Y[3];
   for(std::size_t i_vert=0; i_vert<N_Vertices; ++i_vert)
@@ -251,10 +251,10 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
      dat.getline (line, 99);
      dat >> X[0] >> X[1] >> X[2];      
  
-     NewVertices[i_vert] = make_unique<TVertex<dim>>(X);
+     NewVertices[i_vert] = make_shared<TVertex<dim>>(X);
    } 
 
-  localmesh->SetVertices(std::move(NewVertices));
+  localmesh->MoveVertices(std::move(NewVertices));
 
   std::size_t NBDEdges;
   while (!dat.eof())
@@ -275,9 +275,8 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
   std::vector<std::size_t> BdEdges(2*NBDEdges);
   std::vector<std::size_t> BdMarker(NBDEdges);
-  std::vector<std::size_t> UniqueBdMarker;
+  // std::vector<std::size_t> UniqueBdMarker;
   bool Mark;
-  // std::cout<<  BdMarker.size() << " Size of BdEdges :  " << sizeof( BdEdges)  <<endl;
 
   for(std::size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
@@ -286,45 +285,44 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     BdEdges[2*i_edge] = v1-1; // C-format,  
     BdEdges[2*i_edge+1] = v2-1; // C-format, 
     BdMarker[i_edge] = BoundaryMarker; 
-    Mark=true;
-    for(std::size_t j_edge=0; j_edge<UniqueBdMarker.size(); ++j_edge)
-      {
-       if(UniqueBdMarker[j_edge]==BoundaryMarker) 
-        {
-         Mark = false; 
-         break;
-        }
-      }
+    // Mark=true;
+    // for(std::size_t j_edge=0; j_edge<UniqueBdMarker.size(); ++j_edge)
+    //   {
+    //    if(UniqueBdMarker[j_edge]==BoundaryMarker) 
+    //     {
+    //      Mark = false; 
+    //      break;
+    //     }
+    //   }
 
-    if(Mark)
-     {
-      UniqueBdMarker.push_back(BoundaryMarker); 
-     }
+    // if(Mark)
+    //  {
+    //   UniqueBdMarker.push_back(BoundaryMarker); 
+    //  }
 
    }// for(std::size_t i_edge=0
 
    /** store the unique boundaries in the mesh */
   // localmesh->AddBoundIDs(std::move(UniqueBdMarker));
 
-  vector<unique_ptr<TBoundFacet<dim>>> BDFacets;
-  vector<size_t>::iterator it = BdEdges.begin();
-  vector<size_t>::iterator itr;
+  vector<shared_ptr<TFacet<dim>>> BDFacets;
+  vector<size_t>::iterator itBd = begin(BdEdges);
+  vector<size_t>::iterator itrB;
 
   for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
    {
     /**\brief Boundary Marker ID must be in the range of 100 and 199 */
     BoundaryMarker = BdMarker[i_edge];
-    itr = next(it, 2*i_edge);
+    itrB = next(itBd, 2*i_edge);
 
      if(BoundaryMarker>99 && BoundaryMarker<199 )
       { 
-       BDFacets.push_back(std::move(make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, itr)));       
+       BDFacets.push_back(std::move(make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, BoundaryMarker, 2, itrB)));       
       }
       else
       {
         ErrMsg("BoundaryMarker should be between 99 an 199 in GmSH file");
       }
-    //  localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);
    }
 
   size_t N_FacetPerCell, N_RootCells;
@@ -353,7 +351,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
   // cout<<"Number of RootCells: "<< N_RootCells<<endl;
 
   vector<size_t> CellVertices(3*N_RootCells);
-  vector<unique_ptr<TBaseCell<dim>>> CellTree(N_RootCells);
+  vector<shared_ptr<TGridCell<dim>>> CellTree(N_RootCells);
 
   TRefineDesc<dim> *TriaRefDesc;
   /* get the raw pointer of tria_3 */
@@ -376,7 +374,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     CellVertices[threei + 1] = --v2; // C-format,  
     CellVertices[threei + 2] = --v3; // C-format,  
       
-    CellTree[i] = make_unique<TGridCell<dim>>(TriaRefDesc, 0);
+    CellTree[i] = make_shared<TGridCell<dim>>(TriaRefDesc, 0);
     CellTree[i]->SetVertGlobalIdx(0, v1);
     CellTree[i]->SetVertGlobalIdx(1, v1);
     CellTree[i]->SetVertGlobalIdx(2, v3);
@@ -384,10 +382,8 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     //  CellTree[i]->SetClipBoard(i);     
     }
    
-    localmesh->AddCellTree(std::move(CellTree));
-
-    //  for(std::size_t i_edge=0; i_edge<UniqueBdMarker.size(); ++i_edge)
-      //  cout << "z[i] :" << UniqueBdMarker[i_edge] << endl;
+   /** move the cells to the mesh */
+   localmesh->MoveCellTree(std::move(CellTree));
 
    // search neighbours
    vector<int> PointNeighb(N_RootCells,0); 
@@ -412,26 +408,31 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
     }
 
    // generate new edges
-   int N_Facets, k, kk, iii, a, b, Neib[2], CurrNeib, len1, len2, Neighb_tmp;
+   int N_Facets, k, kk, a, b, Neib[2], CurrNeib, len1, len2, Neighb_tmp;
    int neib0marker, neib1marker;
+   size_t i_edge;
 
    TBaseCell<dim> *cell, *neib0, *neib1;  
-   unique_ptr<TInnerFacet<dim>> InnerFacet;    
-   vector<reference_wrapper<TBaseCell<dim>>> Cells = localmesh->GetCollection();
+   shared_ptr<TFacet<dim>> facet;  
+   vector<shared_ptr<TFacet<dim>>> InnerFacets; 
+   vector<shared_ptr<TFacet<dim>>> InterFacets;     
+   vector<reference_wrapper<TGridCell<dim>>> Cells = localmesh->GetCollection();
    int FacetIDX = 0;
 
-   it = CellVertices.begin();
+   vector<size_t>::iterator itVert = CellVertices.begin();
+   vector<size_t>::iterator itrV;
+   vector<size_t>::iterator itr_j;   
    for(size_t i=0;i<N_RootCells; ++i)   
     {   
      cell = &Cells[i].get();
      N_Facets = cell->GetN_Facets();
-     itr = next(it, 3*i);
+     itrV = next(itVert, 3*i);
   
      for(size_t ii=0;ii<N_Facets; ++ii)
       {
         kk = (ii+1)%3;
-        a = itr[ii];
-        b = itr[kk];
+        a = itrV[ii];
+        b = itrV[kk];
         Neib[0] = -1;
         Neib[1] = -1;
         CurrNeib = 0;
@@ -439,101 +440,152 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
         len1 = PointNeighb[a*maxEpV];
         len2 = PointNeighb[b*maxEpV];
 
-         // find indices of cells containing the current edge/facet
-         for(iii=1;iii<=len1;iii++)
-          {
-           Neighb_tmp = PointNeighb[a*maxEpV + iii];
-           for (k=1;k<=len2;k++)
-            if (Neighb_tmp == PointNeighb[b*maxEpV + k])
-             {
-              Neib[CurrNeib++] = Neighb_tmp;
-              break;
-             } 
-           if (CurrNeib == 2) break;
-          } // for (j=1;j<=len1;j++
+        // find indices of cells containing the current edge/facet
+        for(j=1;j<=len1;j++)
+        {
+          Neighb_tmp = PointNeighb[a*maxEpV + j];
+          for (k=1;k<=len2;k++)
+           if (Neighb_tmp == PointNeighb[b*maxEpV + k])
+            {
+             Neib[CurrNeib++] = Neighb_tmp;
+             break;
+            } 
+          if (CurrNeib == 2) break;
+        } // for (j=1;j<=len1;j++
 
         // inner edge or interface between two domains
         if(CurrNeib == 2)
-         {
-          neib0 = &Cells[Neib[0]].get();            
-          neib1 = &Cells[Neib[1]].get();         
+        {
+          // neib0 = &Cells[Neib[0]].get();  
+          neib0 = &Cells.at(Neib[0]).get();          
+          neib1 = &Cells.at(Neib[1]).get();     
+              
           neib0marker = neib0->GetPhaseID();
           neib1marker = neib1->GetPhaseID();    
       
           if(neib0marker==neib1marker)   
-           {
-            InnerFacet = make_unique<TInnerFacet<dim>>(neib0, neib1);
-            // localmesh->MoveBDFacet(std::move(BDFacet), BoundaryMarker);            
-           }
+          {
+            facet = make_shared<TInnerFacet<dim>>(neib0, neib1);
+            InnerFacets.push_back(facet);          
+          }
           else // interface joint
+          {
+           //  TInterfaceJoint::CheckOrientation()
+           ErrMsg("Yet to be implemented");
+          } // else    
+        } //  if(CurrNeib == 2)
+        else if (CurrNeib == 1) // Boundary face
+        {
+         /** Get the index of the BDEdge */
+         for(i_edge=0; i_edge<NBDEdges; ++i_edge)
            {
-          //    CompID = GetBDEdgeCompID(a, b, NBdEdges,  BdEdges, BdMarkers);  
-  
-          //    if(CompID>=2000)
-          //    { BdID = CompID + N_BdEdgeComp -2000; } // interface ID markers are in 2000s 
-          //    else
-          //    { BdID = CompID - 1000; } // PlaneBD ID markers are in 1000s
+            itrB = next(itBd, 2*i_edge);
+            if( (a==itrB[0] || b==itrB[0])  && (a==itrB[1] || b==itrB[1]))
+             { break; }  
+           }
 
-          //    BdComp = BdParts[0]->GetBdComp(BdID);
-
-          //    if(UsePRM!=0)
-          //    { 
-          //     if(BdComp->GetTofXY(NewVertices[a]->GetX(), NewVertices[a]->GetY(), T[1]) ||
-          //        BdComp->GetTofXY(NewVertices[b]->GetX(), NewVertices[b]->GetY(), T[2]))
-          //       {
-          //        cerr<<"Error: could not set parameter values"<<endl;
-          //        OutPut(NewVertices[a]<<endl);
-          //        OutPut(NewVertices[b]<<endl);
-          //        cout << " CurrComp " << CurrComp <<endl;
-          //        //  exit(0);
-          //       }
-          //     }
-                
-          //    if(CompID>=2000)
-          //     { Joint = new TIsoInterfaceJoint(BdComp, T[1], T[2], neib0, neib1); }
-          //    else
-          //     { Joint = new TInterfaceJoint(BdComp, T[1], T[2], neib0, neib1); }
-            } // else    
-          } //  if(CurrNeib == 2)
-         else if (CurrNeib == 1) // Boundary face
+          if(i_edge==NBDEdges)
           {
-
-          //  for(size_t i_edge=0; i_edge<NBDEdges; ++i_edge)
-            // {
-              // if(a==BdEdges[2*i_edge] && b== BdEdges[2*i_edge+1])
-              // {
-              //  output("found Bdedge")
-              //  ++FacetIDX;
-              // }
-            //   else if (b==BdEdges[2*i_edge] && a== BdEdges[2*i_edge+1])
-            //  {
-            //   //  output("found Bdedge")
-            //    FacetIDX +=1;
-            //   }     
-              
-            // }
-
-          } //  else if (CurrNeib == 1)
-         else
-          {
-           output("Error !!!!!!!! in finding face neighbours!");
+           output("Error !!!!!!!! in finding BDFacet !");
            exit(0);  
           }
+
+         /** store BDFacets in cell order */
+         std::swap(BDFacets[FacetIDX], BDFacets[i_edge]);
+         facet = BDFacets[FacetIDX];
+         FacetIDX++;
+        //  itrB = find_if(begin(itBd, end(BdEdges),[a,b]( ){}  )
+
+        } //  else if (CurrNeib == 1)
+        else
+        {
+          output("Error !!!!!!!! in finding face neighbours!");
+          exit(0);  
+        }
+
+        // find the local index for the point 'a' on the cell
+         itr_j = next(itVert, 3*Neib[0]);
+         for (j=0;j<3;j++)
+          if (itr_j[j] == a) break;
+
+         // find the local index for the point 'b' on the cell 
+         for (k=0;k<3;k++)
+          if (itr_j[k] == b) break;
+
+         k = k*10 + j;
+         switch (k)
+         {
+          case  1:
+          case 10:
+             j = 0;
+          break;
+          case 12:
+          case 21:
+             j = 1;
+          break;
+          case  2:
+          case 20:
+            j = 2;
+          break;
+         }
+
+         /** set the local facet to the cell */
+         neib0->SetFacet(j, facet);
+         if (Neib[1] != -1)
+         {
+          // find the local index for the point 'a' on the cell
+          itr_j = next(itVert, 3*Neib[1]);
+          for (j=0;j<3;j++)
+           if (itr_j[j] == a) break;
+
+          // find the local index for the point 'b' on the cell 
+          for (k=0;k<3;k++)
+           if (itr_j[k] == b) break;
+
+          k = k*10 + j;
+          switch (k) // j will contain the local index for the current
+           {
+            case  1:
+            case 10:
+             j = 0;
+            break;
+            case 12:
+            case 21:
+             j = 1;
+            break;
+            case  2:
+            case 20:
+             j = 2;
+            break;
+           }
+          neib1->SetFacet(j, facet);
+         } //  if (Neib[1] != -1)
       } // ii
-
-     //  exit(0);
-
-  FacetIDX = 3;
-         //  cout<<" N_Facets  : " << x.get().GetN_Facets() << endl;
-      // &x->SetVertGlobalIdx(0, v1);
     } // for(size_t i=0;
 
-   cout << " FacetIDX " << ++FacetIDX << endl;
-   output(++FacetIDX);
-   cout<<N_RootCells <<  " maxEpV : " << Cells.size() << endl;
-  //  output(maxEpV);
+  dat.close();
 
-   dat.close();
+  OutPut("============SParSH Mesh Info==========="<<endl);
+  OutPut(setw(17)  <<"N_RootCells : "<<  Cells.size() << endl);
+  OutPut(setw(17)  <<"N_InnerFacets : "<< InnerFacets.size() << endl);
+  OutPut(setw(17)  << "N_InterFacets : "<<InterFacets.size() << endl);
+  OutPut(setw(17)  <<"N_BDFacets : "<< BDFacets.size() << endl);
+ 
+  localmesh->SetN_InnerFacets(InnerFacets.size());
+  localmesh->SetN_InterfaceFacets(InterFacets.size());
+  localmesh->SetN_BoundaryFacts(InnerFacets.size());
+  
+  InnerFacets.insert(std::end(InnerFacets), std::make_move_iterator(std::begin(InterFacets)), std::make_move_iterator(std::end(InterFacets)) );
+  InnerFacets.insert(std::end(InnerFacets), std::make_move_iterator(std::begin(BDFacets)), std::make_move_iterator(std::end(BDFacets)) );
+
+  OutPut(setw(17)  <<"Total N_Facets : "<< InnerFacets.size() << endl);
+  OutPut("======================================="<<endl);
+
+  /** move the facets to local mesh, needed for integral over facets, eg. dG */
+  localmesh->MoveFacets(std::move(InnerFacets));
+  
+  /** move the genereated coarse mesh (level 0) and consruct the Domain */
+  TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
 
  } // GenerateMesh
 

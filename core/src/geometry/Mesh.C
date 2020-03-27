@@ -23,8 +23,9 @@ TMesh<dim>::TMesh()
   N_BoundaryFacts = 0;   
  }
 
+/** generate the coll of raw ptrs and share it */
 template <sint dim> 
-vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection() 
+vector<reference_wrapper<TGridCell<dim>>> TMesh<dim>::GetCollection() 
 {
   size_t N_Cells = Cells.size();
 
@@ -32,7 +33,7 @@ vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection()
   
   if(CellsRefs.size()==0 && N_Cells!=0)
    {
-    for (auto &ptr : Cells) 
+    for (auto ptr : Cells) 
      {
       CellsRefs.push_back(std::ref(*ptr));
      }
@@ -40,6 +41,27 @@ vector<reference_wrapper<TBaseCell<dim>>> TMesh<dim>::GetCollection()
 
   return CellsRefs;
 }
+
+
+/** Writing the vertices in the give dat file */
+template <sint dim>   
+void TMesh<dim>::WriteMesh(std::ofstream &dat)
+{
+ double X[dim];
+ dat << "POINTS " << Vertices.size() << " float" << endl;
+ 
+ for(auto V : Vertices)
+  V->WriteVert(dat); 
+
+ dat << endl;
+ dat << "CELL_TYPES " << Cells.size() << endl;
+ 
+ for(auto E : Cells)
+  E->WriteCell(dat); 
+
+
+} // WriteMesh(
+
 
 // template <sint dim> 
 // void TMesh<dim>::AddBoundIDs(vector<size_t> && BDIDs)

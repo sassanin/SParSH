@@ -29,7 +29,7 @@ TInnerFacet<dim>::TInnerFacet(SParSH::TBaseCell<dim> *owncell) :
  this->OwnCell = owncell;
 }
 
- /** constructor with two initial neighbours */
+ /** constructor with two initial (rawptr) neighbours */
  template <sint dim> 
 TInnerFacet<dim>::TInnerFacet(SParSH::TBaseCell<dim> *owncell, SParSH::TBaseCell<dim> *neibcell):
                   TFacet<dim>()

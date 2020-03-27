@@ -29,13 +29,13 @@ set(CMAKE_VERBOSE_MAKEFILE FALSE)
 
 
 # selection of architect type (LINUX64 MAC64 INTEL64 AMD64 TYRONE64 CRAY64)
-set(SParSH_ARCH "AMD64" CACHE STRING "select the machine type")
+set(SParSH_ARCH "INTEL64" CACHE STRING "select the machine type")
 
 #  selection of program type (SEQUENTIAL SMPI MPI OMPONLY HYBRID)
 set(SParSH_PARALLEL_TYPE "SEQUENTIAL" CACHE STRING "select the parallel type")
 
 #  selection of program type (MPICH OPENMPI INTELMPI AMDMPI CRAYMPI MACMPI)
-set(SParSH_MPI_IMPLEMENTATION "AMDMPI" CACHE STRING "select the MPI Implementation type")
+set(SParSH_MPI_IMPLEMENTATION "INTELMPI" CACHE STRING "select the MPI Implementation type")
  
 # set the path to save the exe file ....................................................................................
 #.......................................................................................................................
@@ -57,8 +57,8 @@ set(EXE_BUILD_TYPE DEBUG)
 
 # set FALSE, if you want to use libs provided in SParSH 
 # if you set TRUE, it will search in all you lib paths and if not found, SParSH libs will be used
-set(SParSH_USE_SYSTEM_MKLBLAS FALSE)
-set(SParSH_USE_SYSTEM_AMDBLAS TRUE)
+set(SParSH_USE_SYSTEM_MKLBLAS TRUE)
+set(SParSH_USE_SYSTEM_AMDBLAS FALSE)
 set(SParSH_USE_SYSTEM_UMFPACK TRUE)
 set(SParSH_USE_SYSTEM_MUMPS TRUE)
 set(SParSH_USE_SYSTEM_GRIDGEN TRUE)

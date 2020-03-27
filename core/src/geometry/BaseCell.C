@@ -19,16 +19,7 @@ TBaseCell<dim>::TBaseCell(TRefineDesc<dim> *refindesc)
  RefinDesc = refindesc;
  PhaseID = 0;
  N_Facets = (refindesc->GetCellDesc())->GetN_Facets();  
-//  Facets.reserve(N_Facets);
-
-//  for(int i=0; i< N_Facets ; ++i)
-//   { 
-    //   Facets.push_back(move(make_unique<nullptr>));
-//    }
-
-//   output(N_Facets);
-//   output(Facets.size());
-
+ Facets.resize(N_Facets, nullptr);
 }
 
 // explicit instantiation
