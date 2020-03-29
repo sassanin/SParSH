@@ -42,6 +42,11 @@ class TGridCell : public TBaseCell<dim>
   virtual void SetRegionID(int id)
   {  RegionID = id; }
 
+  /** Get the region I of this cell */
+  virtual int GetRegionID()
+  { return RegionID; }
+
+
 };
 
 SParSH_NAMESPACE_END

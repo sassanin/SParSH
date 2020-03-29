@@ -53,6 +53,8 @@ THexahedron_8<dim>::THexahedron_8()
  this->FaceEdgeLen = static_cast<const sint *>(DatFaceEdgeLen);
  this->EdgeFace = static_cast<const sint *>(*DatEdgeFace);
  this->FaceType = static_cast<const CellType *>(DatFaceType);
+
+ this->VTKType = VTKCellType::NOT_DEFINED;
 }
 
 // Methods

@@ -1,3 +1,10 @@
+/** =======================================================================
+* @class     TSParSH_Database
+* @brief     source files for TSParSH_Database
+* @author    Sashikumaar Ganesan 
+* @date      08.01.2020
+* @History   
+===========================================================================*/
 #include <SParSH_IO.h>
 #include <SParSH_Database.h>
 #include <Mesh.h>
@@ -41,7 +48,6 @@ TSParSH_Database<dim>::TSParSH_Database()
 template <sint dim> 
 TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile) 
  {
-
  /** \breif reading the BASIC_DATA from readin file for param database */
   std::ifstream dat(ReadinFile);
   try { if (!dat) throw std::runtime_error("Could not open the readin file");  }
@@ -195,6 +201,195 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
 
 
+
+template <sint dim> 
+void TSParSH_Database<dim>::InitDomain(std::string MeshFile) 
+{
+
+  if(MeshFile.compare("UnitSquare"))
+   {
+   this->UnitSquare();
+   }
+  else if(MeshFile.compare(MeshFile.length()-5, 5,".mesh") == 0)
+   {
+    this->GenerateGmsh(MeshFile); // gmsh 
+   }
+  else
+   {
+    ErrMsg("Could not Init Domain, specify MeshFile[0] correctly in the input file");
+    exit(0);    
+   }
+
+
+
+}
+
+
+template <sint dim> 
+void TSParSH_Database<dim>::InitDescriptors() 
+{
+ int pos;
+ /** initialize the cell descriptors */
+ TSParSH_Database::CellDB.resize(N_CellTypes);
+ TSParSH_Database::RefineDescDB.resize(N_CellTypes+N_RefineTypes);
+
+ pos = static_cast<int>(CellType::LINE_2);
+ TSParSH_Database::CellDB[pos] = move(make_unique<TLine_2<dim>>());
+ TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+ TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Line_2Reg)] = move(make_unique<TRefineLine_2Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+ 
+  /** initialize special cell descriptors on demand for the list given in readin file */
+  for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
+   {
+    pos = TSParSH_Database::ParamDB->CellTypes[i];
+    switch (pos)
+    {
+     case static_cast<int>(CellType::TRI_3):
+      TSParSH_Database::CellDB[pos] = move(make_unique<TTriangle_3<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));      
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Tri_3Reg)] = move(make_unique<TRefineTria_3Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
+
+     case static_cast<int>(CellType::QUAD_4):
+      TSParSH_Database::CellDB[pos] = move(make_unique<TQuadrangle_4<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));         
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Quad_4Reg)] = move(make_unique<TRefineQuad_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
+
+#ifdef __3D__
+     case static_cast<int>(CellType::TETRA_4):
+      TSParSH_Database::CellDB[pos] = move(make_unique<TTetrahedron_4<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));         
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Tetra_4Reg)] = move(make_unique<TRefineTetra_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
+
+     case static_cast<int>(CellType::HEXA_8):
+      TSParSH_Database::CellDB[pos] = move(make_unique<THexahedron_8<dim>>());
+      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));   
+      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Hexa_8Reg)] = move(make_unique<TRefineHexa_8Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
+     break;
+#endif
+
+     default:
+      ErrMsg("Check CellTypes in the readin file") 
+
+     break;
+    }
+   }
+
+  //verify
+  // if(TSParSH_Database::CellDB[5])
+  // {
+  //  cout << "SParSH_Database : InitDescriptors  Completed " << TSParSH_Database::CellDB[5]->GetN_Edges() <<endl;
+
+  //  const sint *TmpEV;
+  //  TSParSH_Database::CellDB[5]->GetEdgeVertex(TmpEV);
+  //    for (sint i=0; i<6; ++i)
+  //      cout << "TTriangle_3 EdgeVertex: " << TmpEV[i] <<endl;
+  // }
+}
+
+
+/** Coarse Mesh generators */
+
+/** UnitSquare mesh */
+template <sint dim> 
+void TSParSH_Database<dim>::UnitSquare()
+ {
+  std::cout<<  "Start Init UnitSquare " << endl;
+
+  std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>());
+
+  // Generate Vertices
+  double X[3], Y[3];
+  vector<shared_ptr<TVertex<dim>>> NewVertices(4);
+
+  X[0] = 0.0; X[1] = 0.0; X[2]=0.0;
+  NewVertices[0] = make_shared<TVertex<dim>>(X);
+
+  X[0] = 1.0; X[1] = 0.0; X[2]=0.0;
+  NewVertices[1] = make_shared<TVertex<dim>>(X);
+
+  X[0] = 1.0; X[1] = 1.0; X[2]=0.0;
+  NewVertices[2] = make_shared<TVertex<dim>>(X);
+
+  X[0] = 0.0; X[1] = 1.0; X[2]=0.0;
+  NewVertices[3] = make_shared<TVertex<dim>>(X);
+
+  localmesh->MoveVertices(std::move(NewVertices));
+
+ //generate the cell
+ vector<shared_ptr<TGridCell<dim>>> CellTree(1);
+
+ TRefineDesc<dim> *QuadRefDesc;
+ /* get the raw pointer of QUAD_4 */
+ if(TSParSH_Database::RefineDescDB[static_cast<int>(CellType::QUAD_4)])
+  { QuadRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::QUAD_4)]).get();}
+ else
+  {
+   ErrMsg("Quad_4 is not selected as CellTypes in Input file");
+   exit(0);
+  }
+
+  CellTree[0] = make_shared<TGridCell<dim>>(QuadRefDesc, 0);
+  CellTree[0]->SetVertGlobalIdx(0, 0);
+  CellTree[0]->SetVertGlobalIdx(1, 1);
+  CellTree[0]->SetVertGlobalIdx(2, 2);
+  CellTree[0]->SetVertGlobalIdx(3, 3);
+  CellTree[0]->SetRegionID(0);  
+   
+  /** move the cells to the mesh */
+  localmesh->MoveCellTree(std::move(CellTree));
+
+  //generate Facets
+  std::vector<std::size_t> BdEdges(8);
+  BdEdges[0] = 0;  BdEdges[1] = 1; 
+  BdEdges[2] = 1;  BdEdges[3] = 2; 
+  BdEdges[4] = 2;  BdEdges[5] = 3; 
+  BdEdges[6] = 3;  BdEdges[7] = 4; 
+
+  vector<shared_ptr<TFacet<dim>>> BDFacets(4);
+  vector<shared_ptr<TFacet<dim>>> InnerFacets; 
+  vector<size_t>::iterator itBd = begin(BdEdges);
+  vector<size_t>::iterator itrB;
+
+  for(size_t i_edge=0; i_edge<4; ++i_edge)
+  {
+    itrB = next(itBd, 2*i_edge);
+    BDFacets[i_edge] =std::move(make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, 100+i_edge, 2, itrB));   
+  }
+
+  vector<reference_wrapper<TGridCell<dim>>> Cells = localmesh->GetCollection();
+  TBaseCell<dim> *cell = &Cells.at(0).get();    
+  cell->SetFacet(0, BDFacets[0]);
+  cell->SetFacet(1, BDFacets[1]);
+  cell->SetFacet(2, BDFacets[2]);
+  cell->SetFacet(3, BDFacets[3]);
+
+  OutPut("============SParSH Mesh Info==========="<<endl);
+  OutPut(setw(17)  <<"N_RootCells : "<<  Cells.size() << endl);
+  OutPut(setw(17)  <<"N_InnerFacets : "<< InnerFacets.size() << endl);
+  OutPut(setw(17)  << "N_InterFacets : "<<0 << endl);
+  OutPut(setw(17)  <<"N_BDFacets : "<< BDFacets.size() << endl);
+ 
+  localmesh->SetN_InnerFacets(InnerFacets.size());
+  localmesh->SetN_InterfaceFacets(0);
+  localmesh->SetN_BoundaryFacts(BDFacets.size());
+  
+  InnerFacets.insert(std::end(InnerFacets), std::make_move_iterator(std::begin(BDFacets)), std::make_move_iterator(std::end(BDFacets)) );
+
+  OutPut(setw(17)  <<"Total N_Facets : "<< InnerFacets.size() << endl);
+  OutPut("======================================="<<endl);
+
+  /** move the facets to local mesh, needed for integral over facets, eg. dG */
+  localmesh->MoveFacets(std::move(InnerFacets));
+  
+  /** move the genereated coarse mesh (level 0) and consruct the Domain */
+  TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
+
+ } //UnitSquare()
+
+/** Read Gmsh */
 template <sint dim> 
 void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile) 
  {
@@ -359,9 +554,9 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
    { TriaRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)]).get();}
    else
    {
-     ErrMsg("Trianlge_3 is not selected in Readin file for Gmsh");
+     ErrMsg("Trianlge_3 is not selected in Input file for Gmsh");
      exit(0);
-  }
+   }
 
    std::size_t threei;
    for (size_t i=0;i<N_RootCells; ++i)
@@ -376,10 +571,9 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
       
     CellTree[i] = make_shared<TGridCell<dim>>(TriaRefDesc, 0);
     CellTree[i]->SetVertGlobalIdx(0, v1);
-    CellTree[i]->SetVertGlobalIdx(1, v1);
+    CellTree[i]->SetVertGlobalIdx(1, v2);
     CellTree[i]->SetVertGlobalIdx(2, v3);
-    CellTree[i]->SetRegionID(CellMarker);
-    //  CellTree[i]->SetClipBoard(i);     
+    CellTree[i]->SetRegionID(CellMarker);  
     }
    
    /** move the cells to the mesh */
@@ -573,7 +767,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
  
   localmesh->SetN_InnerFacets(InnerFacets.size());
   localmesh->SetN_InterfaceFacets(InterFacets.size());
-  localmesh->SetN_BoundaryFacts(InnerFacets.size());
+  localmesh->SetN_BoundaryFacts(BDFacets.size());
   
   InnerFacets.insert(std::end(InnerFacets), std::make_move_iterator(std::begin(InterFacets)), std::make_move_iterator(std::end(InterFacets)) );
   InnerFacets.insert(std::end(InnerFacets), std::make_move_iterator(std::begin(BDFacets)), std::make_move_iterator(std::end(BDFacets)) );
@@ -589,69 +783,8 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
 
  } // GenerateMesh
 
-template <sint dim> 
-void TSParSH_Database<dim>::InitDescriptors() 
-{
- int pos;
- /** initialize the cell descriptors */
- TSParSH_Database::CellDB.resize(N_CellTypes);
- TSParSH_Database::RefineDescDB.resize(N_CellTypes+N_RefineTypes);
 
- pos = static_cast<int>(CellType::LINE_2);
- TSParSH_Database::CellDB[pos] = move(make_unique<TLine_2<dim>>());
- TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
- TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Line_2Reg)] = move(make_unique<TRefineLine_2Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
- 
-  /** initialize special cell descriptors on demand for the list given in readin file */
-  for(size_t i = 0; i<TSParSH_Database::ParamDB->CellTypes.size(); ++i )
-   {
-    pos = TSParSH_Database::ParamDB->CellTypes[i];
-    switch (pos)
-    {
-     case static_cast<int>(CellType::TRI_3):
-      TSParSH_Database::CellDB[pos] = move(make_unique<TTriangle_3<dim>>());
-      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));      
-      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Tri_3Reg)] = move(make_unique<TRefineTria_3Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
-     break;
 
-     case static_cast<int>(CellType::QUAD_4):
-      TSParSH_Database::CellDB[pos] = move(make_unique<TQuadrangle_4<dim>>());
-      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));         
-      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Quad_4Reg)] = move(make_unique<TRefineQuad_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
-     break;
-
-#ifdef __3D__
-     case static_cast<int>(CellType::TETRA_4):
-      TSParSH_Database::CellDB[pos] = move(make_unique<TTetrahedron_4<dim>>());
-      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));         
-      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Tetra_4Reg)] = move(make_unique<TRefineTetra_4Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
-     break;
-
-     case static_cast<int>(CellType::HEXA_8):
-      TSParSH_Database::CellDB[pos] = move(make_unique<THexahedron_8<dim>>());
-      TSParSH_Database::RefineDescDB[pos] = move(make_unique<TRefineNoRef<dim>>((TSParSH_Database::CellDB.at(pos)).get()));   
-      TSParSH_Database::RefineDescDB[N_CellTypes+static_cast<int>(RefineType::Hexa_8Reg)] = move(make_unique<TRefineHexa_8Desc<dim>>((TSParSH_Database::CellDB.at(pos)).get()));
-     break;
-#endif
-
-     default:
-      ErrMsg("Check CellTypes in the readin file") 
-
-     break;
-    }
-   }
-
-  //verify
-  // if(TSParSH_Database::CellDB[5])
-  // {
-  //  cout << "SParSH_Database : InitDescriptors  Completed " << TSParSH_Database::CellDB[5]->GetN_Edges() <<endl;
-
-  //  const sint *TmpEV;
-  //  TSParSH_Database::CellDB[5]->GetEdgeVertex(TmpEV);
-  //    for (sint i=0; i<6; ++i)
-  //      cout << "TTriangle_3 EdgeVertex: " << TmpEV[i] <<endl;
-  // }
-}
 
 
 // explicit instantiation

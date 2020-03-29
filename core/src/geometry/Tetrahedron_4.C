@@ -52,6 +52,7 @@ TTetrahedron_4<dim>::TTetrahedron_4()
  this->FaceEdgeLen = static_cast<const sint *>(DatFaceEdgeLen);
  this->EdgeFace = static_cast<const sint *>(*DatEdgeFace);
  this->FaceType = static_cast<const CellType *>(DatFaceType);
+this->VTKType = VTKCellType::TETRA_4; 
 }
 
 // Methods

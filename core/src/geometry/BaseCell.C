@@ -6,8 +6,6 @@
 * @History   
 ===========================================================================*/
 #include <BaseCell.h>
-// #include <CellDesc.h>
-// #include <RefineDesc.h>
 #include <vector>
 
 SParSH_NAMESPACE_BEGIN
@@ -17,9 +15,8 @@ template <sint dim>
 TBaseCell<dim>::TBaseCell(TRefineDesc<dim> *refindesc)
 {
  RefinDesc = refindesc;
- PhaseID = 0;
- N_Facets = (refindesc->GetCellDesc())->GetN_Facets();  
- Facets.resize(N_Facets, nullptr);
+ PhaseID = 0; 
+ Facets.resize((RefinDesc->GetCellDesc())->GetN_Facets(), nullptr);
 }
 
 // explicit instantiation

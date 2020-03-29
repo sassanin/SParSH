@@ -48,18 +48,49 @@ template <sint dim>
 void TMesh<dim>::WriteMesh(std::ofstream &dat)
 {
  double X[dim];
- dat << "POINTS " << Vertices.size() << " float" << endl;
- 
+ size_t N_V = Vertices.size();
+ dat << "POINTS " << N_V << " float" << endl;
+
  for(auto V : Vertices)
   V->WriteVert(dat); 
 
  dat << endl;
- dat << "CELL_TYPES " << Cells.size() << endl;
- 
+
+ size_t N_E = Cells.size();
+ size_t N_LocalVertices = 0;
+ for(auto E : Cells)
+   N_LocalVertices += E->GetN_Vertices();
+
+ dat << "CELLS " << N_E << " " <<  N_E+N_LocalVertices << endl;
+
  for(auto E : Cells)
   E->WriteCell(dat); 
 
+  dat << endl;
+  dat << "CELL_TYPES " << N_E << endl;
+  for(auto E : Cells)
+   dat << E->GetVTKType()<< " ";
 
+  dat << endl << endl;
+  dat << "CELL_DATA " << N_E << endl;
+
+  // standard output writing
+  dat << "SCALARS " << "RegionID";
+  dat << " float"<< endl;
+  dat << "LOOKUP_TABLE " << "default" << endl;
+  for(auto E : Cells)
+   dat << E->GetRegionID()<< endl;
+
+  // dat << "POINT_DATA " << N_V << endl;
+  //     dat << "SCALARS " << "Test";
+  //     dat << " float"<< endl;
+  //     dat << "LOOKUP_TABLE " << "default" << endl;
+  //     for(int j=0;j<N_V;j++)
+  //       dat <<1.0 << endl;
+
+  
+  dat << endl << endl;
+ 
 } // WriteMesh(
 
 

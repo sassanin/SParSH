@@ -29,6 +29,8 @@ TTriangle_3<dim>::TTriangle_3()
  this->MaxN_EpV = 2;
  this->EdgeVertex = static_cast<const sint *>(*DatEdgeVertex);
  this->VertexEdge = static_cast<const sint *>(*DatVertexEdge);   
+
+ this->VTKType = VTKCellType::TRI_3;
 }
 
 // Methods

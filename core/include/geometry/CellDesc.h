@@ -24,13 +24,19 @@ enum class CellType:sint {LINE_2, LINE_3,
                           PRISM_6, PRISM_15, PRISM_18,
                           HEXA_8, HEXA_20, HEXA_27,
                           NOT_DEFINED };
- 
+
+ enum class VTKCellType:sint {LINE_2=3, TRI_3=5, QUAD_4=9, TETRA_4=10,
+                              HEXA_8=12, NOT_DEFINED };
+
 template <sint dim=GEO_DIM> 
 class TCellDesc {
 
   protected:
     /** \brief Type contains the enum ID of the cell type */
     CellType Type;
+
+    /** \brief VTK Type the cell */
+    VTKCellType VTKType;
 
     /** \brief number of vertices in this cell */
     sint N_Vertices;
@@ -167,6 +173,10 @@ class TCellDesc {
     /** \brief return the cell type */
     CellType GetCellType()
     { return Type; }
+
+    /** \brief return the cell type */
+    int GetVTKCellType()
+    { return (int)VTKType; }
 
     /** \brief  pure virtual function that is used in all derived classes to return diameter of a cell */
     virtual double GetDiameter(SParSH::TVertex<dim> **Verts)=0;

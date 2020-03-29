@@ -25,7 +25,8 @@ TLine_2<dim>::TLine_2()
  this->VertexEdge = static_cast<const sint *>(*DatVertexEdge);
  this->Type = CellType::LINE_2;
  this->N_Vertices = 2;   
- this->N_Facets = 2;   
+ this->N_Facets = 2;  
+ this->VTKType = VTKCellType::LINE_2;  
 }
 
 // Methods

@@ -73,6 +73,8 @@ class TSParSH_Database {
   static vector<unique_ptr<TRefineDesc<dim>>> RefineDescDB;
   static  unique_ptr<TDomain<dim>> Domain; 
 
+
+
   //constructor
 
   /** default constructor */
@@ -81,14 +83,21 @@ class TSParSH_Database {
   /** \brief read the data for the database from the given readin file */
   TSParSH_Database(string ReadinFile);
 
-  //methods
 
+  //methods
+  /** \brief Initilize the coarse mesh */
+  void InitDomain(string MeshFile);
+
+  private:
+  
   /** \brief read the data for the database from the given readin file */
   void InitDescriptors();
 
+  /** \brief gererating an unitsquare mesh */
+  void UnitSquare();
+
   /** \brief gererating a mesh using the given Gmsh file */
    void GenerateGmsh(string MeshFile);
-
 };
 
 /** \brief initialize the static ParamDB */

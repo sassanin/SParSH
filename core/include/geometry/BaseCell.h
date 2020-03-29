@@ -26,9 +26,6 @@ class TBaseCell {
   /**  @brief raw pointer of Cell (Shape) descriptor */
   TRefineDesc<dim> *RefinDesc;
 
-  /** No. of facets in the cell */
-  int N_Facets;
-
   /**  @brief array of all joints */
   vector<shared_ptr<TFacet<dim>>> Facets;
  
@@ -58,8 +55,17 @@ class TBaseCell {
   {return PhaseID;}   
 
   /** \brief return the number of joints */
+  int GetN_Vertices()
+  {  return (RefinDesc->GetCellDesc())->GetN_Vertices(); }
+
+  /** \brief return the number of joints */
   int GetN_Facets()
-  {  return N_Facets; }
+  {  return (RefinDesc->GetCellDesc())->GetN_Facets();}
+
+  int GetVTKType()
+  {
+    return (RefinDesc->GetCellDesc())->GetVTKCellType();
+  }
 
   // /** \brief  retun the facet for the given index */
   // TFacet<dim> *GetFacet(int idx)
@@ -79,7 +85,7 @@ class TBaseCell {
 
   virtual void SetRegionID(int id)=0;
 
-
+  virtual int GetRegionID()=0;
 
 };
 

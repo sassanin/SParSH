@@ -28,6 +28,7 @@ TQuadrangle_4<dim>::TQuadrangle_4()
  this->MaxN_EpV = 2;
  this->EdgeVertex = static_cast<const sint *>(*DatEdgeVertex);
  this->VertexEdge = static_cast<const sint *>(*DatVertexEdge);   
+ this->VTKType = VTKCellType::QUAD_4; 
 }
 
 // Methods

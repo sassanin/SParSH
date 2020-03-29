@@ -34,7 +34,8 @@ void TDomain<dim>::WriteVTKMesh()
 
   FineMesh->WriteMesh(dat);
 
-
+  dat.close();
+  
   output(outfile);
 
  }
