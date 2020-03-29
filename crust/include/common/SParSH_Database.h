@@ -86,7 +86,7 @@ class TSParSH_Database {
 
   //methods
   /** \brief Initilize the coarse mesh */
-  void InitDomain(string MeshFile);
+  void InitDomain(string mesh);
 
   private:
   
@@ -94,7 +94,10 @@ class TSParSH_Database {
   void InitDescriptors();
 
   /** \brief gererating an unitsquare mesh */
-  void UnitSquare();
+  void UnitSquareQuad();
+
+  /** \brief gererating an unitsquare mesh */
+  void UnitSquareTria();
 
   /** \brief gererating a mesh using the given Gmsh file */
    void GenerateGmsh(string MeshFile);

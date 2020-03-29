@@ -23,6 +23,8 @@ int main(int argc, char* argv[])
   /** initiate the database with the give readin file (argv[1]) at execution */
   unique_ptr<TSParSH_Database<GEO_DIM> > DataBase(make_unique<TSParSH_Database<GEO_DIM>>(argv[1]));
  
+   output(SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0]);
+
   /** Generate mesh with the givem mesh file */
   DataBase->InitDomain(SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0]);
 

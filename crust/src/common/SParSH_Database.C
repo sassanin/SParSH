@@ -55,6 +55,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
     { sarshpout(ex); exit(-1); }
 
   char line[100];
+  std::string inpline;
   int tempint;
   double tempdouble;
   sint tempsint, outlen=0, meshlen=0, celltyplen=0, unifmstplen=0, usrdblen=0., usrintlen=0;
@@ -69,25 +70,23 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
   while (!dat.eof())
   {
-   dat >> line;
+   dat >> inpline;
 
-    if (! strcmp(line, "BASIC_DATA_BEGIN"))
+   if(inpline.compare("BASIC_DATA_BEGIN")==0)
     { break; }
   } // while (!dat.eof())
 
   while (!dat.eof())
   {
-   dat >> line;
-    if (!strcmp(line, outstring.c_str()))
+   dat >> inpline;
+   output(inpline);
+
+   if (inpline.compare(outstring)==0 )
      {
       if(outlen==0)
        { 
         dat >> TSParSH_Database::ParamDB->OutFile[0];
-        // dat >> tempstr;
-        // auto it = TSParSH_Database::ParamDB->OutFile.begin();
-        // TSParSH_Database::ParamDB->OutFile.insert(it, tempstr);
         outstring = "OutFile[" + std::to_string(++outlen) + "]:";
-       
        }
       else
        {  
@@ -96,7 +95,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         outstring = "OutFile[" + std::to_string(++outlen) + "]:";
        }
      }
-    else if (!strcmp(line, meshstring.c_str()))
+    else if (inpline.compare(0,12, meshstring)==0)
      {
       if(meshlen==0)
        { 
@@ -110,7 +109,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         meshstring = "MeshFile[" + std::to_string(++meshlen) + "]:";
        }
      }
-    else if (!strcmp(line, celltypstring.c_str()))
+    else if (inpline.compare(celltypstring)==0)
      {
       if(celltyplen==0)
        { 
@@ -124,7 +123,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         celltypstring = "CellTypes[" + std::to_string(++celltyplen) + "]:";
        }
      }
-    else if (!strcmp(line, unifmststring.c_str()))
+    else if (inpline.compare(unifmststring)==0)
      {
       if(unifmstplen==0)
        { 
@@ -138,19 +137,19 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         unifmststring = "Uniform_Steps[" + std::to_string(++unifmstplen) + "]:";
        }
      }
-   else if (! strcmp(line, "VTKFile:"))
+   else if (inpline.compare("VTKFile:")==0)
     {    
      dat >> TSParSH_Database::ParamDB->VTKFile;
     }
-   else if (! strcmp(line, "PSFile:"))
+   else if (inpline.compare("PSFile:")==0)
     {    
      dat >> TSParSH_Database::ParamDB->PSFile;
     }   
-   else if (! strcmp(line, "OutDir:"))
+   else if (inpline.compare("OutDir:")==0)
     {    
      dat >> TSParSH_Database::ParamDB->OutDir;
     }     
-   else if (! strcmp(line, "Write_PS:"))
+   else if (inpline.compare("Write_PS:")==0)
     {    
      dat >> tempint;
      if(tempint==1)
@@ -158,7 +157,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      else
       { TSParSH_Database::ParamDB->Write_PS=false; }
     }   
-    else if (!strcmp(line, usrdblstring.c_str()))
+    else if (inpline.compare(usrdblstring)==0)
      {
       if(usrdblen==0)
        { 
@@ -172,7 +171,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         usrdblstring = "UserDoubleParameter[" + std::to_string(++usrdblen) + "]:";
        }
      }
-    else if (!strcmp(line, usrintstring.c_str()))
+    else if (inpline.compare(usrintstring)==0)
      {
       if(usrintlen==0)
        { 
@@ -186,8 +185,12 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         usrintstring = "UserIntParameter[" + std::to_string(++usrintlen) + "]:";
        }
      }
-   else if (! strcmp(line, "BASIC_DATA_END"))
+   else if (inpline.compare("BASIC_DATA_END")==0)
     {  break; }
+
+  // read until end of line
+  dat.getline (line, 99);
+  
   } // while (!dat.eof())
 
   dat.close();
@@ -203,16 +206,22 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
 
 template <sint dim> 
-void TSParSH_Database<dim>::InitDomain(std::string MeshFile) 
+void TSParSH_Database<dim>::InitDomain(std::string mesh) 
 {
 
-  if(MeshFile.compare("UnitSquare"))
+  output(mesh);
+  
+  if(mesh.compare("UnitSquareQuad")==0)
    {
-   this->UnitSquare();
+   this->UnitSquareQuad();
    }
-  else if(MeshFile.compare(MeshFile.length()-5, 5,".mesh") == 0)
+  else if(mesh.compare("UnitSquareTria")==0)
    {
-    this->GenerateGmsh(MeshFile); // gmsh 
+   this->UnitSquareTria();
+   } 
+  else if(mesh.compare(mesh.length()-5, 5,".mesh") == 0)
+   {
+    this->GenerateGmsh(mesh); // gmsh 
    }
   else
    {
@@ -292,45 +301,35 @@ void TSParSH_Database<dim>::InitDescriptors()
 
 /** Coarse Mesh generators */
 
-/** UnitSquare mesh */
+/** UnitSquare Quad mesh */
 template <sint dim> 
-void TSParSH_Database<dim>::UnitSquare()
+void TSParSH_Database<dim>::UnitSquareQuad()
  {
-  std::cout<<  "Start Init UnitSquare " << endl;
+  std::cout<<  "Start Init UnitSquareQuad " << endl;
 
   std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>());
 
   // Generate Vertices
-  double X[3], Y[3];
+  double X[8]={0.0,0.0, 1.0,0.0, 1.0,1.0,  0.0,1.0};
   vector<shared_ptr<TVertex<dim>>> NewVertices(4);
 
-  X[0] = 0.0; X[1] = 0.0; X[2]=0.0;
-  NewVertices[0] = make_shared<TVertex<dim>>(X);
-
-  X[0] = 1.0; X[1] = 0.0; X[2]=0.0;
-  NewVertices[1] = make_shared<TVertex<dim>>(X);
-
-  X[0] = 1.0; X[1] = 1.0; X[2]=0.0;
-  NewVertices[2] = make_shared<TVertex<dim>>(X);
-
-  X[0] = 0.0; X[1] = 1.0; X[2]=0.0;
-  NewVertices[3] = make_shared<TVertex<dim>>(X);
+  for(size_t i=0; i<4; ++i)
+   NewVertices[i] = make_shared<TVertex<dim>>(X+(2*i));
 
   localmesh->MoveVertices(std::move(NewVertices));
 
- //generate the cell
- vector<shared_ptr<TGridCell<dim>>> CellTree(1);
+  //generate the cell
+  TRefineDesc<dim> *QuadRefDesc;
+  /* get the raw pointer of QUAD_4 */
+  if(TSParSH_Database::RefineDescDB[static_cast<int>(CellType::QUAD_4)])
+   { QuadRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::QUAD_4)]).get();}
+  else
+   {
+    ErrMsg("Quad_4 is not selected as CellTypes in Input file");
+    exit(0);
+   }
 
- TRefineDesc<dim> *QuadRefDesc;
- /* get the raw pointer of QUAD_4 */
- if(TSParSH_Database::RefineDescDB[static_cast<int>(CellType::QUAD_4)])
-  { QuadRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::QUAD_4)]).get();}
- else
-  {
-   ErrMsg("Quad_4 is not selected as CellTypes in Input file");
-   exit(0);
-  }
-
+  vector<shared_ptr<TGridCell<dim>>> CellTree(1);
   CellTree[0] = make_shared<TGridCell<dim>>(QuadRefDesc, 0);
   CellTree[0]->SetVertGlobalIdx(0, 0);
   CellTree[0]->SetVertGlobalIdx(1, 1);
@@ -342,29 +341,20 @@ void TSParSH_Database<dim>::UnitSquare()
   localmesh->MoveCellTree(std::move(CellTree));
 
   //generate Facets
-  std::vector<std::size_t> BdEdges(8);
-  BdEdges[0] = 0;  BdEdges[1] = 1; 
-  BdEdges[2] = 1;  BdEdges[3] = 2; 
-  BdEdges[4] = 2;  BdEdges[5] = 3; 
-  BdEdges[6] = 3;  BdEdges[7] = 4; 
-
+  std::vector<std::size_t> BdEdges{0,1, 1,2, 2,3, 3,4};
   vector<shared_ptr<TFacet<dim>>> BDFacets(4);
   vector<shared_ptr<TFacet<dim>>> InnerFacets; 
   vector<size_t>::iterator itBd = begin(BdEdges);
   vector<size_t>::iterator itrB;
+  vector<reference_wrapper<TGridCell<dim>>> Cells = localmesh->GetCollection();
+  TBaseCell<dim> *cell = &Cells.at(0).get();   
 
   for(size_t i_edge=0; i_edge<4; ++i_edge)
   {
     itrB = next(itBd, 2*i_edge);
     BDFacets[i_edge] =std::move(make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, 100+i_edge, 2, itrB));   
+    cell->SetFacet(i_edge, BDFacets[i_edge]);
   }
-
-  vector<reference_wrapper<TGridCell<dim>>> Cells = localmesh->GetCollection();
-  TBaseCell<dim> *cell = &Cells.at(0).get();    
-  cell->SetFacet(0, BDFacets[0]);
-  cell->SetFacet(1, BDFacets[1]);
-  cell->SetFacet(2, BDFacets[2]);
-  cell->SetFacet(3, BDFacets[3]);
 
   OutPut("============SParSH Mesh Info==========="<<endl);
   OutPut(setw(17)  <<"N_RootCells : "<<  Cells.size() << endl);
@@ -386,8 +376,104 @@ void TSParSH_Database<dim>::UnitSquare()
   
   /** move the genereated coarse mesh (level 0) and consruct the Domain */
   TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
-
  } //UnitSquare()
+
+
+/** UnitSquare Tria mesh */
+template <sint dim> 
+void TSParSH_Database<dim>::UnitSquareTria()
+ {
+  std::cout<<  "Start Init UnitSquareTria " << endl;
+
+  std::unique_ptr<TMesh<dim> > localmesh(make_unique<SParSH::TMesh<GEO_DIM>>());
+
+  // Generate Vertices   
+  vector<shared_ptr<TVertex<dim>>> NewVertices(5);
+  double X[10]={0.5,0.5, 0.0,0.0, 1.0,0.0, 1.0,1.0,  0.0,1.0};
+  for(size_t i=0; i<5; ++i)
+   NewVertices[i] = make_shared<TVertex<dim>>(X+(2*i));
+
+  localmesh->MoveVertices(std::move(NewVertices));
+
+  //generate the cell
+  TRefineDesc<dim> *TriaRefDesc;
+  /* get the raw pointer of TRI_3 */
+  if(TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)])
+   { TriaRefDesc = (TSParSH_Database::RefineDescDB[static_cast<int>(CellType::TRI_3)]).get();}
+  else
+   {
+    ErrMsg("TRI_3 is not selected as CellTypes in Input file");
+    exit(0);
+   }
+
+  vector<shared_ptr<TGridCell<dim>>> CellTree(4);
+  std::size_t CellVertices[12] = {0,1,2, 0,2,3, 0,3,4, 0,4,1};
+  for(std::size_t i=0; i<4; ++i)
+  {
+   CellTree[i] = make_shared<TGridCell<dim>>(TriaRefDesc, 0);
+   CellTree[i]->SetVertGlobalIdx(0, CellVertices[3*i]);
+   CellTree[i]->SetVertGlobalIdx(1, CellVertices[3*i+1]);
+   CellTree[i]->SetVertGlobalIdx(2, CellVertices[3*i+2]);
+   CellTree[i]->SetRegionID(0);  
+  }
+   
+  /** move the cells to the mesh */
+  localmesh->MoveCellTree(std::move(CellTree));
+
+  //generate Facets
+  vector<reference_wrapper<TGridCell<dim>>> Cells = localmesh->GetCollection();
+  std::size_t InnerFacetCells[8] = {0,3, 0,1, 1,2, 2,3};
+  std::size_t InnerFacetLocalFacet[8] = {0,2, 2,0, 2,0, 2,0};  
+  std::size_t BoundFacetCells[4] ={0,1,2,3};
+  std::size_t BoundFacetLocalFacet[4] ={1,1,1,1};
+  vector<std::size_t> BdEdges{0,1, 0,2, 0,3, 0,4, 1,2, 2,3, 3,4, 4,1};  
+  shared_ptr<TFacet<dim>> facet;  
+  vector<shared_ptr<TFacet<dim>>> BDFacets(4);
+  vector<shared_ptr<TFacet<dim>>> InnerFacets(4); 
+  vector<size_t>::iterator itBd = begin(BdEdges);
+  vector<size_t>::iterator itrB;
+  TBaseCell<dim> *neib0, *neib1;  
+
+  for(size_t i=0; i<4; ++i)
+  {
+    neib0 = &Cells.at(InnerFacetCells[2*i]).get();          
+    neib1 = &Cells.at(InnerFacetCells[2*i+1]).get(); 
+    facet = make_shared<TInnerFacet<dim>>(neib0, neib1);
+    InnerFacets[i] = facet; 
+    neib0->SetFacet(InnerFacetCells[2*i], facet);
+    neib1->SetFacet(InnerFacetCells[2*+1], facet);
+  }
+
+  for(size_t i_edge=0; i_edge<4; ++i_edge)
+  {
+    itrB = next(itBd, 8+(2*i_edge));
+    BDFacets[i_edge] =std::move(make_unique<TBoundFacet<dim>>(FacetType::BoundEdge, 100+i_edge, 2, itrB));
+    neib0 = &Cells.at(i_edge).get(); 
+    neib0->SetFacet(BoundFacetLocalFacet[i_edge], BDFacets[i_edge]);
+  }
+
+  OutPut("============SParSH Mesh Info==========="<<endl);
+  OutPut(setw(17)  <<"N_RootCells : "<<  Cells.size() << endl);
+  OutPut(setw(17)  <<"N_InnerFacets : "<< InnerFacets.size() << endl);
+  OutPut(setw(17)  << "N_InterFacets : "<<0 << endl);
+  OutPut(setw(17)  <<"N_BDFacets : "<< BDFacets.size() << endl);
+ 
+  localmesh->SetN_InnerFacets(InnerFacets.size());
+  localmesh->SetN_InterfaceFacets(0);
+  localmesh->SetN_BoundaryFacts(BDFacets.size());
+  
+  InnerFacets.insert(std::end(InnerFacets), std::make_move_iterator(std::begin(BDFacets)), std::make_move_iterator(std::end(BDFacets)) );
+
+  OutPut(setw(17)  <<"Total N_Facets : "<< InnerFacets.size() << endl);
+  OutPut("======================================="<<endl);
+
+  /** move the facets to local mesh, needed for integral over facets, eg. dG */
+  localmesh->MoveFacets(std::move(InnerFacets));
+  
+  /** move the genereated coarse mesh (level 0) and consruct the Domain */
+  TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
+ } //UnitSquareTria()
+
 
 /** Read Gmsh */
 template <sint dim> 

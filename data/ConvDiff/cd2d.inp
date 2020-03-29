@@ -4,8 +4,9 @@
 BASIC_DATA_BEGIN
 
 OutFile[0]:        cd2d.out
-# MeshFile[0]:   ../../SParSH/data/mesh/UnitSqureTria.mesh
-MeshFile[0]: UnitSquare
+MeshFile[0]:   ../../SParSH/data/mesh/UnitSqureTria.mesh
+# MeshFile[0]: UnitSquareQuad
+# MeshFile[0]: UnitSquareTria
 
 # ----------------------------------------------------------------------
 # select the cell types used in the mesh (mesh can have mixed type)
