@@ -24,7 +24,7 @@ class TMesh {
  protected: 
 
   /** \brief Vertices contains the list of all vertices in this mesh. */
-  vector< shared_ptr< TVertex<dim> > > Vertices; 
+  vector<shared_ptr<TVertex<dim>>> Vertices; 
 
   /** \brief list of IDs of physical Boundaries */
   vector<size_t>  BoundIDs;
@@ -74,6 +74,9 @@ class TMesh {
   void MoveCellTree(vector<shared_ptr<TGridCell<dim>>>  && cells_all)
   { Cells = std::move(cells_all); }
 
+  vector<shared_ptr<TGridCell<dim>>> GetCells()
+  {return Cells;}
+
   vector<reference_wrapper<TGridCell<dim>>> GetCollection();
 
   //send the raw pointer of the vertex V[at]
@@ -98,6 +101,10 @@ class TMesh {
   /** \brief  store all Facets of this mesh */
   void MoveFacets(vector<shared_ptr<TFacet<dim>>> && facets_all)
   {  Facets = std::move(facets_all);  }
+
+  /** Return Vertices in the mesh */
+  vector<shared_ptr<TVertex<dim>>> GetVertices()
+  { return Vertices; }
 
   /** Send N_Vertices in the mesh */
   int GetN_Vertices()

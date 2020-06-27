@@ -55,7 +55,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
     { sarshpout(ex); exit(-1); }
 
   char line[100];
-  std::string inpline;
+  std::string inputline;
   int tempint;
   double tempdouble;
   sint tempsint, outlen=0, meshlen=0, celltyplen=0, unifmstplen=0, usrdblen=0., usrintlen=0;
@@ -70,18 +70,17 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
 
   while (!dat.eof())
   {
-   dat >> inpline;
+   dat >> inputline;
 
-   if(inpline.compare("BASIC_DATA_BEGIN")==0)
+   if(inputline.compare("BASIC_DATA_BEGIN")==0)
     { break; }
   } // while (!dat.eof())
 
   while (!dat.eof())
   {
-   dat >> inpline;
-   output(inpline);
+   dat >> inputline;
 
-   if (inpline.compare(outstring)==0 )
+   if (inputline.compare(outstring)==0 )
      {
       if(outlen==0)
        { 
@@ -95,7 +94,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         outstring = "OutFile[" + std::to_string(++outlen) + "]:";
        }
      }
-    else if (inpline.compare(0,12, meshstring)==0)
+    else if (inputline.compare(0,12, meshstring)==0)
      {
       if(meshlen==0)
        { 
@@ -109,7 +108,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         meshstring = "MeshFile[" + std::to_string(++meshlen) + "]:";
        }
      }
-    else if (inpline.compare(celltypstring)==0)
+    else if (inputline.compare(celltypstring)==0)
      {
       if(celltyplen==0)
        { 
@@ -123,7 +122,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         celltypstring = "CellTypes[" + std::to_string(++celltyplen) + "]:";
        }
      }
-    else if (inpline.compare(unifmststring)==0)
+    else if (inputline.compare(unifmststring)==0)
      {
       if(unifmstplen==0)
        { 
@@ -137,19 +136,19 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         unifmststring = "Uniform_Steps[" + std::to_string(++unifmstplen) + "]:";
        }
      }
-   else if (inpline.compare("VTKFile:")==0)
+   else if (inputline.compare("VTKFile:")==0)
     {    
      dat >> TSParSH_Database::ParamDB->VTKFile;
     }
-   else if (inpline.compare("PSFile:")==0)
+   else if (inputline.compare("PSFile:")==0)
     {    
      dat >> TSParSH_Database::ParamDB->PSFile;
     }   
-   else if (inpline.compare("OutDir:")==0)
+   else if (inputline.compare("OutDir:")==0)
     {    
      dat >> TSParSH_Database::ParamDB->OutDir;
     }     
-   else if (inpline.compare("Write_PS:")==0)
+   else if (inputline.compare("Write_PS:")==0)
     {    
      dat >> tempint;
      if(tempint==1)
@@ -157,7 +156,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
      else
       { TSParSH_Database::ParamDB->Write_PS=false; }
     }   
-    else if (inpline.compare(usrdblstring)==0)
+    else if (inputline.compare(usrdblstring)==0)
      {
       if(usrdblen==0)
        { 
@@ -171,7 +170,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         usrdblstring = "UserDoubleParameter[" + std::to_string(++usrdblen) + "]:";
        }
      }
-    else if (inpline.compare(usrintstring)==0)
+    else if (inputline.compare(usrintstring)==0)
      {
       if(usrintlen==0)
        { 
@@ -185,7 +184,7 @@ TSParSH_Database<dim>::TSParSH_Database(std::string ReadinFile)
         usrintstring = "UserIntParameter[" + std::to_string(++usrintlen) + "]:";
        }
      }
-   else if (inpline.compare("BASIC_DATA_END")==0)
+   else if (inputline.compare("BASIC_DATA_END")==0)
     {  break; }
 
   // read until end of line
@@ -375,7 +374,7 @@ void TSParSH_Database<dim>::UnitSquareQuad()
   localmesh->MoveFacets(std::move(InnerFacets));
   
   /** move the genereated coarse mesh (level 0) and consruct the Domain */
-  TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
+  TSParSH_Database::Domain = move(make_shared<TDomain<dim>>(std::move(localmesh))); 
  } //UnitSquare()
 
 
@@ -471,7 +470,7 @@ void TSParSH_Database<dim>::UnitSquareTria()
   localmesh->MoveFacets(std::move(InnerFacets));
   
   /** move the genereated coarse mesh (level 0) and consruct the Domain */
-  TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
+  TSParSH_Database::Domain = move(make_shared<TDomain<dim>>(std::move(localmesh))); 
  } //UnitSquareTria()
 
 
@@ -865,7 +864,7 @@ void TSParSH_Database<dim>::GenerateGmsh(std::string MeshFile)
   localmesh->MoveFacets(std::move(InnerFacets));
   
   /** move the genereated coarse mesh (level 0) and consruct the Domain */
-  TSParSH_Database::Domain = move(make_unique<TDomain<dim>>(std::move(localmesh))); 
+  TSParSH_Database::Domain = move(make_shared<TDomain<dim>>(std::move(localmesh))); 
 
  } // GenerateMesh
 

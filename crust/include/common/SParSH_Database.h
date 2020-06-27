@@ -71,9 +71,7 @@ class TSParSH_Database {
   /** database of shape descriptors */
   static vector<unique_ptr<TCellDesc<dim>>> CellDB;
   static vector<unique_ptr<TRefineDesc<dim>>> RefineDescDB;
-  static  unique_ptr<TDomain<dim>> Domain; 
-
-
+  static shared_ptr<TDomain<dim>> Domain; 
 
   //constructor
 
@@ -117,6 +115,6 @@ vector<unique_ptr<SParSH::TRefineDesc<dim>>> SParSH::TSParSH_Database<dim>::Refi
 
 /** \brief initialize the static Domain */
 template <sint dim> 
-unique_ptr<SParSH::TDomain<dim>> SParSH::TSParSH_Database<dim>::Domain;
+shared_ptr<SParSH::TDomain<dim>> SParSH::TSParSH_Database<dim>::Domain;
 
 SParSH_NAMESPACE_END

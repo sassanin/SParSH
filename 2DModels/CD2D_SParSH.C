@@ -20,15 +20,20 @@ int main(int argc, char* argv[])
 { 
  using namespace SParSH;
 
+  shared_ptr<TDomain<GEO_DIM>> Domain;
+
   /** initiate the database with the give readin file (argv[1]) at execution */
   unique_ptr<TSParSH_Database<GEO_DIM> > DataBase(make_unique<TSParSH_Database<GEO_DIM>>(argv[1]));
  
-   output(SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0]);
 
   /** Generate mesh with the givem mesh file */
   DataBase->InitDomain(SParSH::TSParSH_Database<2>::ParamDB->MeshFile[0]);
 
-  SParSH::TSParSH_Database<2>::Domain->WriteVTKMesh();
+  Domain = SParSH::TSParSH_Database<2>::Domain;
+  Domain->WriteVTKMesh();
+
+
+  Domain->UniformRefine();
 
     int N = 100000;
     vector<int> values(100000); 

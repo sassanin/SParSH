@@ -26,6 +26,8 @@ class TDomain {
   TDomain(unique_ptr<TMesh<dim>> && coarsemesh);
 
   //methods 
+  /** \brief uniformaly refine the exisiting finest level mesh */
+  void UniformRefine();
 
   /** \brief  Assign/Change the coordinates of the vertex */
   void WriteVTKMesh();
